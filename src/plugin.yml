@@ -1,0 +1,16 @@
+name: ColeBans
+main: com.cole2sworld.ColeBans.Main
+version: 0.1.0
+commands:
+    ban:
+        usage: /ban <player> <reason>
+    unban:
+        usage: /unban <player>
+    kick:
+        usage: /kick <player> <reason>
+    tempban:
+        usage: /tempban <player> <time>
+    lookup:
+        usage: /lookup <player>
+    check:
+        usage: /check <player>
