@@ -222,6 +222,11 @@ public class MySQLBanHandler extends BanHandler {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public void convert(BanHandler handler) {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 

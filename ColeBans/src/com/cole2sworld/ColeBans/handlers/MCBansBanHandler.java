@@ -49,4 +49,10 @@ public class MCBansBanHandler extends BanHandler {
 
 	}
 
+	@Override
+	public void convert(BanHandler handler) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
