@@ -14,7 +14,7 @@ import com.cole2sworld.ColeBans.framework.MethodNotSupportedException;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 
-import me.PatPeter.SQLibrary.*;
+import me.PatPeter.SQLibrary.MySQL;
 
 public class MySQLBanHandler extends BanHandler {
 	MySQL sqlHandler;
