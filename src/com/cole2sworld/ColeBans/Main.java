@@ -170,6 +170,8 @@ public class Main extends JavaPlugin {
 							"json:\n"+
 							"    fileName: banlist.json";
 					fos.write(defaultConfig.getBytes());
+					loadConfig();
+					return;
 				}
 				else {
 					Logger.getLogger("Minecraft").severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
