@@ -8,3 +8,5 @@ The point of ColeBans is to provide a extensible, simple, and useful plugin for 
 
 
 ColeBans is made for CraftBukkit 1818 at the time of writing.
+
+The binary download for this file can be found [http://portal.cole2sworld.com/index.php?/files/file/8-colebans/ here]. This download is not always up to date with GitHub, as I don't compile experimental builds except for testing purposes.
