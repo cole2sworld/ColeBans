@@ -1,0 +1,10 @@
+=ColeBans=
+===A simple ban plugin that puts YOU in control.===
+
+Want to convert from a YAML file to JSON? No problem. Want to move from MCBans to a local MySQL database? Simple. Want to use a new format we don't have support for? Write a custom ban handler, or request it.
+
+
+The point of ColeBans is to provide a extensible, simple, and useful plugin for bans. Most of the plugins I have seen are all rigid, or use their own service/configuration without an ability to change.
+
+
+ColeBans is made for CraftBukkit 1818 at the time of writing.
