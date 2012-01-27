@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
+import me.PatPeter.SQLibrary.MySQL;
+
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -13,8 +15,6 @@ import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.MethodNotSupportedException;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
-
-import me.PatPeter.SQLibrary.MySQL;
 
 public class MySQLBanHandler extends BanHandler {
 	MySQL sqlHandler;

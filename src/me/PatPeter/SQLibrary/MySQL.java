@@ -22,9 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-//import java.util.logging.Logger;
 import java.util.logging.Logger;
-//import com.sun.rowset.JdbcRowSetImpl;
 
 public class MySQL extends DatabaseHandler {
 	private String hostname = "localhost";
