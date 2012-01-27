@@ -109,7 +109,7 @@ public class Main extends JavaPlugin {
 	}
 	
 	public void loadConfig() {
-		File confFile = new File("/plugins/ColeBans/config.yml");
+		File confFile = new File("./plugins/ColeBans/config.yml");
 		try {
 			if (confFile.exists()) {
 				conf.load(confFile);
