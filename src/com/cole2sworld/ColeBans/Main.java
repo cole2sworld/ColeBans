@@ -135,7 +135,8 @@ public class Main extends JavaPlugin {
 				sql.prefix = sql.section.getString("prefix");
 			}
 			else {
-				confFile.mkdirs();
+				File dir = new File("./plugins/ColeBans");
+				dir.mkdir();
 				confFile.createNewFile();
 				if (confFile.canWrite()) {
 					System.out.println("[ColeBans] No config file exists, generating.");
