@@ -7,9 +7,9 @@ import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 
 public class MCBansBanHandler extends BanHandler {
-	
+	private String api;
 	public MCBansBanHandler(String api) {
-
+		this.api = api;
 	}
 
 	@Override
