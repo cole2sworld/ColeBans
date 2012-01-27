@@ -142,34 +142,34 @@ public class Main extends JavaPlugin {
 					System.out.println("[ColeBans] No config file exists, generating.");
 					FileOutputStream fos = new FileOutputStream(confFile);
 					String defaultConfig = "settings:\n"+
-							"banHammer: BLAZE_ROD\n"+
-							"allowBanhammer: true\n"+
-							"allowTempBans: true\n"+
-							"banMessage: You are banned for %reason!\n"+
-							"tempBanMessage: You are tempbanned! %time minute%plural remaining!\n"+
-							"fancyEffects: true\n"+
-							"banColor: DARK_RED\n"+
-							"kickColor: YELLOW\n"+
-							"tempBanColor: RED\n"+
-							"announceBansAndKicks: true\n"+
-							"mcbansNodes: true\n"+
-							"logPrefix: [ColeBans]\n"+
-							"#banHandler can be MySQL, MCBans, YAML, or JSON.\n"+
-							"banHandler: MySQL\n"+
-							"mysql:\n"+
-							"    user: root\n"+
-							"    pass: pass\n"+
-							"    host: localhost\n"+
-							"    port: 3306\n"+
-							"    db: minecraft\n"+
-							"    prefix: cb_\n"+
-							"mcbans:\n"+
-							"    ###### THIS LINE IS VERY VERY IMPORTANT IF YOU CHOSE MCBANS FOR THE BAN HANDLER ######\n"+
-							"    apiKey:\n"+
-							"yaml:\n"+
-							"    fileName: banlist.yml\n"+
-							"json:\n"+
-							"    fileName: banlist.json";
+							"    banHammer: BLAZE_ROD\n"+
+							"    allowBanhammer: true\n"+
+							"    allowTempBans: true\n"+
+							"    banMessage: You are banned for %reason!\n"+
+							"    tempBanMessage: You are tempbanned! %time minute%plural remaining!\n"+
+							"    fancyEffects: true\n"+
+							"    banColor: DARK_RED\n"+
+							"    kickColor: YELLOW\n"+
+							"    tempBanColor: RED\n"+
+							"    announceBansAndKicks: true\n"+
+							"    mcbansNodes: true\n"+
+							"    logPrefix: [ColeBans]\n"+
+							"    #banHandler can be MySQL, MCBans, YAML, or JSON.\n"+
+							"    banHandler: MySQL\n"+
+							"    mysql:\n"+
+							"        user: root\n"+
+							"        pass: pass\n"+
+							"        host: localhost\n"+
+							"        port: 3306\n"+
+							"        db: minecraft\n"+
+							"        prefix: cb_\n"+
+							"    mcbans:\n"+
+							"        ###### THIS LINE IS VERY VERY IMPORTANT IF YOU CHOSE MCBANS FOR THE BAN HANDLER ######\n"+
+							"        apiKey:\n"+
+							"    yaml:\n"+
+							"        fileName: banlist.yml\n"+
+							"    json:\n"+
+							"        fileName: banlist.json";
 					fos.write(defaultConfig.getBytes());
 					loadConfig();
 					return;
