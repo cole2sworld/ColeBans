@@ -1,5 +1,11 @@
 package com.cole2sworld.ColeBans;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.logging.Logger;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -8,6 +14,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
@@ -78,7 +85,6 @@ public class Main extends JavaPlugin {
 		long oldtime = System.currentTimeMillis();
 		conf = getConfig();
 		loadConfig();
-		if (banHandlerConf.equals("MySQL"))
 		banHandler = new MySQLBanHandler(sql.user, sql.pass, sql.host, sql.port, logPrefix, sql.db);
 		long newtime = System.currentTimeMillis();
 		System.out.println(logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
@@ -103,27 +109,80 @@ public class Main extends JavaPlugin {
 	}
 	
 	public void loadConfig() {
-		reloadConfig();
-		settings = conf.getConfigurationSection("settings");
-		allowTempBans = settings.getBoolean("allowTempBans");
-		banHammer = Material.getMaterial(settings.getString("banHammer"));
-		banMessage = settings.getString("banMessage");
-		tempBanMessage = settings.getString("tempBanMessage");
-		allowBanhammer = settings.getBoolean("allowBanhammer");
-		fancyEffects = settings.getBoolean("fancyEffects");
-		banColor = settings.getString("banColor");
-		kickColor = settings.getString("kickColor");
-		tempBanColor = settings.getString("tempBanColor");
-		announceBansAndKicks = settings.getBoolean("announceBansAndKicks");
-		mcbansNodes = settings.getBoolean("mcbansNodes");
-		logPrefix = settings.getString("logPrefix")+" ";
-		sql.section = settings.getConfigurationSection("mysql");
-		sql.user = sql.section.getString("user");
-		sql.pass = sql.section.getString("pass");
-		sql.host = sql.section.getString("host");
-		sql.port = sql.section.getString("port");
-		sql.db = sql.section.getString("db");
-		sql.prefix = sql.section.getString("prefix");
+		File confFile = new File("/plugins/ColeBans/config.yml");
+		try {
+			if (confFile.exists()) {
+				conf.load(confFile);
+				settings = conf.getConfigurationSection("settings");
+				allowTempBans = settings.getBoolean("allowTempBans");
+				banHammer = Material.getMaterial(settings.getString("banHammer"));
+				banMessage = settings.getString("banMessage");
+				tempBanMessage = settings.getString("tempBanMessage");
+				allowBanhammer = settings.getBoolean("allowBanhammer");
+				fancyEffects = settings.getBoolean("fancyEffects");
+				banColor = settings.getString("banColor");
+				kickColor = settings.getString("kickColor");
+				tempBanColor = settings.getString("tempBanColor");
+				announceBansAndKicks = settings.getBoolean("announceBansAndKicks");
+				mcbansNodes = settings.getBoolean("mcbansNodes");
+				logPrefix = settings.getString("logPrefix")+" ";
+				sql.section = settings.getConfigurationSection("mysql");
+				sql.user = sql.section.getString("user");
+				sql.pass = sql.section.getString("pass");
+				sql.host = sql.section.getString("host");
+				sql.port = sql.section.getString("port");
+				sql.db = sql.section.getString("db");
+				sql.prefix = sql.section.getString("prefix");
+			}
+			else {
+				confFile.mkdirs();
+				confFile.createNewFile();
+				if (confFile.canWrite()) {
+					System.out.println("[ColeBans] No config file exists, generating.");
+					FileOutputStream fos = new FileOutputStream(confFile);
+					String defaultConfig = "settings:\n"+
+							"banHammer: BLAZE_ROD\n"+
+							"allowBanhammer: true\n"+
+							"allowTempBans: true\n"+
+							"banMessage: You are banned for %reason!\n"+
+							"tempBanMessage: You are tempbanned! %time minute%plural remaining!\n"+
+							"fancyEffects: true\n"+
+							"banColor: DARK_RED\n"+
+							"kickColor: YELLOW\n"+
+							"tempBanColor: RED\n"+
+							"announceBansAndKicks: true\n"+
+							"mcbansNodes: true\n"+
+							"logPrefix: [ColeBans]\n"+
+							"#banHandler can be MySQL, MCBans, YAML, or JSON.\n"+
+							"banHandler: MySQL\n"+
+							"mysql:\n"+
+							"    user: root\n"+
+							"    pass: pass\n"+
+							"    host: localhost\n"+
+							"    port: 3306\n"+
+							"    db: minecraft\n"+
+							"    prefix: cb_\n"+
+							"mcbans:\n"+
+							"    ###### THIS LINE IS VERY VERY IMPORTANT IF YOU CHOSE MCBANS FOR THE BAN HANDLER ######\n"+
+							"    apiKey:\n"+
+							"yaml:\n"+
+							"    fileName: banlist.yml\n"+
+							"json:\n"+
+							"    fileName: banlist.json";
+					fos.write(defaultConfig.getBytes());
+				}
+				else {
+					Logger.getLogger("Minecraft").severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
+					this.setEnabled(false);
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
