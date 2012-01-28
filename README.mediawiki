@@ -9,4 +9,10 @@ The point of ColeBans is to provide a extensible, simple, and useful plugin for 
 
 ColeBans is made for CraftBukkit 1818 at the time of writing.
 
+ColeBans requires <b>Permissions 2/3 or a bridge</b> for permissions support. SuperPerms support will be added eventually.
+
+If there is no permissions plugin, ColeBans will use op-status instead. Only ops will be able to use the plugin.
+
 The Jenkins for this plugin and all other Cole2's World plugins can be found [http://ci.cole2sworld.com:8080 here].
+
+Information for this plugin can be found on the [http://wiki.cole2sworld.com/ wiki].
