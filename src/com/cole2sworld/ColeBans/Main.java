@@ -65,6 +65,19 @@ public class Main extends JavaPlugin {
 		public static String db = "minecraft";
 		public static String prefix = "cb_";
 	}
+	public static class mcbans {
+		public static ConfigurationSection section;
+		public static String apiKey = "yourAPIKeyHere";
+		public static boolean fullBackups = false;
+	}
+	public static class yaml {
+		public static ConfigurationSection section;
+		public static File file;
+	}
+	public static class json {
+		public static ConfigurationSection section;
+		public static File file;
+	}
 
 	public Main() {
 		instance = this;
@@ -90,6 +103,7 @@ public class Main extends JavaPlugin {
 		System.out.println(logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
 		System.out.println(logPrefix+"Registering events...");
 		oldtime = System.currentTimeMillis();
+		final long oldTimePerms = System.currentTimeMillis();
 		pm.registerEvent(Type.PLAYER_PRELOGIN, new CBPlayerListener(), Priority.Highest, this);
 		pm.registerEvent(Type.PLUGIN_ENABLE, new ServerListener() {
 		    public void onPluginEnable(PluginEnableEvent event) {
@@ -98,7 +112,8 @@ public class Main extends JavaPlugin {
 		    		if (permissions != null) {
 		    			if (permissions.isEnabled() & permissions.getClass().getName().equals("com.nijikokun.bukkit.Permissions.Permissions")) {
 		    				Main.instance.permissionsHandler = ((Permissions)permissions).getHandler();
-		    				System.out.println(logPrefix+"Hooked into Nijikokun-like permissions.");
+		    				long newTime = System.currentTimeMillis();
+		    				System.out.println(logPrefix+"Hooked into Nijikokun-like permissions. Took "+(newTime-oldTimePerms)+" ms to find & hook.");
 		    			}
 		    		}
 		    	}
@@ -133,6 +148,9 @@ public class Main extends JavaPlugin {
 				sql.port = sql.section.getString("port");
 				sql.db = sql.section.getString("db");
 				sql.prefix = sql.section.getString("prefix");
+				mcbans.section = settings.getConfigurationSection("mcbans");
+				mcbans.apiKey = mcbans.section.getString("apiKey");
+				mcbans.fullBackups = mcbans.section.getBoolean("fullBackups");
 			}
 			else {
 				File dir = new File("./plugins/ColeBans");
@@ -145,7 +163,9 @@ public class Main extends JavaPlugin {
 							"    banHammer: BLAZE_ROD\n"+
 							"    allowBanhammer: true\n"+
 							"    allowTempBans: true\n"+
+							"    # In the banMessage, %reason is replaced with the reason."+
 							"    banMessage: You are banned for %reason!\n"+
+							"    # In the tempBanMessage, %time is replaced with the amount of time (in minutes) left for the ban, and %plural turns into an S if the time is > 1."+
 							"    tempBanMessage: You are tempbanned! %time minute%plural remaining!\n"+
 							"    fancyEffects: true\n"+
 							"    banColor: DARK_RED\n"+
@@ -165,12 +185,17 @@ public class Main extends JavaPlugin {
 							"        prefix: cb_\n"+
 							"    mcbans:\n"+
 							"        ###### THIS LINE IS VERY VERY IMPORTANT IF YOU CHOSE MCBANS FOR THE BAN HANDLER ######\n"+
-							"        apiKey:\n"+
+							"        apiKey: yourAPIKeyHere\n"+
+							"        # Turn on jsonBackup to backup your MCBans bans to a JSON banlist occasionally (frequency depends on size of your banlist)\n"+
+							"        jsonBackup: true\n"+
+							"        # Full backups include reasons for bans, but they are much slower. False for simple backup (no reasons) or true for full backup.\n"+
+							"        fullBackups: false\n"+
 							"    yaml:\n"+
 							"        fileName: banlist.yml\n"+
 							"    json:\n"+
+							"        # If you are using MCBans and have jsonBackup on, this is your backup banlist name as well\n"+
 							"        fileName: banlist.json";
-					fos.write(defaultConfig.getBytes());
+					fos.write(defaultConfig.getBytes("utf-8"));
 					loadConfig();
 					return;
 				}

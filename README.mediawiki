@@ -1,7 +1,7 @@
 =ColeBans=
-===A simple ban plugin that puts YOU in control.===
+==A simple ban plugin that puts YOU in control.==
 
-Want to convert from a YAML file to JSON? No problem. Want to move from MCBans to a local MySQL database? Simple. Want to use a new format we don't have support for? Write a custom ban handler, or request it.
+===Want to convert from a YAML file to JSON? No problem. Want to move from MCBans to a local MySQL database? Simple. Want to use a new format we don't have support for? Write a custom ban handler, or request it.===
 
 
 The point of ColeBans is to provide a extensible, simple, and useful plugin for bans. Most of the plugins I have seen are all rigid, or use their own service/configuration without an ability to change.
@@ -9,4 +9,4 @@ The point of ColeBans is to provide a extensible, simple, and useful plugin for 
 
 ColeBans is made for CraftBukkit 1818 at the time of writing.
 
-The binary download for this file can be found [http://portal.cole2sworld.com/index.php?/files/file/8-colebans/ here]. This download is not always up to date with GitHub, as I don't compile experimental builds except for testing purposes.
+The Jenkins for this plugin and all other Cole2's World plugins can be found [http://ci.cole2sworld.com:8080 here].
