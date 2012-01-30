@@ -16,17 +16,17 @@ public class CBPlayerListener extends PlayerListener {
 		if (banType == Type.PERMANENT) {
 			String banReason = bd.getReason();
 			event.setResult(Result.KICK_BANNED);
-			event.setKickMessage(ChatColor.valueOf(Main.banColor)+Main.banMessage.replace("%reason", banReason));
+			event.setKickMessage(ChatColor.valueOf(GlobalConf.banColor)+GlobalConf.banMessage.replace("%reason", banReason));
 			return;
 		}
-		if (Main.allowTempBans) {
+		if (GlobalConf.allowTempBans) {
 			Long tempBanTime = Main.banHandler.getBanData(player).getTime();
 			if (tempBanTime > -1) {
 				Long tempBanMins = tempBanTime-System.currentTimeMillis();
 				tempBanMins /= 1000;
 				tempBanMins /= 60;
 				event.setResult(Result.KICK_BANNED);
-				event.setKickMessage(ChatColor.valueOf(Main.tempBanColor)+Main.tempBanMessage.replace("%time", tempBanMins.toString()).replace("%plural", Main.getPlural(tempBanMins)));
+				event.setKickMessage(ChatColor.valueOf(GlobalConf.tempBanColor)+GlobalConf.tempBanMessage.replace("%time", tempBanMins.toString()).replace("%plural", Main.getPlural(tempBanMins)));
 				return;
 			}
 		}

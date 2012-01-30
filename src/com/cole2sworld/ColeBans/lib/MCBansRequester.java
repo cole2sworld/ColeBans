@@ -1,4 +1,4 @@
-package com.cole2sworld.ColeBans.handlers;
+package com.cole2sworld.ColeBans.lib;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,11 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import com.cole2sworld.ColeBans.framework.BadAPIKeyException;
-
+/**
+ * Requester -- sends raw requests to MCBans. <b>This class should not be directly interfaced by classes, instead it should be accessed through MCBansLib.
+ * @author cole2
+ * @see MCBans
+ */
 public class MCBansRequester extends Thread {
 	private String key;
 	public MCBansRequester(String key) {

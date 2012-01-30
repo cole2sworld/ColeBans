@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.bukkit.ChatColor;
 
-import com.cole2sworld.ColeBans.Main;
+import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.framework.MethodNotSupportedException;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
@@ -74,10 +74,10 @@ public abstract class BanHandler {
 	 */
 	public static String getFormattedBanReason(String banReason, Type banType, Long tempBanTime) {
 		if (banType == Type.PERMANENT) {
-			return ChatColor.valueOf(Main.banColor)+Main.banMessage.replace("%reason", banReason).replace("%time", "infinite");
+			return ChatColor.valueOf(GlobalConf.banColor)+GlobalConf.banMessage.replace("%reason", banReason).replace("%time", "infinite");
 		}
 		else if (banType == Type.TEMPORARY) {
-			return ChatColor.valueOf(Main.tempBanColor)+Main.tempBanMessage.replace("%reason", "Temporary Ban").replace("%time", tempBanTime.toString());
+			return ChatColor.valueOf(GlobalConf.tempBanColor)+GlobalConf.tempBanMessage.replace("%reason", "Temporary Ban").replace("%time", tempBanTime.toString());
 		}
 		return "";
 	}
