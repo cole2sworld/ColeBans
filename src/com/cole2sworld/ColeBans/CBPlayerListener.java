@@ -6,11 +6,12 @@ import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent.Result;
 
 import com.cole2sworld.ColeBans.handlers.BanData;
+import com.cole2sworld.ColeBans.handlers.BanHandler;
 import com.cole2sworld.ColeBans.handlers.BanHandler.Type;
 
 public class CBPlayerListener extends PlayerListener {
 	public void onPlayerPreLogin(PlayerPreLoginEvent event) {
-		BanData bd = Main.banHandler.getBanData(event.getName());
+		BanData bd = Main.banHandler.getBanData(event.getName(), BanHandler.SYSTEM_ADMIN_NAME);
 		Type banType = bd.getType();
 		String player = event.getName();
 		if (banType == Type.PERMANENT) {
@@ -20,7 +21,7 @@ public class CBPlayerListener extends PlayerListener {
 			return;
 		}
 		if (GlobalConf.allowTempBans) {
-			Long tempBanTime = Main.banHandler.getBanData(player).getTime();
+			Long tempBanTime = Main.banHandler.getBanData(player, BanHandler.SYSTEM_ADMIN_NAME).getTime();
 			if (tempBanTime > -1) {
 				Long tempBanMins = tempBanTime-System.currentTimeMillis();
 				tempBanMins /= 1000;

@@ -11,7 +11,7 @@ public class CommandHandler {
 		PermissionSet pset = new PermissionSet(sender);
 		if (cmdLabel.equalsIgnoreCase("ban")) {
 			if (pset.canBan) {
-				String result = Ban.run(args);
+				String result = Ban.run(args, sender);
 				if (result != null) return true;
 				else error = result;
 			}
@@ -19,7 +19,7 @@ public class CommandHandler {
 		}
 		else if (cmdLabel.equalsIgnoreCase("tempban")) {
 			if (pset.canTempBan) {
-				String result = TempBan.run(args);
+				String result = TempBan.run(args, sender);
 				if (result != null) return true;
 				else error = result;
 			}
@@ -27,7 +27,7 @@ public class CommandHandler {
 		}
 		else if (cmdLabel.equalsIgnoreCase("unban")) {
 			if (pset.canUnBan) {
-				String result = UnBan.run(args);
+				String result = UnBan.run(args, sender);
 				if (result != null) return true;
 				else error = result;
 			}

@@ -1,6 +1,7 @@
 package com.cole2sworld.ColeBans.commands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
 import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
@@ -8,7 +9,7 @@ import com.cole2sworld.ColeBans.framework.MethodNotSupportedException;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 
 public class TempBan {
-	public static String run(String[] args) {
+	public static String run(String[] args, CommandSender admin) {
 		String error = null;
 		if (args.length < 2) error = ChatColor.RED+"You must specify a player and time (in minutes).";
 		else if (args.length > 2) error = ChatColor.RED+"Too many arguments. Usage: /tempban <player> <minutes>";
@@ -21,7 +22,7 @@ public class TempBan {
 				}
 				else {
 					try {
-						Main.banHandler.tempBanPlayer(victim, time);
+						Main.banHandler.tempBanPlayer(victim, time, admin.getName());
 						if (GlobalConf.announceBansAndKicks) Main.server.broadcastMessage(ChatColor.valueOf(GlobalConf.tempBanColor)+victim+" was temporarily banned! ["+time+" minute"+Main.getPlural(time)+"]");
 					} catch (PlayerAlreadyBannedException e) {
 						error = ChatColor.DARK_RED+victim+" is already banned!";

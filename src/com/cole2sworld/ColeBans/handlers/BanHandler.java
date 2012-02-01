@@ -1,10 +1,9 @@
 package com.cole2sworld.ColeBans.handlers;
 
-import java.io.File;
-
 import org.bukkit.ChatColor;
 
 import com.cole2sworld.ColeBans.GlobalConf;
+import com.cole2sworld.ColeBans.framework.EnableData;
 import com.cole2sworld.ColeBans.framework.MethodNotSupportedException;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
@@ -31,40 +30,54 @@ public abstract class BanHandler {
 		 */
 		NOT_BANNED
 	};
-	public abstract BanHandler onEnable(String username, String password, String host, String port, String prefix, String db, File yaml, File json, String api);
+	/**
+	 * The preferred name for the admin name when an action is initiated without player intervention
+	 */
+	public static final String SYSTEM_ADMIN_NAME = "[System]";
+	/**
+	 * Do stuff related to getting ready, and then return a new instance of the BanHandler.
+	 * @param data EnableData that contains SQL credentials, files for yaml/json, etc.
+	 * @return
+	 */
+	public abstract BanHandler onEnable(EnableData data);
 	/**
 	 * Permanently bans a player.
 	 * @param player The player to ban.
 	 * @param reason The ban reason
+	 * @param admin The admin that initiated this action
 	 * @throws PlayerAlreadyBannedException if the player is already banned
 	 */
-	public abstract void banPlayer(String player, String reason) throws PlayerAlreadyBannedException;
+	public abstract void banPlayer(String player, String reason, String admin) throws PlayerAlreadyBannedException;
 	/**
 	 * Temporarily bans a player.
 	 * @param player The player to ban
 	 * @param time Amount of time to stay banned, in minutes.
+	 * @param admin The admin that initiated this action
 	 * @throws PlayerAlreadyBannedException if the player is already banned
 	 * @throws MethodNotSupportedException if temp bans are disabled
 	 */
-	public abstract void tempBanPlayer(String player, long time) throws PlayerAlreadyBannedException, MethodNotSupportedException;
+	public abstract void tempBanPlayer(String player, long time, String admin) throws PlayerAlreadyBannedException, MethodNotSupportedException;
 	/**
 	 * Unbans a player, whether they have been temp banned or perm banned
 	 * @param player The player to unban
+	 * @param admin The admin that initiated this action
 	 * @throws PlayerNotBannedException If the player is not banned
 	 */
-	public abstract void unbanPlayer(String player) throws PlayerNotBannedException;
+	public abstract void unbanPlayer(String player, String admin) throws PlayerNotBannedException;
 	/**
 	 * Gets whether a player is banned.
 	 * @param player The player to check
+	 * @param admin The admin that initiated this action
 	 * @return If the player is banned (whether it be temp or permanent)
 	 * @see BanHandler#getBanData(String)
 	 */
-	public abstract boolean isPlayerBanned(String player);
+	public abstract boolean isPlayerBanned(String player, String admin);
 	/**
 	 * @param player The name of the player to check
+	 * @param admin The admin that initiated this action
 	 * @return BanData object containing details about the ban.
 	 */
-	public abstract BanData getBanData(String player);
+	public abstract BanData getBanData(String player, String admin);
 	/**
 	 * Gets the formatted ban reason for "reason"
 	 * @param banReason The reason for the ban

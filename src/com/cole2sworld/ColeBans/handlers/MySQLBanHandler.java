@@ -1,6 +1,5 @@
 package com.cole2sworld.ColeBans.handlers;
 
-import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
@@ -13,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
+import com.cole2sworld.ColeBans.framework.EnableData;
 import com.cole2sworld.ColeBans.framework.MethodNotSupportedException;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
@@ -60,8 +60,8 @@ public class MySQLBanHandler extends BanHandler {
 		else return false;
 	}
 
-	public void banPlayer(String player, String reason) throws PlayerAlreadyBannedException {
-		if (isPlayerBanned(player)) throw new PlayerAlreadyBannedException(player+" is already banned!");
+	public void banPlayer(String player, String reason, String admin) throws PlayerAlreadyBannedException {
+		if (isPlayerBanned(player, admin)) throw new PlayerAlreadyBannedException(player+" is already banned!");
 		String tbl = GlobalConf.sql.prefix+"perm";
 		if (sqlHandler.checkConnection()) {
 			if (sqlHandler.checkTable(tbl)) {
@@ -89,14 +89,14 @@ public class MySQLBanHandler extends BanHandler {
 						"PRIMARY KEY (`id`) );");
 				sqlHandler.query("ALTER TABLE `"+GlobalConf.sql.db+"`.`"+tbl+"`"+
 						"ADD INDEX `NAMEINDEX` (`username` ASC);");
-				banPlayer(player, reason);
+				banPlayer(player, reason, admin);
 			}
 		}
 	}
 
-	public void tempBanPlayer(String player, long primTime) throws PlayerAlreadyBannedException, MethodNotSupportedException {
+	public void tempBanPlayer(String player, long primTime, String admin) throws PlayerAlreadyBannedException, MethodNotSupportedException {
 		if (!GlobalConf.allowTempBans) throw new MethodNotSupportedException("Temp bans are disabled!");
-		if (isPlayerBanned(player)) throw new PlayerAlreadyBannedException(player+" is already banned!");
+		if (isPlayerBanned(player, admin)) throw new PlayerAlreadyBannedException(player+" is already banned!");
 		Long time = System.currentTimeMillis()+((primTime*60)*1000);
 		String tbl = GlobalConf.sql.prefix+"temp";
 		if (sqlHandler.checkConnection()) {
@@ -125,13 +125,13 @@ public class MySQLBanHandler extends BanHandler {
 						"PRIMARY KEY (`id`) );");
 				sqlHandler.query("ALTER TABLE `"+GlobalConf.sql.db+"`.`"+tbl+"`"+
 						"ADD INDEX `NAMEINDEX` (`username` ASC);");
-				tempBanPlayer(player, primTime);
+				tempBanPlayer(player, primTime, admin);
 			}
 		}
 	}
 
-	public void unbanPlayer(String player) throws PlayerNotBannedException {
-		BanData bd = getBanData(player);
+	public void unbanPlayer(String player, String admin) throws PlayerNotBannedException {
+		BanData bd = getBanData(player, admin);
 		if (bd.getType() == Type.PERMANENT)  {
 			String tbl = GlobalConf.sql.prefix+"perm";
 			if (sqlHandler.checkConnection()) {
@@ -153,13 +153,13 @@ public class MySQLBanHandler extends BanHandler {
 		throw new PlayerNotBannedException(player+" is not banned!");
 	}
 
-	public boolean isPlayerBanned(String player) {
-		return (getBanData(player).getType()) != Type.NOT_BANNED;
+	public boolean isPlayerBanned(String player, String admin) {
+		return (getBanData(player, admin).getType()) != Type.NOT_BANNED;
 	}
 
 
 	@Override
-	public BanData getBanData(String player) {
+	public BanData getBanData(String player, String admin) {
 		String tbl = GlobalConf.sql.prefix+"perm";
 		if (sqlHandler.checkConnection()) {
 			if (sqlHandler.checkTable(tbl)) {
@@ -217,10 +217,8 @@ public class MySQLBanHandler extends BanHandler {
 		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Done. Took "+(newtime-oldtime)+" ms.");
 	}
 	@Override
-	public BanHandler onEnable(String username, String password, String host,
-			String port, String prefix, String db, File yaml, File json,
-			String api) {
-		return new MySQLBanHandler(username, password, host, port, prefix, db);
+	public BanHandler onEnable(EnableData data) {
+		return new MySQLBanHandler(data.username, data.password, data.host, data.port, data.prefix, data.db);
 	}
 	@Override
 	public void convert(BanHandler handler) {

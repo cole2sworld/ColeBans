@@ -7,19 +7,29 @@ import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-
-import com.cole2sworld.ColeBans.framework.BadAPIKeyException;
 /**
- * Requester -- sends raw requests to MCBans. <b>This class should not be directly interfaced by classes, instead it should be accessed through MCBansLib.
+ * Requester -- sends raw requests to MCBans. <b>This class should not be directly interfaced by classes, instead it should be accessed through com.cole2sworld.ColeBans.lib.MCBans.
  * @author cole2
  * @see MCBans
  */
 public class MCBansRequester extends Thread {
 	private String key;
-	public MCBansRequester(String key) {
+	private String instruction;
+	private String result;
+	private boolean finished;
+	public MCBansRequester(String key, String inst) {
+		super("MCBans requester thread - '"+inst+"'");
 		setKey(key);
+		instruction = inst;
 	}
-	public String request(String instruction) {
+	public boolean isFinished() {
+		return finished;
+	}
+	public String getResult() {
+		if (finished) return result;
+		else return null;
+	}
+	public void run() {
 		try {
 			URL url;
 			url = new URL("http://72.10.39.172/v2/"+key);
@@ -36,16 +46,14 @@ public class MCBansRequester extends Thread {
 			while ((line = rd.readLine()) != null) {
 				rtrn.append(line);
 			}
-			return rtrn.toString();
+			result = rtrn.toString();
+			finished = true;
+			return;
 		}
-		catch (MalformedURLException e) {
-			BadAPIKeyException ex = new BadAPIKeyException(key);
-			ex.initCause(e);
-		} catch (IOException e) {
-			BadAPIKeyException ex = new BadAPIKeyException(key);
-			ex.initCause(e);
-		}
-		return null;
+		catch (MalformedURLException e) {}
+		catch (IOException e) {}
+		result = null;
+		finished = true;
 	}
 	/**
 	 * @return the key
