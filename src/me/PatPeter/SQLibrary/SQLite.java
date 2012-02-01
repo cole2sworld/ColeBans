@@ -221,14 +221,12 @@ public class SQLite extends DatabaseHandler {
 		}
 	}
 	
-	/*
-	 * <b>retry</b><br>
-	 * <br>
+	/**
 	 * Retries.
 	 * <br>
 	 * <br>
 	 * @param query The SQL query.
-	 */
+	 **/
 	public void retry(String query) {
 		boolean passed = false;
 		Connection connection = open();
@@ -249,7 +247,7 @@ public class SQLite extends DatabaseHandler {
 		}
 	}
 	
-	/*
+	/**
 	 * Retries a result.
 	 * 
 	 * @param query The SQL query to retry.
