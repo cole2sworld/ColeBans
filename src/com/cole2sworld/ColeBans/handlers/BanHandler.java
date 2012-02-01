@@ -1,5 +1,7 @@
 package com.cole2sworld.ColeBans.handlers;
 
+import java.util.Vector;
+
 import org.bukkit.ChatColor;
 
 import com.cole2sworld.ColeBans.GlobalConf;
@@ -103,4 +105,12 @@ public abstract class BanHandler {
 	 * @param handler The handler to dump data into.
 	 */
 	public abstract void convert(BanHandler handler);
+	/**
+	 * Does a full dump of the data for this ban handler.
+	 */
+	public abstract Vector<BanHandler> dump(String admin);
+	/**
+	 * Gets a simple list of the banned players, with no reasons.
+	 */
+	public abstract Vector<String> listBannedPlayers(String admin);
 }

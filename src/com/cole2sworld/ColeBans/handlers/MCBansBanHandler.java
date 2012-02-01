@@ -1,5 +1,7 @@
 package com.cole2sworld.ColeBans.handlers;
 
+import java.util.Vector;
+
 import com.cole2sworld.ColeBans.framework.EnableData;
 import com.cole2sworld.ColeBans.framework.MethodNotSupportedException;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
@@ -57,6 +59,18 @@ public class MCBansBanHandler extends BanHandler {
 
 	@Override
 	public BanData getBanData(String player, String admin) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector<BanHandler> dump(String admin) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector<String> listBannedPlayers(String admin) {
 		// TODO Auto-generated method stub
 		return null;
 	}

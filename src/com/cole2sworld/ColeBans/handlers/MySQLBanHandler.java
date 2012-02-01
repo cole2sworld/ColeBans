@@ -2,6 +2,7 @@ package com.cole2sworld.ColeBans.handlers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 import me.PatPeter.SQLibrary.MySQL;
@@ -224,6 +225,16 @@ public class MySQLBanHandler extends BanHandler {
 	public void convert(BanHandler handler) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public Vector<BanHandler> dump(String admin) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Vector<String> listBannedPlayers(String admin) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
