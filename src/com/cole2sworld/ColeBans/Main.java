@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.cole2sworld.ColeBans.EventListener;
 import com.cole2sworld.ColeBans.commands.CBCommand;
 import com.cole2sworld.ColeBans.commands.CommandHandler;
 import com.cole2sworld.ColeBans.framework.PlayerOfflineException;
@@ -50,8 +51,7 @@ public class Main extends JavaPlugin {
 		System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
 		System.out.println(GlobalConf.logPrefix+"Registering events...");
 		oldtime = System.currentTimeMillis();
-		final long oldTimePerms = System.currentTimeMillis();
-		EventRegistar.register(pm, oldTimePerms);
+		pm.registerEvents(new EventListener(), this);
 		newtime = System.currentTimeMillis();
 		System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
 	}
