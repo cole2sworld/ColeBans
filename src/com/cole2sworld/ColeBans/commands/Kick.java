@@ -1,13 +1,14 @@
 package com.cole2sworld.ColeBans.commands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
 import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.PlayerOfflineException;
 
-public class Kick {
-	public static String run(String[] args) {
+public class Kick extends CBCommand {
+	public String run(String[] args, CommandSender admin) {
 		String error = null;
 		if (args.length < 2) error = ChatColor.RED+"You must specify a player and reason.";
 		else {

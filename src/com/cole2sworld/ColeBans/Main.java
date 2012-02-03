@@ -1,5 +1,7 @@
 package com.cole2sworld.ColeBans;
 
+import java.util.Vector;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Server;
@@ -10,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.cole2sworld.ColeBans.commands.CBCommand;
 import com.cole2sworld.ColeBans.commands.CommandHandler;
 import com.cole2sworld.ColeBans.framework.PlayerOfflineException;
 import com.cole2sworld.ColeBans.handlers.BanHandler;
@@ -54,7 +57,37 @@ public class Main extends JavaPlugin {
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
-		return CommandHandler.onCommand(sender, cmd, cmdLabel, args);
+		if (cmdLabel.equalsIgnoreCase("cb")) {
+			if (args.length == 0) return false;
+			else {
+				try {
+					String cmdName = args[0].substring(1);
+					Character firstChar = args[0].charAt(1);
+					cmdName = Character.toUpperCase(firstChar)+cmdName.toLowerCase();
+					Object rawObject = Class.forName("com.cole2sworld.ColeBans.commands."+cmdName).newInstance();
+					if (rawObject instanceof CBCommand) {
+						CBCommand cmdObj = (CBCommand) rawObject;
+						Vector<String> newArgs = new Vector<String>(args.length);
+						for (int i = 1; i<args.length; i++) {
+							newArgs.add(args[i]);
+						}
+						String error = cmdObj.run((String[]) newArgs.toArray(), sender);
+						if (error != null) {
+							sender.sendMessage(error);
+						}
+						return true;
+					}
+				}
+				catch (ClassNotFoundException e) {
+				} catch (InstantiationException e) {
+				} catch (IllegalAccessException e) {}
+			}
+		}
+		else {
+			CommandHandler.onCommand(sender, cmd, cmdLabel, args);
+		}
+		sender.sendMessage(ChatColor.RED+"Invalid sub-command.");
+		return true;
 	}
 	
 	public void kickPlayer(String player, String reason) throws PlayerOfflineException {

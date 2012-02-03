@@ -14,3 +14,5 @@ commands:
         usage: /lookup <player>
     check:
         usage: /check <player>
+    cb:
+        usage: /cb <subcommand> [arguments]

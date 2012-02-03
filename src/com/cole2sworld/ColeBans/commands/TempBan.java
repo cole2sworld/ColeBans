@@ -8,8 +8,8 @@ import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.MethodNotSupportedException;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 
-public class TempBan {
-	public static String run(String[] args, CommandSender admin) {
+public class TempBan extends CBCommand {
+	public String run(String[] args, CommandSender admin) {
 		String error = null;
 		if (args.length < 2) error = ChatColor.RED+"You must specify a player and time (in minutes).";
 		else if (args.length > 2) error = ChatColor.RED+"Too many arguments. Usage: /tempban <player> <minutes>";

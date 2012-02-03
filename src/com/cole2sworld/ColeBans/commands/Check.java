@@ -7,8 +7,8 @@ import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.handlers.BanData;
 import com.cole2sworld.ColeBans.handlers.BanHandler;
 
-public class Check {
-	public static String run(String[] args, CommandSender sender) {
+public class Check extends CBCommand {
+	public String run(String[] args, CommandSender sender) {
 		String error = null;
 		if (args.length < 1) error = ChatColor.RED+"You must specify a player";
 		else if (args.length > 1) error = ChatColor.RED+"Too many arguments. Usage: /lookup <player>";

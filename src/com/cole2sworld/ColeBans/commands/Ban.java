@@ -7,8 +7,8 @@ import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 
-public class Ban {
-	public static String run(String[] args, CommandSender admin) {
+public class Ban extends CBCommand {
+	public String run(String[] args, CommandSender admin) {
 		String error = null;
 		if (args.length < 2) error = ChatColor.RED+"You must specify a player and reason.";
 		else {
