@@ -43,11 +43,15 @@ public class GlobalConf {
 	}
 	public static class yaml {
 		public static ConfigurationSection section;
-		public static File file;
+		public static String file;
 	}
 	public static class json {
 		public static ConfigurationSection section;
-		public static File file;
+		public static String file;
+	}
+	public static class advanced {
+		public static ConfigurationSection section;
+		public static String pkg;
 	}
 	public static void loadConfig() {
 		File confFile = new File("./plugins/ColeBans/config.yml");
@@ -120,7 +124,10 @@ public class GlobalConf {
 							"        fileName: banlist.yml\n"+
 							"    json:\n"+
 							"        # If you are using MCBans and have jsonBackup on, this is your backup banlist name as well\n"+
-							"        fileName: banlist.json";
+							"        fileName: banlist.json\n"+
+							"    advanced:\n" +
+							"        # The package is where to get the ban handlers. Only change this line if you know what you are doing.\n" +
+							"        package: com.cole2sworld.ColeBans.handlers";
 					fos.write(defaultConfig.getBytes("utf-8"));
 					loadConfig();
 					return;

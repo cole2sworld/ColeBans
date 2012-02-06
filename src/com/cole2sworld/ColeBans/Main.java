@@ -46,6 +46,7 @@ public class Main extends JavaPlugin {
 		long oldtime = System.currentTimeMillis();
 		GlobalConf.conf = getConfig();
 		GlobalConf.loadConfig();
+		//HARD CODED BAN HANDLER. Will be fixed soon.
 		banHandler = new MySQLBanHandler(GlobalConf.sql.user, GlobalConf.sql.pass, GlobalConf.sql.host, GlobalConf.sql.port, GlobalConf.logPrefix, GlobalConf.sql.db);
 		long newtime = System.currentTimeMillis();
 		System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
@@ -58,7 +59,7 @@ public class Main extends JavaPlugin {
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		if (cmdLabel.equalsIgnoreCase("cb")) {
-			if (args.length == 0) return false;
+			if (args.length < 2) return false;
 			else {
 				try {
 					String cmdName = args[0].substring(1);
@@ -84,7 +85,7 @@ public class Main extends JavaPlugin {
 			}
 		}
 		else {
-			CommandHandler.onCommand(sender, cmd, cmdLabel, args);
+			return CommandHandler.onCommand(sender, cmd, cmdLabel, args);
 		}
 		sender.sendMessage(ChatColor.RED+"Invalid sub-command.");
 		return true;

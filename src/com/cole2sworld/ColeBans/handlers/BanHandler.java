@@ -1,12 +1,11 @@
 package com.cole2sworld.ColeBans.handlers;
 
+import java.util.HashMap;
 import java.util.Vector;
 
 import org.bukkit.ChatColor;
 
 import com.cole2sworld.ColeBans.GlobalConf;
-import com.cole2sworld.ColeBans.framework.EnableData;
-import com.cole2sworld.ColeBans.framework.MethodNotSupportedException;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 /**
@@ -41,7 +40,7 @@ public abstract class BanHandler {
 	 * @param data EnableData that contains SQL credentials, files for yaml/json, etc.
 	 * @return
 	 */
-	public abstract BanHandler onEnable(EnableData data);
+	public abstract BanHandler onEnable(HashMap<String, String> data);
 	/**
 	 * Permanently bans a player.
 	 * @param player The player to ban.
@@ -58,7 +57,7 @@ public abstract class BanHandler {
 	 * @throws PlayerAlreadyBannedException if the player is already banned
 	 * @throws MethodNotSupportedException if temp bans are disabled
 	 */
-	public abstract void tempBanPlayer(String player, long time, String admin) throws PlayerAlreadyBannedException, MethodNotSupportedException;
+	public abstract void tempBanPlayer(String player, long time, String admin) throws PlayerAlreadyBannedException, UnsupportedOperationException;
 	/**
 	 * Unbans a player, whether they have been temp banned or perm banned
 	 * @param player The player to unban
@@ -108,7 +107,7 @@ public abstract class BanHandler {
 	/**
 	 * Does a full dump of the data for this ban handler.
 	 */
-	public abstract Vector<BanHandler> dump(String admin);
+	public abstract Vector<BanData> dump(String admin);
 	/**
 	 * Gets a simple list of the banned players, with no reasons.
 	 */

@@ -5,7 +5,6 @@ import org.bukkit.command.CommandSender;
 
 import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
-import com.cole2sworld.ColeBans.framework.MethodNotSupportedException;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 
 public class TempBan extends CBCommand {
@@ -26,7 +25,7 @@ public class TempBan extends CBCommand {
 						if (GlobalConf.announceBansAndKicks) Main.server.broadcastMessage(ChatColor.valueOf(GlobalConf.tempBanColor)+victim+" was temporarily banned! ["+time+" minute"+Main.getPlural(time)+"]");
 					} catch (PlayerAlreadyBannedException e) {
 						error = ChatColor.DARK_RED+victim+" is already banned!";
-					} catch (MethodNotSupportedException e) {
+					} catch (UnsupportedOperationException e) {
 						error = ChatColor.DARK_RED+"Temporary bans are disabled!";
 					}
 				}

@@ -2,6 +2,7 @@ package com.cole2sworld.ColeBans.handlers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -13,8 +14,6 @@ import org.bukkit.entity.Player;
 
 import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
-import com.cole2sworld.ColeBans.framework.EnableData;
-import com.cole2sworld.ColeBans.framework.MethodNotSupportedException;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 
@@ -95,8 +94,8 @@ public class MySQLBanHandler extends BanHandler {
 		}
 	}
 
-	public void tempBanPlayer(String player, long primTime, String admin) throws PlayerAlreadyBannedException, MethodNotSupportedException {
-		if (!GlobalConf.allowTempBans) throw new MethodNotSupportedException("Temp bans are disabled!");
+	public void tempBanPlayer(String player, long primTime, String admin) throws PlayerAlreadyBannedException, UnsupportedOperationException {
+		if (!GlobalConf.allowTempBans) throw new UnsupportedOperationException("Temp bans are disabled!");
 		if (isPlayerBanned(player, admin)) throw new PlayerAlreadyBannedException(player+" is already banned!");
 		Long time = System.currentTimeMillis()+((primTime*60)*1000);
 		String tbl = GlobalConf.sql.prefix+"temp";
@@ -218,8 +217,8 @@ public class MySQLBanHandler extends BanHandler {
 		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Done. Took "+(newtime-oldtime)+" ms.");
 	}
 	@Override
-	public BanHandler onEnable(EnableData data) {
-		return new MySQLBanHandler(data.username, data.password, data.host, data.port, data.prefix, data.db);
+	public BanHandler onEnable(HashMap<String, String> data) {
+		return new MySQLBanHandler(data.get("username"), data.get("password"), data.get("host"), data.get("port"), data.get("prefix"), data.get("db"));
 	}
 	@Override
 	public void convert(BanHandler handler) {
@@ -227,7 +226,7 @@ public class MySQLBanHandler extends BanHandler {
 		
 	}
 	@Override
-	public Vector<BanHandler> dump(String admin) {
+	public Vector<BanData> dump(String admin) {
 		// TODO Auto-generated method stub
 		return null;
 	}

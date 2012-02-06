@@ -1,32 +1,18 @@
 package com.cole2sworld.ColeBans.handlers;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Vector;
 
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 
-public class MCBansBanHandler extends BanHandler {
-	private String api;
-	public MCBansBanHandler(String api) {
-		this.api = api;
-	}
-
+public class YAMLBanHandler extends BanHandler {
+	private File file;
 	@Override
 	public BanHandler onEnable(HashMap<String, String> data) {
-		return new MCBansBanHandler(data.get("api"));
-	}
-
-
-	@Override
-	public void onDisable() {
-		System.out.println(api);
-	}
-
-	@Override
-	public void convert(BanHandler handler) {
-		// TODO Auto-generated method stub
 		
+		return null;
 	}
 
 	@Override
@@ -60,6 +46,18 @@ public class MCBansBanHandler extends BanHandler {
 	public BanData getBanData(String player, String admin) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void onDisable() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void convert(BanHandler handler) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
