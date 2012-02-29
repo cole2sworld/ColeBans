@@ -19,7 +19,7 @@ public class CommandHandler {
 		}
 		else if (cmdLabel.equalsIgnoreCase("tempban")) {
 			if (pset.canTempBan) {
-				String result = new TempBan().run(args, sender);
+				String result = new Tempban().run(args, sender);
 				if (result != null) return true;
 				else error = result;
 			}
@@ -27,7 +27,7 @@ public class CommandHandler {
 		}
 		else if (cmdLabel.equalsIgnoreCase("unban")) {
 			if (pset.canUnBan) {
-				String result = new UnBan().run(args, sender);
+				String result = new Unban().run(args, sender);
 				if (result != null) return true;
 				else error = result;
 			}

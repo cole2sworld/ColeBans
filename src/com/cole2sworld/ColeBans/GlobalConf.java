@@ -89,13 +89,11 @@ public class GlobalConf {
 				if (confFile.canWrite()) {
 					System.out.println("[ColeBans] No config file exists, generating.");
 					FileOutputStream fos = new FileOutputStream(confFile);
-					String defaultConfig = "settings:\n"+
-							"    banHammer: BLAZE_ROD\n"+
-							"    allowBanhammer: true\n"+
+					String defaultConfig = ""+
+							"# For information on how to configure ColeBans, go to http://c2wr.com/cbconf"+
+							"settings:\n"+
 							"    allowTempBans: true\n"+
-							"    # In the banMessage, %reason is replaced with the reason."+
 							"    banMessage: You are banned for %reason!\n"+
-							"    # In the tempBanMessage, %time is replaced with the amount of time (in minutes) left for the ban, and %plural turns into an S if the time is > 1."+
 							"    tempBanMessage: You are tempbanned! %time minute%plural remaining!\n"+
 							"    fancyEffects: true\n"+
 							"    banColor: DARK_RED\n"+
@@ -116,14 +114,12 @@ public class GlobalConf {
 							"    mcbans:\n"+
 							"        ###### THIS LINE IS VERY VERY IMPORTANT IF YOU CHOSE MCBANS FOR THE BAN HANDLER ######\n"+
 							"        apiKey: yourAPIKeyHere\n"+
-							"        # Turn on jsonBackup to backup your MCBans bans to a JSON banlist occasionally (frequency depends on size of your banlist)\n"+
-							"        jsonBackup: true\n"+
-							"        # Full backups include reasons for bans, but they are much slower. False for simple backup (no reasons) or true for full backup.\n"+
+							"        # Set this to the BanHandler you want to use for the backups, or \"None\" to turn off backups.\n"+
+							"        backup: true\n"+
 							"        fullBackups: false\n"+
 							"    yaml:\n"+
 							"        fileName: banlist.yml\n"+
 							"    json:\n"+
-							"        # If you are using MCBans and have jsonBackup on, this is your backup banlist name as well\n"+
 							"        fileName: banlist.json\n"+
 							"    advanced:\n" +
 							"        # The package is where to get the ban handlers. Only change this line if you know what you are doing.\n" +

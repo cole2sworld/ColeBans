@@ -7,7 +7,7 @@ import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 
-public class TempBan extends CBCommand {
+public class Tempban extends CBCommand {
 	public String run(String[] args, CommandSender admin) {
 		String error = null;
 		if (args.length < 2) error = ChatColor.RED+"You must specify a player and time (in minutes).";
