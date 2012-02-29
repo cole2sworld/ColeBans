@@ -24,7 +24,6 @@ public class GlobalConf {
 	public static String kickColor = "YELLOW";
 	public static String tempBanColor = "RED";
 	public static boolean announceBansAndKicks = true;
-	public static boolean mcbansNodes = false;
 	public static String logPrefix = "[ColeBans] ";
 	public static String banHandlerConf = "MySQL";
 	public static class sql {
@@ -69,7 +68,6 @@ public class GlobalConf {
 				kickColor = settings.getString("kickColor");
 				tempBanColor = settings.getString("tempBanColor");
 				announceBansAndKicks = settings.getBoolean("announceBansAndKicks");
-				mcbansNodes = settings.getBoolean("mcbansNodes");
 				logPrefix = settings.getString("logPrefix")+" ";
 				sql.section = settings.getConfigurationSection("mysql");
 				sql.user = sql.section.getString("user");
@@ -100,7 +98,6 @@ public class GlobalConf {
 							"    kickColor: YELLOW\n"+
 							"    tempBanColor: RED\n"+
 							"    announceBansAndKicks: true\n"+
-							"    mcbansNodes: true\n"+
 							"    logPrefix: [ColeBans]\n"+
 							"    #banHandler can be MySQL, MCBans, YAML, or JSON.\n"+
 							"    banHandler: MySQL\n"+
