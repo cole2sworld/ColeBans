@@ -10,7 +10,10 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
-
+/**
+ * Configuration for ColeBans. Loaded from file on startup.
+ *
+ */
 public class GlobalConf {
 	/**
 	 * Configuration we are using.

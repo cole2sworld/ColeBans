@@ -20,7 +20,10 @@ import com.cole2sworld.ColeBans.handlers.BanHandler;
 import com.cole2sworld.ColeBans.handlers.MySQLBanHandler;
 import com.nijiko.permissions.PermissionHandler;
 
-
+/**
+ * The main class for ColeBans.
+ *
+ */
 public class Main extends JavaPlugin {
 	/**
 	 * The Permissions 3/2 (or bridge) that we will use for permissions.

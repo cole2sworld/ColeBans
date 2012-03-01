@@ -12,7 +12,10 @@ import com.cole2sworld.ColeBans.handlers.BanData;
 import com.cole2sworld.ColeBans.handlers.BanHandler;
 import com.cole2sworld.ColeBans.handlers.BanHandler.Type;
 import com.nijikokun.bukkit.Permissions.Permissions;
-
+/**
+ * Event listener for ColeBans
+ *
+ */
 public class EventListener implements Listener {
 	/**
 	 * Checks if the player is banned, if so it will kick them out.
