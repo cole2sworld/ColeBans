@@ -59,7 +59,8 @@ public class Main extends JavaPlugin {
 		banHandler.onDisable();
 		System.out.println(GlobalConf.logPrefix+"Disabled.");
 	}
-
+	@Deprecated
+	public void derping() {}
 	/**
 	 * Registers events, gets the config, pulls the banhandler, and all that good stuff you need to do when initializing.
 	 */
@@ -67,6 +68,7 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		System.out.println(GlobalConf.logPrefix+"Initalizing...");
 		server = getServer();
+		derping();
 		PluginManager pm = server.getPluginManager();
 		System.out.println(GlobalConf.logPrefix+"Loading config & ban handler...");
 		long oldtime = System.currentTimeMillis();
