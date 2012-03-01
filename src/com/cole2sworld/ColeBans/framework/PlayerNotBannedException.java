@@ -6,6 +6,7 @@ public class PlayerNotBannedException extends Exception {
 	public PlayerNotBannedException(String detail) {
 		this.detail = detail;
 	}
+	@Override
 	public String getMessage() {
 		return detail;
 	}

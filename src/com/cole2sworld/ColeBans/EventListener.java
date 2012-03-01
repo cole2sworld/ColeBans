@@ -14,6 +14,10 @@ import com.cole2sworld.ColeBans.handlers.BanHandler.Type;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class EventListener implements Listener {
+	/**
+	 * Checks if the player is banned, if so it will kick them out.
+	 * @param event The PlayerPreLoginEvent created by Bukkit.
+	 */
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerPreLogin(PlayerPreLoginEvent event) {
 		BanData bd = Main.banHandler.getBanData(event.getName(), BanHandler.SYSTEM_ADMIN_NAME);
@@ -32,12 +36,16 @@ public class EventListener implements Listener {
 				tempBanMins /= 1000;
 				tempBanMins /= 60;
 				event.setResult(Result.KICK_BANNED);
-				event.setKickMessage(ChatColor.valueOf(GlobalConf.tempBanColor)+GlobalConf.tempBanMessage.replace("%time", tempBanMins.toString()).replace("%plural", Main.getPlural(tempBanMins)));
+				event.setKickMessage(ChatColor.valueOf(GlobalConf.tempBanColor)+GlobalConf.tempBanMessage.replace("%time", tempBanMins.toString()).replace("%plural", Main.getPlural(tempBanMins, true)));
 				return;
 			}
 		}
 		event.setResult(Result.ALLOWED);
 	}
+	/**
+	 * Monitors for when Permissions is initialized.
+	 * @param event The PluginEnableEvent created by Bukkit.
+	 */
 	@EventHandler(priority = EventPriority.MONITOR)
     public void onPluginEnable(PluginEnableEvent event) {
     	if (Main.instance.permissionsHandler == null) {

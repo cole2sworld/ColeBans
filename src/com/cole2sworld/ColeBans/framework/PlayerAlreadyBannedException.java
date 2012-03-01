@@ -6,6 +6,7 @@ public class PlayerAlreadyBannedException extends Exception {
 	public PlayerAlreadyBannedException(String detail) {
 		this.detail = detail;
 	}
+	@Override
 	public String getMessage() {
 		return detail;
 	}

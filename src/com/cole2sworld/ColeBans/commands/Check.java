@@ -8,6 +8,7 @@ import com.cole2sworld.ColeBans.handlers.BanData;
 import com.cole2sworld.ColeBans.handlers.BanHandler;
 
 public class Check extends CBCommand {
+	@Override
 	public String run(String[] args, CommandSender sender) {
 		String error = null;
 		if (args.length < 1) error = ChatColor.RED+"You must specify a player";

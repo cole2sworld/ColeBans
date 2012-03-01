@@ -12,46 +12,160 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class GlobalConf {
+	/**
+	 * Configuration we are using.
+	 */
 	public static FileConfiguration conf;
+	/**
+	 * The main ConfigurationSection
+	 */
 	public static ConfigurationSection settings;
+	/**
+	 * Do we allow tempbans to be made?
+	 */
 	public static boolean allowTempBans = true;
+	/**
+	 * Unused.
+	 */
 	public static Material banHammer = Material.BLAZE_ROD;
+	/**
+	 * Message when somebody tries to log in but is banned.
+	 */
 	public static String banMessage = "You are banned for %reason!";
+	/**
+	 * Message when somebody tries to log in but is tempbanned.
+	 */
 	public static String tempBanMessage = "You are tempbanned! %time seconds remaining!";
+	/**
+	 * Unused.
+	 */
 	public static boolean allowBanhammer = true;
+	/**
+	 * Show fancy effects?
+	 */
 	public static boolean fancyEffects = true;
+	/**
+	 * Color of the disconnect message when banned.
+	 */
 	public static String banColor = "DARK_RED";
+	/**
+	 * Color of the disconnect message when kicked.
+	 */
 	public static String kickColor = "YELLOW";
+	/**
+	 * Color of the disconnect message when tempbanned.
+	 */
 	public static String tempBanColor = "RED";
+	/**
+	 * Announce when somebody is banned/kicked to the entire server?
+	 */
 	public static boolean announceBansAndKicks = true;
+	/**
+	 * Prefix to use in the console.
+	 */
 	public static String logPrefix = "[ColeBans] ";
+	/**
+	 * Which banhandler?
+	 */
 	public static String banHandlerConf = "MySQL";
+	/**
+	 * Configuration section for SQL.
+	 *
+	 */
 	public static class sql {
+		/**
+		 * The raw section.
+		 */
 		public static ConfigurationSection section;
+		/**
+		 * Username for the database.
+		 */
 		public static String user = "minecraft";
+		/**
+		 * Password for the database.
+		 */
 		public static String pass = "password";
+		/**
+		 * Host for the database.
+		 */
 		public static String host = "localhost";
+		/**
+		 * Port for the database.
+		 */
 		public static String port = "3306";
+		/**
+		 * Database name.
+		 */
 		public static String db = "minecraft";
+		/**
+		 * Table prefix.
+		 */
 		public static String prefix = "cb_";
 	}
+	/**
+	 * Configuration section for MCBans.
+	 *
+	 */
 	public static class mcbans {
+		/**
+		 * The raw section.
+		 */
 		public static ConfigurationSection section;
+		/**
+		 * The MCBans API key.
+		 */
 		public static String apiKey = "yourAPIKeyHere";
+		/**
+		 * Whether or not to make full dumps of the banlist, including reasons.
+		 */
 		public static boolean fullBackups = false;
 	}
+	/**
+	 * Configuration section for YAML.
+	 *
+	 */
 	public static class yaml {
+		/**
+		 * The raw section.
+		 */
 		public static ConfigurationSection section;
+		/**
+		 * The file to use.
+		 */
 		public static String file;
 	}
+	/**
+	 * Configuration section for YAML.
+	 *
+	 */
 	public static class json {
+		/**
+		 * The raw section.
+		 */
 		public static ConfigurationSection section;
+		/**
+		 * The file to use.
+		 */
 		public static String file;
 	}
+	/**
+	 * Stuff the user shouldn't touch unless they know what they are doing.
+	 * @author cole2
+	 *
+	 */
 	public static class advanced {
+		/**
+		 * The raw section.
+		 */
 		public static ConfigurationSection section;
+		/**
+		 * Which package do we get the banhandlers?
+		 */
 		public static String pkg;
 	}
+	/**
+	 * Loads up the config from disk, or creates it if it does not exist.
+	 */
 	public static void loadConfig() {
 		File confFile = new File("./plugins/ColeBans/config.yml");
 		try {

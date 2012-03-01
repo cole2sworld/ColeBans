@@ -8,6 +8,7 @@ import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 
 public class Tempban extends CBCommand {
+	@Override
 	public String run(String[] args, CommandSender admin) {
 		String error = null;
 		if (args.length < 2) error = ChatColor.RED+"You must specify a player and time (in minutes).";
@@ -22,7 +23,7 @@ public class Tempban extends CBCommand {
 				else {
 					try {
 						Main.banHandler.tempBanPlayer(victim, time, admin.getName());
-						if (GlobalConf.announceBansAndKicks) Main.server.broadcastMessage(ChatColor.valueOf(GlobalConf.tempBanColor)+victim+" was temporarily banned! ["+time+" minute"+Main.getPlural(time)+"]");
+						if (GlobalConf.announceBansAndKicks) Main.server.broadcastMessage(ChatColor.valueOf(GlobalConf.tempBanColor)+victim+" was temporarily banned! ["+time+" minute"+Main.getPlural(time, true)+"]");
 					} catch (PlayerAlreadyBannedException e) {
 						error = ChatColor.DARK_RED+victim+" is already banned!";
 					} catch (UnsupportedOperationException e) {

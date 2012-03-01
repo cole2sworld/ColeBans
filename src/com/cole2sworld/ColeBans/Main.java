@@ -22,21 +22,44 @@ import com.nijiko.permissions.PermissionHandler;
 
 
 public class Main extends JavaPlugin {
+	/**
+	 * The Permissions 3/2 (or bridge) that we will use for permissions.
+	 */
     public PermissionHandler permissionsHandler = null;
+    /**
+     * The instance of Main, for accessing non-static methods.
+     */
 	public static Main instance;
+	/**
+	 * The server that ColeBans got on startup.
+	 */
 	public static Server server;
+	/**
+	 * The banhandler that will be used for all actions.
+	 */
 	public static BanHandler banHandler;
+
+	/**
+	 * Creates a new ColeBans Main class.
+	 * <i>Do not use. Only the Bukkit server implementation should instantiate Main. If you need an instance of Main, use Main.instance</i>
+	 */
 
 	public Main() {
 		instance = this;
 	}
 	
+	/**
+	 * Called when the plugin is disabled.
+	 */
 	@Override
 	public void onDisable() {
 		banHandler.onDisable();
 		System.out.println(GlobalConf.logPrefix+"Disabled.");
 	}
 
+	/**
+	 * Registers events, gets the config, pulls the banhandler, and all that good stuff you need to do when initializing.
+	 */
 	@Override
 	public void onEnable() {
 		System.out.println(GlobalConf.logPrefix+"Initalizing...");
@@ -57,6 +80,10 @@ public class Main extends JavaPlugin {
 		System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
 	}
 	
+	/**
+	 * Manages the dynamic command handler and the static command handler.
+	 */
+	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		if (cmdLabel.equalsIgnoreCase("cb")) {
 			if (args.length < 2) return false;
@@ -91,6 +118,12 @@ public class Main extends JavaPlugin {
 		return true;
 	}
 	
+	/**
+	 * Kicks a player out of the game, with a fancy effect if enabled.
+	 * @param player The player to kick (name)
+	 * @param reason The reason for the kick (shown to the victim)
+	 * @throws PlayerOfflineException If the player is offline
+	 */
 	public void kickPlayer(String player, String reason) throws PlayerOfflineException {
 		Player playerObj = server.getPlayer(player);
 		if (playerObj != null) {
@@ -108,19 +141,41 @@ public class Main extends JavaPlugin {
 		}
 		else throw new PlayerOfflineException(player+" is offline!");
 	}
-	public static String getPlural(long check) {
-		if (check < 0) return "s";
-		else if (check == 0) return "s";
-		else if (check > 1) return "s";
-		else return "";
+	/**
+	 * Check if the number "check" should be pluralized in speech with an s.
+	 * Returns "s" if yes, "" if no when plural is true, "are" if yes or "is" if no when plural is false.
+	 * <br/><b>Example:</b><br/>
+	 * "There "+Main.getPlural(apples, false)+" "+apples+" apple"+Main.getPlural(apples, true)+" in the bowl."<br/>
+	 * <br/>
+	 * If 'apples' was 4, the string would be "There are 4 apples in the bowl."<br/>
+	 * If 'apples' was 1, the string would be "There is 1 apple in the bowl."<br/>
+	 * If 'apples' was 0, the string would be "There are 0 apples in the bowl."
+	 * @param check The number to check
+	 * @param plural Return s?
+	 * @return Plural
+	 */
+	public static String getPlural(long check, boolean plural) {
+		boolean isPlural = check < 0 | check == 0 | check > 1;
+		if (plural & isPlural) return "s";
+		if (plural & !isPlural) return "";
+		if (!plural & isPlural) return "are";
+		return "is";
 	}
+	/**
+	 * @param player Player to check (name)
+	 * @param permissionNode Node to check
+	 * @return If there is a permissionsHandler, whether or not the given player has the node. If there isn't, if the player is an operator.
+	 */
     public boolean hasPermission(Player player, String permissionNode)
     {
     	if (permissionsHandler == null) return player.isOp();
         return permissionsHandler.has(player, permissionNode);
     }
 
-	public void onFatal() {
+    /**
+     * Called when something really bad happens.
+     */
+	protected void onFatal() {
 		this.onDisable();
 		try {
 			this.finalize();

@@ -6,6 +6,7 @@ public class PlayerOfflineException extends Exception {
 	public PlayerOfflineException(String detail) {
 		this.detail = detail;
 	}
+	@Override
 	public String getMessage() {
 		return detail;
 	}

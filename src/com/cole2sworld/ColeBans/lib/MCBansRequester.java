@@ -29,6 +29,7 @@ public class MCBansRequester extends Thread {
 		if (finished) return result;
 		else return null;
 	}
+	@Override
 	public void run() {
 		try {
 			URL url;

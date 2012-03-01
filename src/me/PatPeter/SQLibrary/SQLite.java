@@ -67,6 +67,7 @@ public class SQLite extends DatabaseHandler {
 		}
 	}*/
 	
+	@Override
 	protected boolean initialize() {
 		try {
 		  Class.forName("org.sqlite.JDBC");

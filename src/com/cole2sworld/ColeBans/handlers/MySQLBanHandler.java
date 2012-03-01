@@ -60,6 +60,7 @@ public class MySQLBanHandler extends BanHandler {
 		else return false;
 	}
 
+	@Override
 	public void banPlayer(String player, String reason, String admin) throws PlayerAlreadyBannedException {
 		if (isPlayerBanned(player, admin)) throw new PlayerAlreadyBannedException(player+" is already banned!");
 		String tbl = GlobalConf.sql.prefix+"perm";
@@ -94,6 +95,7 @@ public class MySQLBanHandler extends BanHandler {
 		}
 	}
 
+	@Override
 	public void tempBanPlayer(String player, long primTime, String admin) throws PlayerAlreadyBannedException, UnsupportedOperationException {
 		if (!GlobalConf.allowTempBans) throw new UnsupportedOperationException("Temp bans are disabled!");
 		if (isPlayerBanned(player, admin)) throw new PlayerAlreadyBannedException(player+" is already banned!");
@@ -110,7 +112,7 @@ public class MySQLBanHandler extends BanHandler {
 						");");
 				Player playerObj = Main.server.getPlayer(player);
 				if (playerObj != null) {
-					playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.tempBanColor)+"Temporarily banned for "+primTime+" minute"+Main.getPlural(primTime)+".");
+					playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.tempBanColor)+"Temporarily banned for "+primTime+" minute"+Main.getPlural(primTime, true)+".");
 					if (GlobalConf.fancyEffects) {
 						World world = playerObj.getWorld();
 						world.createExplosion(playerObj.getLocation(), 0);
@@ -130,6 +132,7 @@ public class MySQLBanHandler extends BanHandler {
 		}
 	}
 
+	@Override
 	public void unbanPlayer(String player, String admin) throws PlayerNotBannedException {
 		BanData bd = getBanData(player, admin);
 		if (bd.getType() == Type.PERMANENT)  {
@@ -153,6 +156,7 @@ public class MySQLBanHandler extends BanHandler {
 		throw new PlayerNotBannedException(player+" is not banned!");
 	}
 
+	@Override
 	public boolean isPlayerBanned(String player, String admin) {
 		return (getBanData(player, admin).getType()) != Type.NOT_BANNED;
 	}
