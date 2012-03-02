@@ -3,6 +3,8 @@ package com.cole2sworld.ColeBans.handlers;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.naming.OperationNotSupportedException;
+
 import org.bukkit.ChatColor;
 
 import com.cole2sworld.ColeBans.GlobalConf;
@@ -38,8 +40,11 @@ public abstract class BanHandler {
 	 * Do stuff related to getting ready, and then return a new instance of the BanHandler.
 	 * @param data EnableData that contains SQL credentials, files for yaml/json, etc.
 	 * @return This ban handler, after proper initialization.
+	 * @throws OperationNotSupportedException if the ban handler does not properly override this method
 	 */
-	public abstract BanHandler onEnable(HashMap<String, String> data);
+	public static BanHandler onEnable(HashMap<String, String> data) throws OperationNotSupportedException {
+		throw new OperationNotSupportedException("BanHandler is abstract");
+	}
 	/**
 	 * Permanently bans a player.
 	 * @param player The player to ban.

@@ -15,12 +15,11 @@ import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 public class YAMLBanHandler extends BanHandler {
 	private File file;
 	private YamlConfiguration conf;
-	@Override
-	public BanHandler onEnable(HashMap<String, String> data) {
-		file = new File("./plugins/ColeBans/"+data.get("yaml"));
-		conf = new YamlConfiguration();
+	public static BanHandler onEnable(HashMap<String, String> data) {
+		File tFile = new File("./plugins/ColeBans/"+data.get("yaml"));
+		YamlConfiguration tConf = new YamlConfiguration();
 		try {
-			conf.load(file);
+			tConf.load(tFile);
 		} catch (FileNotFoundException e) {
 			
 		} catch (IOException e) {
@@ -31,9 +30,14 @@ public class YAMLBanHandler extends BanHandler {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return new YAMLBanHandler(tFile, tConf);
 	}
 
+	public YAMLBanHandler(File file, YamlConfiguration conf) {
+		this.file = file;
+		this.conf = conf;
+	}
+	
 	@Override
 	public void banPlayer(String player, String reason, String admin)
 			throws PlayerAlreadyBannedException {

@@ -8,8 +8,7 @@ import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 
 public class JSONBanHandler extends BanHandler {
 
-	@Override
-	public BanHandler onEnable(HashMap<String, String> data) {
+	public static BanHandler onEnable(HashMap<String, String> data) {
 		// TODO Auto-generated method stub
 		return null;
 	}

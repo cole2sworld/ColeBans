@@ -3,6 +3,7 @@ package com.cole2sworld.ColeBans.handlers;
 import java.util.HashMap;
 import java.util.Vector;
 
+import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 
@@ -12,9 +13,11 @@ public class MCBansBanHandler extends BanHandler {
 		this.api = api;
 	}
 
-	@Override
-	public BanHandler onEnable(HashMap<String, String> data) {
-		return new MCBansBanHandler(data.get("api"));
+	public static BanHandler onEnable(HashMap<String, String> data) {
+		MCBansBanHandler handler = new MCBansBanHandler(data.get("api"));
+		System.out.println(GlobalConf.logPrefix + "[MCBansBanHandler] Verifying connection...");
+	
+		return handler;
 	}
 
 

@@ -229,8 +229,7 @@ public class MySQLBanHandler extends BanHandler {
 		long newtime = System.currentTimeMillis();
 		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Done. Took "+(newtime-oldtime)+" ms.");
 	}
-	@Override
-	public BanHandler onEnable(HashMap<String, String> data) {
+	public static BanHandler onEnable(HashMap<String, String> data) {
 		return new MySQLBanHandler(data.get("username"), data.get("password"), data.get("host"), data.get("port"), data.get("prefix"), data.get("db"));
 	}
 	@Override
