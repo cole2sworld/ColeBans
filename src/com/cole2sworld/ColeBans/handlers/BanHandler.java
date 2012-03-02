@@ -69,7 +69,6 @@ public abstract class BanHandler {
 	 * @param player The player to check
 	 * @param admin The admin that initiated this action
 	 * @return If the player is banned (whether it be temp or permanent)
-	 * @see BanHandler#getBanData(String)
 	 */
 	public abstract boolean isPlayerBanned(String player, String admin);
 	/**
