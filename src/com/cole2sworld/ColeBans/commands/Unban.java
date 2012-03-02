@@ -19,8 +19,8 @@ public class Unban extends CBCommand {
 		else {
 			String victim = args[0];
 			try {
-				Main.banHandler.unbanPlayer(victim, admin.getName());
-				if (GlobalConf.announceBansAndKicks) Main.server.broadcastMessage(ChatColor.GREEN+victim+" was unbanned!");
+				Main.instance.banHandler.unbanPlayer(victim, admin.getName());
+				if (GlobalConf.announceBansAndKicks) Main.instance.server.broadcastMessage(ChatColor.GREEN+victim+" was unbanned!");
 			} catch (PlayerNotBannedException e) {
 				error = ChatColor.DARK_RED+victim+" is not banned!";
 			}

@@ -25,8 +25,8 @@ public class Tempban extends CBCommand {
 				}
 				else {
 					try {
-						Main.banHandler.tempBanPlayer(victim, time, admin.getName());
-						if (GlobalConf.announceBansAndKicks) Main.server.broadcastMessage(ChatColor.valueOf(GlobalConf.tempBanColor)+victim+" was temporarily banned! ["+time+" minute"+Main.getPlural(time, true)+"]");
+						Main.instance.banHandler.tempBanPlayer(victim, time, admin.getName());
+						if (GlobalConf.announceBansAndKicks) Main.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.tempBanColor)+victim+" was temporarily banned! ["+time+" minute"+Main.getPlural(time, true)+"]");
 					} catch (PlayerAlreadyBannedException e) {
 						error = ChatColor.DARK_RED+victim+" is already banned!";
 					} catch (UnsupportedOperationException e) {

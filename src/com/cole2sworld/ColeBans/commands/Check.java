@@ -18,7 +18,7 @@ public class Check extends CBCommand {
 		else if (args.length > 1) error = ChatColor.RED+"Too many arguments. Usage: /lookup <player>";
 		else {
 			String victim = args[0];
-			BanData bd = Main.banHandler.getBanData(victim, sender.getName());
+			BanData bd = Main.instance.banHandler.getBanData(victim, sender.getName());
 			if (bd.getType() == BanHandler.Type.PERMANENT) {
 				sender.sendMessage(ChatColor.RED+"-- "+ChatColor.DARK_RED+victim+ChatColor.RED+" --");
 				sender.sendMessage(ChatColor.RED+"Ban Type: "+ChatColor.DARK_RED+"Permanent");

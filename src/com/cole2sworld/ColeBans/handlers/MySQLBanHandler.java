@@ -82,7 +82,7 @@ public class MySQLBanHandler extends BanHandler {
 						"'"+addSlashes(player)+"', " +
 						"'"+addSlashes(reason)+"'"+
 						");");
-				Player playerObj = Main.server.getPlayer(player);
+				Player playerObj = Main.instance.server.getPlayer(player);
 				if (playerObj != null) {
 					playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.banColor)+"BANNED: "+reason);
 					if (GlobalConf.fancyEffects) {
@@ -119,7 +119,7 @@ public class MySQLBanHandler extends BanHandler {
 						"'"+addSlashes(player)+"', " +
 						"'"+time+"'"+
 						");");
-				Player playerObj = Main.server.getPlayer(player);
+				Player playerObj = Main.instance.server.getPlayer(player);
 				if (playerObj != null) {
 					playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.tempBanColor)+"Temporarily banned for "+primTime+" minute"+Main.getPlural(primTime, true)+".");
 					if (GlobalConf.fancyEffects) {

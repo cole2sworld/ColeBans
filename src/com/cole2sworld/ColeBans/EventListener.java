@@ -23,7 +23,7 @@ public class EventListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public final void onPlayerPreLogin(final PlayerPreLoginEvent event) {
-		BanData bd = Main.banHandler.getBanData(event.getName(), BanHandler.SYSTEM_ADMIN_NAME);
+		BanData bd = Main.instance.banHandler.getBanData(event.getName(), BanHandler.SYSTEM_ADMIN_NAME);
 		Type banType = bd.getType();
 		String player = event.getName();
 		if (banType == Type.PERMANENT) {
@@ -33,7 +33,7 @@ public class EventListener implements Listener {
 			return;
 		}
 		if (GlobalConf.allowTempBans) {
-			Long tempBanTime = Main.banHandler.getBanData(player, BanHandler.SYSTEM_ADMIN_NAME).getTime();
+			Long tempBanTime = Main.instance.banHandler.getBanData(player, BanHandler.SYSTEM_ADMIN_NAME).getTime();
 			if (tempBanTime > -1) {
 				Long tempBanMins = tempBanTime-System.currentTimeMillis();
 				tempBanMins /= 1000;

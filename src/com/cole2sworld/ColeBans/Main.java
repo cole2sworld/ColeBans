@@ -36,11 +36,11 @@ public class Main extends JavaPlugin {
 	/**
 	 * The server that ColeBans got on startup.
 	 */
-	public static Server server;
+	public Server server;
 	/**
 	 * The banhandler that will be used for all actions.
 	 */
-	public static BanHandler banHandler;
+	public BanHandler banHandler;
 
 	/**
 	 * Creates a new ColeBans Main class.

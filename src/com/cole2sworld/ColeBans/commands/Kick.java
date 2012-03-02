@@ -26,7 +26,7 @@ public class Kick extends CBCommand {
 			String reason = reasonBuilder.toString();
 			try {
 				Main.instance.kickPlayer(victim, reason);
-				if (GlobalConf.announceBansAndKicks) Main.server.broadcastMessage(ChatColor.valueOf(GlobalConf.kickColor)+victim+" was kicked! ["+reason+"]");
+				if (GlobalConf.announceBansAndKicks) Main.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.kickColor)+victim+" was kicked! ["+reason+"]");
 			} catch (PlayerOfflineException e) {
 				error = ChatColor.DARK_RED+victim+" is not online!";
 			}
