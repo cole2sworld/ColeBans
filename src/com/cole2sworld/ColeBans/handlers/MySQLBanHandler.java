@@ -18,7 +18,7 @@ import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 
 public class MySQLBanHandler extends BanHandler {
-	MySQL sqlHandler;
+	private MySQL sqlHandler;
 	/**
 	 * Creates a new MySQLBanHandler using a database with the given settings
 	 * @param username - The username to log into the server
@@ -36,6 +36,11 @@ public class MySQLBanHandler extends BanHandler {
 		long newtime = System.currentTimeMillis();
 		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Done. Took "+(newtime-oldtime)+" ms.");
 	}
+	/**
+	 * Sanitizes the input to be safe for usage in a SQL query.
+	 * @param workset The string to process
+	 * @return The sanitized string
+	 */
 	public static String addSlashes(String workset) {
 		StringBuilder sanitizer = new StringBuilder();
 		for (int i = 0; i<workset.length(); i++) {
@@ -49,6 +54,10 @@ public class MySQLBanHandler extends BanHandler {
 		}
 		return sanitizer.toString();
 	}
+	/**
+	 * @param charAt Character to check
+	 * @return If escaping this character in MySQL will cause strange things to happen
+	 */
 	public static boolean isSQLSpecialCharacter(Character charAt) {
 		String workset = charAt.toString();
 		if ("0".equalsIgnoreCase(workset)) return true;

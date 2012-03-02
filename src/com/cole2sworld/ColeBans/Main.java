@@ -72,7 +72,7 @@ public class Main extends JavaPlugin {
 		long oldtime = System.currentTimeMillis();
 		GlobalConf.conf = getConfig();
 		GlobalConf.loadConfig();
-		//HARD CODED BAN HANDLER. Will be fixed soon.
+		//FIXME Hardcoded banhandler - needs to be replaced with a dynamic banhandler
 		banHandler = new MySQLBanHandler(GlobalConf.Sql.user, GlobalConf.Sql.pass, GlobalConf.Sql.host, GlobalConf.Sql.port, GlobalConf.logPrefix, GlobalConf.Sql.db);
 		long newtime = System.currentTimeMillis();
 		System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");

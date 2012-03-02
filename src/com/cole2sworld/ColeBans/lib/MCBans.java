@@ -29,6 +29,6 @@ public class MCBans {
 		return false;
 	}
 	public void localBan(String player, String admin) {
-		
+		//TODO Finish the MCBans lib
 	}
 }

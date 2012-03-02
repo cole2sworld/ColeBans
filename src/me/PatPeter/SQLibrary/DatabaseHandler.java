@@ -1,10 +1,4 @@
-/**
- * Database Handler
- * Abstract superclass for all subclass database files.
- * 
- * Date Created: 2011-08-26 19:08
- * @author PatPeter
- */
+
 package me.PatPeter.SQLibrary;
 
 /*
@@ -26,9 +20,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
 /**
+ * Database Handler
+ * Abstract superclass for all subclass database files.
  * 
+ * Date Created: 2011-08-26 19:08
  * @author PatPeter
- *
  */
 public abstract class DatabaseHandler {
 	protected Logger log;

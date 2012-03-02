@@ -11,6 +11,7 @@ import java.net.URLConnection;
  * Requester -- sends raw requests to MCBans. <b>This class should not be directly interfaced by classes, instead it should be accessed through the MCBans class.
  * @see MCBans
  */
+//TODO check if this thing actually works
 public class MCBansRequester extends Thread {
 	private String key;
 	private String instruction;
@@ -28,6 +29,9 @@ public class MCBansRequester extends Thread {
 		if (finished) return result;
 		else return null;
 	}
+	/**
+	 * Requests from MCBans with the given instruction and api key.
+	 */
 	@Override
 	public void run() {
 		try {

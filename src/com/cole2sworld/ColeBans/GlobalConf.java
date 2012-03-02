@@ -28,10 +28,6 @@ public final class GlobalConf {
 	 */
 	public static boolean allowTempBans = true;
 	/**
-	 * Unused.
-	 */
-	public static Material banHammer = Material.BLAZE_ROD;
-	/**
 	 * Message when somebody tries to log in but is banned.
 	 */
 	public static String banMessage = "You are banned for %reason!";
@@ -39,10 +35,6 @@ public final class GlobalConf {
 	 * Message when somebody tries to log in but is tempbanned.
 	 */
 	public static String tempBanMessage = "You are tempbanned! %time seconds remaining!";
-	/**
-	 * Unused.
-	 */
-	public static boolean allowBanhammer = true;
 	/**
 	 * Show fancy effects?
 	 */
@@ -176,10 +168,8 @@ public final class GlobalConf {
 				conf.load(confFile);
 				settings = conf.getConfigurationSection("settings");
 				allowTempBans = settings.getBoolean("allowTempBans");
-				banHammer = Material.getMaterial(settings.getString("banHammer"));
 				banMessage = settings.getString("banMessage");
 				tempBanMessage = settings.getString("tempBanMessage");
-				allowBanhammer = settings.getBoolean("allowBanhammer");
 				fancyEffects = settings.getBoolean("fancyEffects");
 				banColor = settings.getString("banColor");
 				kickColor = settings.getString("kickColor");

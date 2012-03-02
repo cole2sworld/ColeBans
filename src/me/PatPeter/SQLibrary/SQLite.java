@@ -1,10 +1,3 @@
-/**
- * SQLite
- * Inherited subclass for reading and writing to and from an SQLite file.
- * 
- * Date Created: 2011-08-26 19:08
- * @author PatPeter
- */
 package me.PatPeter.SQLibrary;
 
 /*
@@ -25,10 +18,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Logger;
 /**
+ * SQLite
+ * Inherited subclass for reading and writing to and from an SQLite file.
  * 
+ * Date Created: 2011-08-26 19:08
  * @author PatPeter
- *
  */
+//TODO Check if this actually works
 public class SQLite extends DatabaseHandler {
 	public String location;
 	public String name;

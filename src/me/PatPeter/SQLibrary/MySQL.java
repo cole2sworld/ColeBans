@@ -1,10 +1,3 @@
-/**
- * MySQL
- * Inherited subclass for making a connection to a MySQL server.
- * 
- * Date Created: 2011-08-26 19:08
- * @author PatPeter
- */
 package me.PatPeter.SQLibrary;
 
 /*
@@ -24,9 +17,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Logger;
 /**
+ * MySQL
+ * Inherited subclass for making a connection to a MySQL server.
  * 
+ * Date Created: 2011-08-26 19:08
  * @author PatPeter
- *
  */
 public class MySQL extends DatabaseHandler {
 	private String hostname = "localhost";
