@@ -37,7 +37,7 @@ public abstract class BanHandler {
 	/**
 	 * Do stuff related to getting ready, and then return a new instance of the BanHandler.
 	 * @param data EnableData that contains SQL credentials, files for yaml/json, etc.
-	 * @return
+	 * @return This ban handler, after proper initialization.
 	 */
 	public abstract BanHandler onEnable(HashMap<String, String> data);
 	/**
