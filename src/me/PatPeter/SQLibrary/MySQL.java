@@ -23,7 +23,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Logger;
-
+/**
+ * 
+ * @author PatPeter
+ *
+ */
 public class MySQL extends DatabaseHandler {
 	private String hostname = "localhost";
 	private String portnmbr = "3306";

@@ -9,8 +9,7 @@ import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 /**
- * Abstract class for ban handlers. To make a custom ban handler, simply extend this class and you can make a custom ban handler.
- * @author cole2
+ * Handles banning and unbanning of players.
  */
 public abstract class BanHandler {
 	/**

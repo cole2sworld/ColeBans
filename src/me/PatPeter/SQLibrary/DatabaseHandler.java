@@ -25,7 +25,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
-
+/**
+ * 
+ * @author PatPeter
+ *
+ */
 public abstract class DatabaseHandler {
 	protected Logger log;
 	protected final String PREFIX;

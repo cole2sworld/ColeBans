@@ -1,10 +1,18 @@
 package com.cole2sworld.ColeBans.lib;
-
+/**
+ * Send requests to the MCBans service.
+ * @author cole2
+ *
+ */
 public class MCBans {
 	private String key;
 	public MCBans(String key) {
 		this.key = key;
 	}
+	/**
+	 * Makes sure the key is valid and usable.
+	 * @return if the key is valid
+	 */
 	public boolean isValid() {
 		MCBansRequester requester = new MCBansRequester(key, "");
 		requester.start();

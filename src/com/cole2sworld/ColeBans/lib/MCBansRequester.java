@@ -8,8 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 /**
- * Requester -- sends raw requests to MCBans. <b>This class should not be directly interfaced by classes, instead it should be accessed through com.cole2sworld.ColeBans.lib.MCBans.
- * @author cole2
+ * Requester -- sends raw requests to MCBans. <b>This class should not be directly interfaced by classes, instead it should be accessed through the MCBans class.
  * @see MCBans
  */
 public class MCBansRequester extends Thread {

@@ -1,6 +1,9 @@
 package com.cole2sworld.ColeBans.handlers;
 import com.cole2sworld.ColeBans.handlers.BanHandler.Type;
-
+/**
+ * Holds data about a ban.
+ *
+ */
 public class BanData {
 	private Type type = Type.NOT_BANNED;
 	private String reason = "";
@@ -75,8 +78,7 @@ public class BanData {
 		this.type = type;
 	}
 	/**
-	 * The time is the Unix Timestamp at which the ban will expire.
-	 * @return the time, will be -1 if permanent ban
+	 * @return the Unix Timestamp at which the ban will expire
 	 */
 	public Long getTime() {
 		return time;
