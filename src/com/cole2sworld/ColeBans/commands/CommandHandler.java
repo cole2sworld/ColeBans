@@ -36,7 +36,7 @@ public class CommandHandler {
 			}
 			else error = ChatColor.RED+"You do not have permission to use the "+cmdLabel+" command.";
 		}
-		else if (cmdLabel.equalsIgnoreCase("lookup") | cmdLabel.equalsIgnoreCase("check")) {
+		else if (cmdLabel.equalsIgnoreCase("lookup") || cmdLabel.equalsIgnoreCase("check")) {
 			if (pset.canLookup) {
 				String result = new Check().run(args, sender);
 				if (result != null) return true;

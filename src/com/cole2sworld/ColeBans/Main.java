@@ -68,7 +68,7 @@ public class Main extends JavaPlugin {
 		System.out.println(GlobalConf.logPrefix+"Initalizing...");
 		server = getServer();
 		PluginManager pm = server.getPluginManager();
-		System.out.println(GlobalConf.logPrefix+"Loading config & ban handler...");
+		System.out.println(GlobalConf.logPrefix+"Loading config and ban handler...");
 		long oldtime = System.currentTimeMillis();
 		GlobalConf.conf = getConfig();
 		GlobalConf.loadConfig();
@@ -102,7 +102,7 @@ public class Main extends JavaPlugin {
 						for (int i = 1; i<args.length; i++) {
 							newArgs.add(args[i]);
 						}
-						String error = cmdObj.run((String[]) newArgs.toArray(), sender);
+						String error = cmdObj.run(newArgs.toArray(new String[newArgs.size()]), sender);
 						if (error != null) {
 							sender.sendMessage(error);
 						}
