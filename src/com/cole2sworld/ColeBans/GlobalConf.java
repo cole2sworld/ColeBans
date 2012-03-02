@@ -114,6 +114,10 @@ public final class GlobalConf {
 		 * Whether or not to make full dumps of the banlist, including reasons.
 		 */
 		public static boolean fullBackups = false;
+		/**
+		 * Lowest rep you can have and still be able to join.
+		 */
+		public static double minRep = 10;
 	}
 	/**
 	 * Configuration section for YAML.
@@ -186,6 +190,7 @@ public final class GlobalConf {
 				MCBans.section = settings.getConfigurationSection("mcbans");
 				MCBans.apiKey = MCBans.section.getString("apiKey");
 				MCBans.fullBackups = MCBans.section.getBoolean("fullBackups");
+				MCBans.minRep = MCBans.section.getDouble("minRep");
 			}
 			else {
 				File dir = new File("./plugins/ColeBans");
@@ -221,6 +226,8 @@ public final class GlobalConf {
 								"        # Set this to the BanHandler you want to use for the backups, or \"None\" to turn off backups.\n"+
 								"        backup: true\n"+
 								"        fullBackups: false\n"+
+								"        #The minimum rep a player can have to join your server."+
+								"        minRep: 10"+
 								"    yaml:\n"+
 								"        fileName: banlist.yml\n"+
 								"    json:\n"+
