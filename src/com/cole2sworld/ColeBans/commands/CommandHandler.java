@@ -4,7 +4,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
-
+/**
+ * Static command handler. For handling traditional /&lt;cmd&gt; commands instead of the dynamic /cb &lt;cmd&gt; [args] commands.
+ *
+ */
 public class CommandHandler {
 	public static boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		String error = ChatColor.YELLOW+"An unspecified error has occurred while running this command.";

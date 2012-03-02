@@ -6,7 +6,10 @@ import org.bukkit.command.CommandSender;
 import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
-
+/**
+ * The Ban command. Handles banning players through commands.
+ *
+ */
 public class Ban extends CBCommand {
 	@Override
 	public String run(String[] args, CommandSender admin) {

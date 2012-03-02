@@ -6,7 +6,10 @@ import org.bukkit.command.CommandSender;
 import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
-
+/**
+ * The Unban command. Handles unbanning players through commands.
+ *
+ */
 public class Unban extends CBCommand {
 	@Override
 	public String run(String[] args, CommandSender admin) {
