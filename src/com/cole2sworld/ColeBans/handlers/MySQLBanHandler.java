@@ -63,7 +63,7 @@ public class MySQLBanHandler extends BanHandler {
 	@Override
 	public void banPlayer(String player, String reason, String admin) throws PlayerAlreadyBannedException {
 		if (isPlayerBanned(player, admin)) throw new PlayerAlreadyBannedException(player+" is already banned!");
-		String tbl = GlobalConf.sql.prefix+"perm";
+		String tbl = GlobalConf.Sql.prefix+"perm";
 		if (sqlHandler.checkConnection()) {
 			if (sqlHandler.checkTable(tbl)) {
 				sqlHandler.query("INSERT INTO "+tbl+" (" +
@@ -83,12 +83,12 @@ public class MySQLBanHandler extends BanHandler {
 				}
 			}
 			else {
-				sqlHandler.query("CREATE  TABLE `"+GlobalConf.sql.db+"`.`"+tbl+"` (" +
+				sqlHandler.query("CREATE  TABLE `"+GlobalConf.Sql.db+"`.`"+tbl+"` (" +
 						"`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ," +
 						"`username` VARCHAR(255) NULL ," +
 						"`reason` VARCHAR(255) NULL ," +
 						"PRIMARY KEY (`id`) );");
-				sqlHandler.query("ALTER TABLE `"+GlobalConf.sql.db+"`.`"+tbl+"`"+
+				sqlHandler.query("ALTER TABLE `"+GlobalConf.Sql.db+"`.`"+tbl+"`"+
 						"ADD INDEX `NAMEINDEX` (`username` ASC);");
 				banPlayer(player, reason, admin);
 			}
@@ -100,10 +100,10 @@ public class MySQLBanHandler extends BanHandler {
 		if (!GlobalConf.allowTempBans) throw new UnsupportedOperationException("Temp bans are disabled!");
 		if (isPlayerBanned(player, admin)) throw new PlayerAlreadyBannedException(player+" is already banned!");
 		Long time = System.currentTimeMillis()+((primTime*60)*1000);
-		String tbl = GlobalConf.sql.prefix+"temp";
+		String tbl = GlobalConf.Sql.prefix+"temp";
 		if (sqlHandler.checkConnection()) {
 			if (sqlHandler.checkTable(tbl)) {
-				sqlHandler.query("INSERT INTO `"+GlobalConf.sql.db+"`.`"+tbl+"` (" +
+				sqlHandler.query("INSERT INTO `"+GlobalConf.Sql.db+"`.`"+tbl+"` (" +
 						"username, " +
 						"time" +
 						") VALUES (" +
@@ -120,12 +120,12 @@ public class MySQLBanHandler extends BanHandler {
 				}
 			}
 			else {
-				sqlHandler.query("CREATE  TABLE `"+GlobalConf.sql.db+"`.`"+tbl+"` (" +
+				sqlHandler.query("CREATE  TABLE `"+GlobalConf.Sql.db+"`.`"+tbl+"` (" +
 						"`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ," +
 						"`username` VARCHAR(255) NULL ," +
 						"`time` VARCHAR(255) NULL ," +
 						"PRIMARY KEY (`id`) );");
-				sqlHandler.query("ALTER TABLE `"+GlobalConf.sql.db+"`.`"+tbl+"`"+
+				sqlHandler.query("ALTER TABLE `"+GlobalConf.Sql.db+"`.`"+tbl+"`"+
 						"ADD INDEX `NAMEINDEX` (`username` ASC);");
 				tempBanPlayer(player, primTime, admin);
 			}
@@ -136,19 +136,19 @@ public class MySQLBanHandler extends BanHandler {
 	public void unbanPlayer(String player, String admin) throws PlayerNotBannedException {
 		BanData bd = getBanData(player, admin);
 		if (bd.getType() == Type.PERMANENT)  {
-			String tbl = GlobalConf.sql.prefix+"perm";
+			String tbl = GlobalConf.Sql.prefix+"perm";
 			if (sqlHandler.checkConnection()) {
 				if (sqlHandler.checkTable(tbl)) {
-					sqlHandler.query("DELETE FROM `"+GlobalConf.sql.db+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
+					sqlHandler.query("DELETE FROM `"+GlobalConf.Sql.db+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
 					return;
 				}
 			}
 		}
 		else if (bd.getType() == Type.TEMPORARY) {
-			String tbl = GlobalConf.sql.prefix+"temp";
+			String tbl = GlobalConf.Sql.prefix+"temp";
 			if (sqlHandler.checkConnection()) {
 				if (sqlHandler.checkTable(tbl)) {
-					sqlHandler.query("DELETE FROM `"+GlobalConf.sql.db+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
+					sqlHandler.query("DELETE FROM `"+GlobalConf.Sql.db+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
 					return;
 				}
 			}
@@ -164,10 +164,10 @@ public class MySQLBanHandler extends BanHandler {
 
 	@Override
 	public BanData getBanData(String player, String admin) {
-		String tbl = GlobalConf.sql.prefix+"perm";
+		String tbl = GlobalConf.Sql.prefix+"perm";
 		if (sqlHandler.checkConnection()) {
 			if (sqlHandler.checkTable(tbl)) {
-				ResultSet reasonResult = sqlHandler.query("SELECT reason FROM `"+GlobalConf.sql.db+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
+				ResultSet reasonResult = sqlHandler.query("SELECT reason FROM `"+GlobalConf.Sql.db+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
 				boolean results = false;
 				try {
 					results = reasonResult.first();
@@ -182,9 +182,9 @@ public class MySQLBanHandler extends BanHandler {
 					}
 				}
 			}
-			String tblB = GlobalConf.sql.prefix+"temp";
+			String tblB = GlobalConf.Sql.prefix+"temp";
 			if (sqlHandler.checkTable(tblB)) {
-				ResultSet reasonResultB = sqlHandler.query("SELECT time FROM `"+GlobalConf.sql.db+"`.`"+tblB+"` WHERE username='"+addSlashes(player)+"';");
+				ResultSet reasonResultB = sqlHandler.query("SELECT time FROM `"+GlobalConf.Sql.db+"`.`"+tblB+"` WHERE username='"+addSlashes(player)+"';");
 				boolean resultsB = false;
 				try {
 					resultsB = reasonResultB.first();
@@ -196,7 +196,7 @@ public class MySQLBanHandler extends BanHandler {
 						if (time <= System.currentTimeMillis()) {
 							if (sqlHandler.checkConnection()) {
 								if (sqlHandler.checkTable(tblB)) {
-									sqlHandler.query("DELETE FROM `"+GlobalConf.sql.db+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
+									sqlHandler.query("DELETE FROM `"+GlobalConf.Sql.db+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
 								}
 							}
 							return new BanData(player);

@@ -14,13 +14,13 @@ import org.bukkit.configuration.file.FileConfiguration;
  * Configuration for ColeBans. Loaded from file on startup.
  *
  */
-public class GlobalConf {
+public final class GlobalConf {
 	/**
 	 * Configuration we are using.
 	 */
 	public static FileConfiguration conf;
 	/**
-	 * The main ConfigurationSection
+	 * The main ConfigurationSection.
 	 */
 	public static ConfigurationSection settings;
 	/**
@@ -75,7 +75,7 @@ public class GlobalConf {
 	 * Configuration section for SQL.
 	 *
 	 */
-	public static class sql {
+	public static class Sql {
 		/**
 		 * The raw section.
 		 */
@@ -109,7 +109,7 @@ public class GlobalConf {
 	 * Configuration section for MCBans.
 	 *
 	 */
-	public static class mcbans {
+	public static class MCBans {
 		/**
 		 * The raw section.
 		 */
@@ -127,7 +127,7 @@ public class GlobalConf {
 	 * Configuration section for YAML.
 	 *
 	 */
-	public static class yaml {
+	public static class Yaml {
 		/**
 		 * The raw section.
 		 */
@@ -141,7 +141,7 @@ public class GlobalConf {
 	 * Configuration section for YAML.
 	 *
 	 */
-	public static class json {
+	public static class Json {
 		/**
 		 * The raw section.
 		 */
@@ -156,7 +156,7 @@ public class GlobalConf {
 	 * @author cole2
 	 *
 	 */
-	public static class advanced {
+	public static class Advanced {
 		/**
 		 * The raw section.
 		 */
@@ -186,60 +186,62 @@ public class GlobalConf {
 				tempBanColor = settings.getString("tempBanColor");
 				announceBansAndKicks = settings.getBoolean("announceBansAndKicks");
 				logPrefix = settings.getString("logPrefix")+" ";
-				sql.section = settings.getConfigurationSection("mysql");
-				sql.user = sql.section.getString("user");
-				sql.pass = sql.section.getString("pass");
-				sql.host = sql.section.getString("host");
-				sql.port = sql.section.getString("port");
-				sql.db = sql.section.getString("db");
-				sql.prefix = sql.section.getString("prefix");
-				mcbans.section = settings.getConfigurationSection("mcbans");
-				mcbans.apiKey = mcbans.section.getString("apiKey");
-				mcbans.fullBackups = mcbans.section.getBoolean("fullBackups");
+				Sql.section = settings.getConfigurationSection("mysql");
+				Sql.user = Sql.section.getString("user");
+				Sql.pass = Sql.section.getString("pass");
+				Sql.host = Sql.section.getString("host");
+				Sql.port = Sql.section.getString("port");
+				Sql.db = Sql.section.getString("db");
+				Sql.prefix = Sql.section.getString("prefix");
+				MCBans.section = settings.getConfigurationSection("mcbans");
+				MCBans.apiKey = MCBans.section.getString("apiKey");
+				MCBans.fullBackups = MCBans.section.getBoolean("fullBackups");
 			}
 			else {
 				File dir = new File("./plugins/ColeBans");
 				dir.mkdir();
-				confFile.createNewFile();
-				if (confFile.canWrite()) {
-					System.out.println("[ColeBans] No config file exists, generating.");
-					FileOutputStream fos = new FileOutputStream(confFile);
-					String defaultConfig = ""+
-							"# For information on how to configure ColeBans, go to http://c2wr.com/cbconf"+
-							"settings:\n"+
-							"    allowTempBans: true\n"+
-							"    banMessage: You are banned for %reason!\n"+
-							"    tempBanMessage: You are tempbanned! %time minute%plural remaining!\n"+
-							"    fancyEffects: true\n"+
-							"    banColor: DARK_RED\n"+
-							"    kickColor: YELLOW\n"+
-							"    tempBanColor: RED\n"+
-							"    announceBansAndKicks: true\n"+
-							"    logPrefix: [ColeBans]\n"+
-							"    #banHandler can be MySQL, MCBans, YAML, or JSON.\n"+
-							"    banHandler: MySQL\n"+
-							"    mysql:\n"+
-							"        user: root\n"+
-							"        pass: pass\n"+
-							"        host: localhost\n"+
-							"        port: 3306\n"+
-							"        db: minecraft\n"+
-							"        prefix: cb_\n"+
-							"    mcbans:\n"+
-							"        ###### THIS LINE IS VERY VERY IMPORTANT IF YOU CHOSE MCBANS FOR THE BAN HANDLER ######\n"+
-							"        apiKey: yourAPIKeyHere\n"+
-							"        # Set this to the BanHandler you want to use for the backups, or \"None\" to turn off backups.\n"+
-							"        backup: true\n"+
-							"        fullBackups: false\n"+
-							"    yaml:\n"+
-							"        fileName: banlist.yml\n"+
-							"    json:\n"+
-							"        fileName: banlist.json\n"+
-							"    advanced:\n" +
-							"        # The package is where to get the ban handlers. Only change this line if you know what you are doing.\n" +
-							"        package: com.cole2sworld.ColeBans.handlers";
-					fos.write(defaultConfig.getBytes("utf-8"));
-					loadConfig();
+				if (confFile.createNewFile()) {
+					if (confFile.canWrite()) {
+						System.out.println("[ColeBans] No config file exists, generating.");
+						FileOutputStream fos = new FileOutputStream(confFile);
+						String defaultConfig = ""+
+								"# For information on how to configure ColeBans, go to http://c2wr.com/cbconf"+
+								"settings:\n"+
+								"    allowTempBans: true\n"+
+								"    banMessage: You are banned for %reason!\n"+
+								"    tempBanMessage: You are tempbanned! %time minute%plural remaining!\n"+
+								"    fancyEffects: true\n"+
+								"    banColor: DARK_RED\n"+
+								"    kickColor: YELLOW\n"+
+								"    tempBanColor: RED\n"+
+								"    announceBansAndKicks: true\n"+
+								"    logPrefix: [ColeBans]\n"+
+								"    #banHandler can be MySQL, MCBans, YAML, or JSON.\n"+
+								"    banHandler: MySQL\n"+
+								"    mysql:\n"+
+								"        user: root\n"+
+								"        pass: pass\n"+
+								"        host: localhost\n"+
+								"        port: 3306\n"+
+								"        db: minecraft\n"+
+								"        prefix: cb_\n"+
+								"    mcbans:\n"+
+								"        ###### THIS LINE IS VERY VERY IMPORTANT IF YOU CHOSE MCBANS FOR THE BAN HANDLER ######\n"+
+								"        apiKey: yourAPIKeyHere\n"+
+								"        # Set this to the BanHandler you want to use for the backups, or \"None\" to turn off backups.\n"+
+								"        backup: true\n"+
+								"        fullBackups: false\n"+
+								"    yaml:\n"+
+								"        fileName: banlist.yml\n"+
+								"    json:\n"+
+								"        fileName: banlist.json\n"+
+								"    advanced:\n" +
+								"        # The package is where to get the ban handlers. Only change this line if you know what you are doing.\n" +
+								"        package: com.cole2sworld.ColeBans.handlers";
+						fos.write(defaultConfig.getBytes("utf-8"));
+						loadConfig();
+						fos.close();
+					}
 					return;
 				}
 				else {

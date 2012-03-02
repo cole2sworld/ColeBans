@@ -73,7 +73,7 @@ public class Main extends JavaPlugin {
 		GlobalConf.conf = getConfig();
 		GlobalConf.loadConfig();
 		//HARD CODED BAN HANDLER. Will be fixed soon.
-		banHandler = new MySQLBanHandler(GlobalConf.sql.user, GlobalConf.sql.pass, GlobalConf.sql.host, GlobalConf.sql.port, GlobalConf.logPrefix, GlobalConf.sql.db);
+		banHandler = new MySQLBanHandler(GlobalConf.Sql.user, GlobalConf.Sql.pass, GlobalConf.Sql.host, GlobalConf.Sql.port, GlobalConf.logPrefix, GlobalConf.Sql.db);
 		long newtime = System.currentTimeMillis();
 		System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
 		System.out.println(GlobalConf.logPrefix+"Registering events...");
@@ -158,10 +158,10 @@ public class Main extends JavaPlugin {
 	 * @return Plural
 	 */
 	public static String getPlural(long check, boolean plural) {
-		boolean isPlural = check < 0 | check == 0 | check > 1;
-		if (plural & isPlural) return "s";
-		if (plural & !isPlural) return "";
-		if (!plural & isPlural) return "are";
+		boolean isPlural = check < 0 || check == 0 || check > 1;
+		if (plural && isPlural) return "s";
+		if (plural && !isPlural) return "";
+		if (!plural && isPlural) return "are";
 		return "is";
 	}
 	/**
