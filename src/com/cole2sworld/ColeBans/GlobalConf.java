@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,6 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
  * Configuration for ColeBans. Loaded from file on startup.
  *
  */
+//LOWPRI Check if there is a better way to do this
 public final class GlobalConf {
 	/**
 	 * Configuration we are using.
