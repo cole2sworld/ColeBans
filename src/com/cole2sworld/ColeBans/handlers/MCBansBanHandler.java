@@ -1,6 +1,6 @@
 package com.cole2sworld.ColeBans.handlers;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import com.cole2sworld.ColeBans.GlobalConf;
@@ -13,7 +13,7 @@ public class MCBansBanHandler extends BanHandler {
 		this.api = api;
 	}
 
-	public static BanHandler onEnable(HashMap<String, String> data) {
+	public static BanHandler onEnable(Map<String, String> data) {
 		MCBansBanHandler handler = new MCBansBanHandler(data.get("api"));
 		System.out.println(GlobalConf.logPrefix + "[MCBansBanHandler] Verifying connection...");
 	

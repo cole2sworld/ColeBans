@@ -1,6 +1,10 @@
 package com.cole2sworld.ColeBans;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -17,7 +21,6 @@ import com.cole2sworld.ColeBans.commands.CBCommand;
 import com.cole2sworld.ColeBans.commands.CommandHandler;
 import com.cole2sworld.ColeBans.framework.PlayerOfflineException;
 import com.cole2sworld.ColeBans.handlers.BanHandler;
-import com.cole2sworld.ColeBans.handlers.MySQLBanHandler;
 import com.nijiko.permissions.PermissionHandler;
 
 /**
@@ -72,8 +75,38 @@ public class Main extends JavaPlugin {
 		long oldtime = System.currentTimeMillis();
 		GlobalConf.conf = getConfig();
 		GlobalConf.loadConfig();
-		//FIXME Hardcoded banhandler - needs to be replaced with a dynamic banhandler
-		banHandler = new MySQLBanHandler(GlobalConf.Sql.user, GlobalConf.Sql.pass, GlobalConf.Sql.host, GlobalConf.Sql.port, GlobalConf.logPrefix, GlobalConf.Sql.db);
+		HashMap<String, String> data = new HashMap<String, String>(15);
+		try {
+			Class<?> rawClass = Class.forName(GlobalConf.Advanced.pkg+"."+GlobalConf.banHandlerConf+GlobalConf.Advanced.suffix);
+			if (rawClass.isAssignableFrom(BanHandler.class)) {
+				Class<?>[] arguments = {Map.class};
+				banHandler = (BanHandler) rawClass.getDeclaredMethod("onEnable", arguments).invoke(null, data);
+			}
+		} catch (ClassNotFoundException e) {
+			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Non-existant ban handler given in config file! Aborting operation.");
+			onFatal();
+		} catch (SecurityException e) {
+			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Somehow, a SecurityException occurred. Plugin conflict? Aborting operation.");
+			onFatal();
+		} catch (NoSuchMethodException e) {
+			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+			onFatal();
+		} catch (IllegalArgumentException e) {
+			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+			onFatal();
+		} catch (IllegalAccessException e) {
+			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+			onFatal();
+		} catch (InvocationTargetException e) {
+			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+			onFatal();
+		} catch (NullPointerException e) {
+			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+			onFatal();
+		} catch (ClassCastException e) {
+			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+			onFatal();
+		}
 		long newtime = System.currentTimeMillis();
 		System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
 		System.out.println(GlobalConf.logPrefix+"Registering events...");
@@ -180,9 +213,6 @@ public class Main extends JavaPlugin {
      */
 	protected void onFatal() {
 		this.onDisable();
-		try {
-			this.finalize();
-		} catch (Throwable e) {}
 		this.setEnabled(false);
 	}
 

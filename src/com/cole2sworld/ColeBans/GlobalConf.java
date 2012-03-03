@@ -161,6 +161,10 @@ public final class GlobalConf {
 		 * Which package do we get the banhandlers?
 		 */
 		public static String pkg;
+		/**
+		 * What is the suffix on the banhandlers?
+		 */
+		public static String suffix;
 	}
 	/**
 	 * Loads up the config from disk, or creates it if it does not exist.
@@ -170,27 +174,37 @@ public final class GlobalConf {
 		try {
 			if (confFile.exists()) {
 				conf.load(confFile);
-				settings = conf.getConfigurationSection("settings");
-				allowTempBans = settings.getBoolean("allowTempBans");
-				banMessage = settings.getString("banMessage");
-				tempBanMessage = settings.getString("tempBanMessage");
-				fancyEffects = settings.getBoolean("fancyEffects");
-				banColor = settings.getString("banColor");
-				kickColor = settings.getString("kickColor");
-				tempBanColor = settings.getString("tempBanColor");
-				announceBansAndKicks = settings.getBoolean("announceBansAndKicks");
-				logPrefix = settings.getString("logPrefix")+" ";
-				Sql.section = settings.getConfigurationSection("mysql");
-				Sql.user = Sql.section.getString("user");
-				Sql.pass = Sql.section.getString("pass");
-				Sql.host = Sql.section.getString("host");
-				Sql.port = Sql.section.getString("port");
-				Sql.db = Sql.section.getString("db");
-				Sql.prefix = Sql.section.getString("prefix");
-				MCBans.section = settings.getConfigurationSection("mcbans");
-				MCBans.apiKey = MCBans.section.getString("apiKey");
-				MCBans.fullBackups = MCBans.section.getBoolean("fullBackups");
-				MCBans.minRep = MCBans.section.getDouble("minRep");
+				try {
+					settings = conf.getConfigurationSection("settings");
+					allowTempBans = settings.getBoolean("allowTempBans");
+					banMessage = settings.getString("banMessage");
+					tempBanMessage = settings.getString("tempBanMessage");
+					fancyEffects = settings.getBoolean("fancyEffects");
+					banColor = settings.getString("banColor");
+					kickColor = settings.getString("kickColor");
+					tempBanColor = settings.getString("tempBanColor");
+					announceBansAndKicks = settings.getBoolean("announceBansAndKicks");
+					logPrefix = settings.getString("logPrefix")+" ";
+					Sql.section = settings.getConfigurationSection("mysql");
+					Sql.user = Sql.section.getString("user");
+					Sql.pass = Sql.section.getString("pass");
+					Sql.host = Sql.section.getString("host");
+					Sql.port = Sql.section.getString("port");
+					Sql.db = Sql.section.getString("db");
+					Sql.prefix = Sql.section.getString("prefix");
+					MCBans.section = settings.getConfigurationSection("mcbans");
+					MCBans.apiKey = MCBans.section.getString("apiKey");
+					MCBans.fullBackups = MCBans.section.getBoolean("fullBackups");
+					MCBans.minRep = MCBans.section.getDouble("minRep");
+					Advanced.section = settings.getConfigurationSection("advanced");
+					Advanced.pkg = Advanced.section.getString("package");
+					Advanced.suffix = Advanced.section.getString("suffix");
+				}
+				catch (NullPointerException e) {
+					Logger.getLogger("Minecraft").severe("[ColeBans] Your config file is outdated! Please delete it to regenerate it!");
+					Logger.getLogger("Minecraft").severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
+					Main.instance.onFatal();
+				}
 			}
 			else {
 				File dir = new File("./plugins/ColeBans");
@@ -212,7 +226,7 @@ public final class GlobalConf {
 								"    announceBansAndKicks: true\n"+
 								"    logPrefix: [ColeBans]\n"+
 								"    #banHandler can be MySQL, MCBans, YAML, or JSON.\n"+
-								"    banHandler: MySQL\n"+
+								"    banHandler: YAML\n"+
 								"    mysql:\n"+
 								"        user: root\n"+
 								"        pass: pass\n"+
@@ -234,7 +248,9 @@ public final class GlobalConf {
 								"        fileName: banlist.json\n"+
 								"    advanced:\n" +
 								"        # The package is where to get the ban handlers. Only change this line if you know what you are doing.\n" +
-								"        package: com.cole2sworld.ColeBans.handlers";
+								"        package: com.cole2sworld.ColeBans.handlers" +
+								"        #The suffix is what is at the end of all the ban handlers. Only change this line if you know what you are doing.\n" +
+								"        suffix: BanHandler";
 						fos.write(defaultConfig.getBytes("utf-8"));
 						loadConfig();
 						fos.close();

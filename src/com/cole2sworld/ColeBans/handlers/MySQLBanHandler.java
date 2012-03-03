@@ -2,7 +2,7 @@ package com.cole2sworld.ColeBans.handlers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -229,7 +229,7 @@ public class MySQLBanHandler extends BanHandler {
 		long newtime = System.currentTimeMillis();
 		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Done. Took "+(newtime-oldtime)+" ms.");
 	}
-	public static BanHandler onEnable(HashMap<String, String> data) {
+	public static BanHandler onEnable(Map<String, String> data) {
 		return new MySQLBanHandler(data.get("username"), data.get("password"), data.get("host"), data.get("port"), data.get("prefix"), data.get("db"));
 	}
 	@Override

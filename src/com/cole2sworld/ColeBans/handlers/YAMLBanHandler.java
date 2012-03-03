@@ -3,7 +3,7 @@ package com.cole2sworld.ColeBans.handlers;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -15,7 +15,7 @@ import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 public class YAMLBanHandler extends BanHandler {
 	private File file;
 	private YamlConfiguration conf;
-	public static BanHandler onEnable(HashMap<String, String> data) {
+	public static BanHandler onEnable(Map<String, String> data) {
 		File tFile = new File("./plugins/ColeBans/"+data.get("yaml"));
 		YamlConfiguration tConf = new YamlConfiguration();
 		try {

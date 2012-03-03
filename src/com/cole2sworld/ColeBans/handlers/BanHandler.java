@@ -1,6 +1,6 @@
 package com.cole2sworld.ColeBans.handlers;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.naming.OperationNotSupportedException;
@@ -42,7 +42,7 @@ public abstract class BanHandler {
 	 * @return This ban handler, after proper initialization.
 	 * @throws OperationNotSupportedException if the ban handler does not properly override this method
 	 */
-	public static BanHandler onEnable(HashMap<String, String> data) throws OperationNotSupportedException {
+	public static BanHandler onEnable(Map<String, String> data) throws OperationNotSupportedException {
 		throw new OperationNotSupportedException("BanHandler is abstract");
 	}
 	/**
