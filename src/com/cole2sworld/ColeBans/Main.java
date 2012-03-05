@@ -76,6 +76,13 @@ public class Main extends JavaPlugin {
 		GlobalConf.conf = getConfig();
 		GlobalConf.loadConfig();
 		HashMap<String, String> data = new HashMap<String, String>(15);
+		data.put("username", GlobalConf.Sql.user);
+		data.put("password", GlobalConf.Sql.pass);
+		data.put("host", GlobalConf.Sql.host);
+		data.put("port", GlobalConf.Sql.port);
+		data.put("prefix", GlobalConf.Sql.prefix);
+		data.put("db", GlobalConf.Sql.db);
+		// Reflection :(
 		try {
 			Class<?> rawClass = Class.forName(GlobalConf.Advanced.pkg+"."+GlobalConf.banHandlerConf+GlobalConf.Advanced.suffix);
 			if (rawClass.isAssignableFrom(BanHandler.class)) {

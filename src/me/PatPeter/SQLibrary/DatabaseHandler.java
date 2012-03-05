@@ -1,22 +1,7 @@
 
 package me.PatPeter.SQLibrary;
 
-/*
- *  MySQL
- */
-// import java.net.MalformedURLException;
-
-/*
- *  SQLLite
- */
-//import java.io.File;
-//import java.sql.DatabaseMetaData;
-
-/*
- *  Both
- */
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
 /**
@@ -30,7 +15,6 @@ public abstract class DatabaseHandler {
 	protected Logger log;
 	protected final String PREFIX;
 	protected final String DATABASE_PREFIX;
-	protected boolean connected;
 	protected Connection connection;
 	protected enum Statements {
 		SELECT, INSERT, UPDATE, DELETE, DO, REPLACE, LOAD, HANDLER, CALL, // Data manipulation statements
@@ -41,12 +25,10 @@ public abstract class DatabaseHandler {
 	 *  MySQL, SQLLite
 	 */
 	
-	public DatabaseHandler(Logger log, String prefix, String dp) {
+	public DatabaseHandler(final Logger log, final String prefix, final String dp) {
 		this.log = log;
 		this.PREFIX = prefix;
 		this.DATABASE_PREFIX = dp;
-		this.connected = false;
-		this.connection = null;
 	}
 	
 	/**
@@ -58,7 +40,7 @@ public abstract class DatabaseHandler {
 	 * @param toWrite - the <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html">String</a>
 	 * of content to write to the console.
 	 */
-	protected void writeInfo(String toWrite) {
+	protected void writeInfo(final String toWrite) {
 		if (toWrite != null) {
 			this.log.info(this.PREFIX + this.DATABASE_PREFIX + toWrite);
 		}
@@ -74,7 +56,7 @@ public abstract class DatabaseHandler {
 	 * written to the console.
 	 * @param severe - whether console output should appear as an error or warning.
 	 */
-	protected void writeError(String toWrite, boolean severe) {
+	protected void writeError(final String toWrite, final boolean severe) {
 		if (toWrite != null) {
 			if (severe) {
 				this.log.severe(this.PREFIX + this.DATABASE_PREFIX + toWrite);
@@ -85,15 +67,6 @@ public abstract class DatabaseHandler {
 	}
 	
 	/**
-	 * <b>initialize</b><br>
-	 * <br>
-	 * &nbsp;&nbsp;Used to check whether the class for the SQL engine is installed.
-	 * <br>
-	 * <br>
-	 */
-	abstract boolean initialize();
-	
-	/**
 	 * <b>open</b><br>
 	 * <br>
 	 * &nbsp;&nbsp;Opens a connection with the database.
@@ -101,7 +74,7 @@ public abstract class DatabaseHandler {
 	 * <br>
 	 * @return the success of the method.
 	 */
-	abstract Connection open();
+	public abstract Connection open();
 	
 	/**
 	 * <b>close</b><br>
@@ -110,17 +83,7 @@ public abstract class DatabaseHandler {
 	 * <br>
 	 * <br>
 	 */
-	abstract void close();
-	
-	/**
-	 * <b>getConnection</b><br>
-	 * <br>
-	 * &nbsp;&nbsp;Gets the connection variable 
-	 * <br>
-	 * <br>
-	 * @return the <a href="http://download.oracle.com/javase/6/docs/api/java/sql/Connection.html">Connection</a> variable.
-	 */
-	abstract Connection getConnection();
+	public abstract void close();
 	
 	/**
 	 * <b>checkConnection</b><br>
@@ -130,7 +93,7 @@ public abstract class DatabaseHandler {
 	 * <br>
 	 * @return the status of the connection, true for up, false for down.
 	 */
-	abstract boolean checkConnection();
+	public abstract boolean checkConnection();
 	
 	/**
 	 * <b>query</b><br>
@@ -140,17 +103,7 @@ public abstract class DatabaseHandler {
 	 * @param query - the SQL query to send to the database.
 	 * @return the table of results from the query.
 	 */
-	abstract ResultSet query(String query);
-	
-	/**
-	 * <b>prepare</b><br>
-	 * &nbsp;&nbsp;Prepares to send a query to the database.
-	 * <br>
-	 * <br>
-	 * @param query - the SQL query to prepare to send to the database.
-	 * @return the prepared statement.
-	 */
-	abstract PreparedStatement prepare(String query);
+	public abstract ResultSet query(final String query);
 	
 	/**
 	 * <b>getStatement</b><br>
@@ -158,38 +111,15 @@ public abstract class DatabaseHandler {
 	 * <br>
 	 * <br>
 	 */
-	protected Statements getStatement(String query) {
-		String trimmedQuery = query.trim();
-		if (trimmedQuery.substring(0,6).equalsIgnoreCase("SELECT"))
-			return Statements.SELECT;
-		else if (trimmedQuery.substring(0,6).equalsIgnoreCase("INSERT"))
-			return Statements.INSERT;
-		else if (trimmedQuery.substring(0,6).equalsIgnoreCase("UPDATE"))
-			return Statements.UPDATE;
-		else if (trimmedQuery.substring(0,6).equalsIgnoreCase("DELETE"))
-			return Statements.DELETE;
-		else if (trimmedQuery.substring(0,6).equalsIgnoreCase("CREATE"))
-			return Statements.CREATE;
-		else if (trimmedQuery.substring(0,5).equalsIgnoreCase("ALTER"))
-			return Statements.ALTER;
-		else if (trimmedQuery.substring(0,4).equalsIgnoreCase("DROP"))
-			return Statements.DROP;
-		else if (trimmedQuery.substring(0,8).equalsIgnoreCase("TRUNCATE"))
-			return Statements.TRUNCATE;
-		else if (trimmedQuery.substring(0,6).equalsIgnoreCase("RENAME"))
-			return Statements.RENAME;
-		else if (trimmedQuery.substring(0,2).equalsIgnoreCase("DO"))
-			return Statements.DO;
-		else if (trimmedQuery.substring(0,7).equalsIgnoreCase("REPLACE"))
-			return Statements.REPLACE;
-		else if (trimmedQuery.substring(0,4).equalsIgnoreCase("LOAD"))
-			return Statements.LOAD;
-		else if (trimmedQuery.substring(0,7).equalsIgnoreCase("HANDLER"))
-			return Statements.HANDLER;
-		else if (trimmedQuery.substring(0,4).equalsIgnoreCase("CALL"))
-			return Statements.CALL;
-		else
-			return Statements.SELECT;
+	protected static Statements getStatement(final String query) {
+		Statements rtrn;
+		try {
+			rtrn = Statements.valueOf(query.trim().split(" ")[0]);
+		}
+		catch (IllegalArgumentException e) {
+			rtrn = Statements.SELECT;
+		}
+		return rtrn;
 	}
 	
 	/**
@@ -201,7 +131,7 @@ public abstract class DatabaseHandler {
 	 * @param query - the SQL query for creating a table.
 	 * @return the success of the method.
 	 */
-	abstract boolean createTable(String query);
+	public abstract boolean createTable(final String query);
 	
 	/**
 	 * <b>checkTable</b><br>
@@ -212,7 +142,7 @@ public abstract class DatabaseHandler {
 	 * @param table - name of the table to check.
 	 * @return success of the method.
 	 */
-	abstract boolean checkTable(String table);
+	public abstract boolean checkTable(final String table);
 	
 	/**
 	 * <b>wipeTable</b><br>
@@ -223,5 +153,5 @@ public abstract class DatabaseHandler {
 	 * @param table - name of the table to wipe.
 	 * @return success of the method.
 	 */
-	abstract boolean wipeTable(String table);
+	public abstract boolean wipeTable(final String table);
 }
