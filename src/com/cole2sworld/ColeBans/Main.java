@@ -59,7 +59,8 @@ public class Main extends JavaPlugin {
 	 */
 	@Override
 	public void onDisable() {
-		banHandler.onDisable();
+		if (banHandler != null)
+			banHandler.onDisable();
 		System.out.println(GlobalConf.logPrefix+"Disabled.");
 	}
 
