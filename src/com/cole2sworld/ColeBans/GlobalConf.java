@@ -169,7 +169,7 @@ public final class GlobalConf {
 	/**
 	 * Loads up the config from disk, or creates it if it does not exist.
 	 */
-	public static void loadConfig() {
+	public static void loadConfig() throws RuntimeException {
 		File confFile = new File("./plugins/ColeBans/config.yml");
 		try {
 			if (confFile.exists()) {

@@ -69,59 +69,64 @@ public class Main extends JavaPlugin {
 	 */
 	@Override
 	public void onEnable() {
-		System.out.println(GlobalConf.logPrefix+"Initalizing...");
-		server = getServer();
-		PluginManager pm = server.getPluginManager();
-		System.out.println(GlobalConf.logPrefix+"Loading config and ban handler...");
-		long oldtime = System.currentTimeMillis();
-		GlobalConf.conf = getConfig();
-		GlobalConf.loadConfig();
-		HashMap<String, String> data = new HashMap<String, String>(15);
-		data.put("username", GlobalConf.Sql.user);
-		data.put("password", GlobalConf.Sql.pass);
-		data.put("host", GlobalConf.Sql.host);
-		data.put("port", GlobalConf.Sql.port);
-		data.put("prefix", GlobalConf.Sql.prefix);
-		data.put("db", GlobalConf.Sql.db);
-		// Reflection :(
 		try {
-			Class<?> rawClass = Class.forName(GlobalConf.Advanced.pkg+"."+GlobalConf.banHandlerConf+GlobalConf.Advanced.suffix);
-			if (rawClass.isAssignableFrom(BanHandler.class)) {
-				Class<?>[] arguments = {Map.class};
-				banHandler = (BanHandler) rawClass.getDeclaredMethod("onEnable", arguments).invoke(null, data);
+			System.out.println(GlobalConf.logPrefix+"Initalizing...");
+			server = getServer();
+			PluginManager pm = server.getPluginManager();
+			System.out.println(GlobalConf.logPrefix+"Loading config and ban handler...");
+			long oldtime = System.currentTimeMillis();
+			GlobalConf.conf = getConfig();
+			GlobalConf.loadConfig();
+			HashMap<String, String> data = new HashMap<String, String>(15);
+			data.put("username", GlobalConf.Sql.user);
+			data.put("password", GlobalConf.Sql.pass);
+			data.put("host", GlobalConf.Sql.host);
+			data.put("port", GlobalConf.Sql.port);
+			data.put("prefix", GlobalConf.Sql.prefix);
+			data.put("db", GlobalConf.Sql.db);
+			// Reflection :(
+			try {
+				Class<?> rawClass = Class.forName(GlobalConf.Advanced.pkg+"."+GlobalConf.banHandlerConf+GlobalConf.Advanced.suffix);
+				if (rawClass.isAssignableFrom(BanHandler.class)) {
+					Class<?>[] arguments = {Map.class};
+					banHandler = (BanHandler) rawClass.getDeclaredMethod("onEnable", arguments).invoke(null, data);
+				}
+			} catch (ClassNotFoundException e) {
+				Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Non-existant ban handler given in config file! Aborting operation.");
+				onFatal();
+			} catch (SecurityException e) {
+				Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Somehow, a SecurityException occurred. Plugin conflict? Aborting operation.");
+				onFatal();
+			} catch (NoSuchMethodException e) {
+				Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+				onFatal();
+			} catch (IllegalArgumentException e) {
+				Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+				onFatal();
+			} catch (IllegalAccessException e) {
+				Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+				onFatal();
+			} catch (InvocationTargetException e) {
+				Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+				onFatal();
+			} catch (NullPointerException e) {
+				Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+				onFatal();
+			} catch (ClassCastException e) {
+				Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+				onFatal();
 			}
-		} catch (ClassNotFoundException e) {
-			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Non-existant ban handler given in config file! Aborting operation.");
-			onFatal();
-		} catch (SecurityException e) {
-			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Somehow, a SecurityException occurred. Plugin conflict? Aborting operation.");
-			onFatal();
-		} catch (NoSuchMethodException e) {
-			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
-			onFatal();
-		} catch (IllegalArgumentException e) {
-			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
-			onFatal();
-		} catch (IllegalAccessException e) {
-			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
-			onFatal();
-		} catch (InvocationTargetException e) {
-			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
-			onFatal();
-		} catch (NullPointerException e) {
-			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
-			onFatal();
-		} catch (ClassCastException e) {
-			Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
-			onFatal();
+			long newtime = System.currentTimeMillis();
+			System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
+			System.out.println(GlobalConf.logPrefix+"Registering events...");
+			oldtime = System.currentTimeMillis();
+			pm.registerEvents(new EventListener(), this);
+			newtime = System.currentTimeMillis();
+			System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
 		}
-		long newtime = System.currentTimeMillis();
-		System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
-		System.out.println(GlobalConf.logPrefix+"Registering events...");
-		oldtime = System.currentTimeMillis();
-		pm.registerEvents(new EventListener(), this);
-		newtime = System.currentTimeMillis();
-		System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
+		catch (RuntimeException e) {
+			setEnabled(false);
+		}
 	}
 	
 	/**
@@ -219,9 +224,8 @@ public class Main extends JavaPlugin {
     /**
      * Called when something really bad happens.
      */
-	protected void onFatal() {
-		this.onDisable();
-		this.setEnabled(false);
+	protected void onFatal() throws RuntimeException {
+		throw new RuntimeException("FATAL ERROR");
 	}
 
 }
