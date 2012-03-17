@@ -4,17 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Vector;
-
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
-import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
-
-public class YAMLBanHandler extends BanHandler {
-	private File file;
-	private YamlConfiguration conf;
+public class YAMLBanHandler extends NoOpBanHandler {
+	//private File file;
+	//private YamlConfiguration conf;
 	public static BanHandler onEnable(Map<String, String> data) {
 		File tFile = new File("./plugins/ColeBans/"+data.get("yaml"));
 		YamlConfiguration tConf = new YamlConfiguration();
@@ -34,65 +29,8 @@ public class YAMLBanHandler extends BanHandler {
 	}
 
 	public YAMLBanHandler(File file, YamlConfiguration conf) {
-		this.file = file;
-		this.conf = conf;
-	}
-	
-	@Override
-	public void banPlayer(String player, String reason, String admin)
-			throws PlayerAlreadyBannedException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void tempBanPlayer(String player, long time, String admin)
-			throws PlayerAlreadyBannedException, UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void unbanPlayer(String player, String admin)
-			throws PlayerNotBannedException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean isPlayerBanned(String player, String admin) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public BanData getBanData(String player, String admin) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void onDisable() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void convert(BanHandler handler) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Vector<BanData> dump(String admin) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Vector<String> listBannedPlayers(String admin) {
-		// TODO Auto-generated method stub
-		return null;
+		//this.file = file;
+		//this.conf = conf;
 	}
 
 }
