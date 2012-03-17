@@ -214,7 +214,7 @@ public final class GlobalConf {
 						System.out.println("[ColeBans] No config file exists, generating.");
 						FileOutputStream fos = new FileOutputStream(confFile);
 						String defaultConfig = ""+
-								"# For information on how to configure ColeBans, go to http://c2wr.com/cbconf"+
+								"# For information on how to configure ColeBans, go to http://c2wr.com/cbconf\n"+
 								"settings:\n"+
 								"    allowTempBans: true\n"+
 								"    banMessage: You are banned for %reason!\n"+
