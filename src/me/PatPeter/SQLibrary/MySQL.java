@@ -44,7 +44,13 @@ public class MySQL extends DatabaseHandler {
 				this.writeError("Could not be resolved because of an SQL Exception: "
 								+ e.getMessage() + ".", true);
 			}
-		}
+		} else
+			try {
+				if (!connection.isValid(5)) {
+					connection = null;
+					return open();
+				}
+			} catch (SQLException e) {} 
 		return connection;
 	}
 
@@ -61,8 +67,15 @@ public class MySQL extends DatabaseHandler {
 	}
 
 	@Override
-	public boolean checkConnection() { // http://forums.bukkit.org/threads/lib-tut-mysql-sqlite-bukkit-drivers.33849/page-4#post-701550
-		return connection != null;
+	public boolean checkConnection() {
+		if (connection != null) {
+			try {
+				return connection.isValid(5);
+			} catch (SQLException e) {
+				return false;
+			}
+		}
+		else return false;
 	}
 
 	@Override
@@ -124,11 +137,11 @@ public class MySQL extends DatabaseHandler {
 
 	@Override
 	public boolean checkTable(final String table) {
-		ResultSet result = query("SELECT * FROM " + table);
+		ResultSet result = query("SELECT * FROM " + table + " LIMIT 1;");
 		try {
 			result.close();
 		} catch (Exception e) {}
-		return result == null;
+		return result != null;
 	}
 
 	@Override

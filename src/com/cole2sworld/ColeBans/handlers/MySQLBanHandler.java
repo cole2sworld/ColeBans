@@ -82,14 +82,7 @@ public class MySQLBanHandler extends BanHandler {
 						"'"+addSlashes(player)+"', " +
 						"'"+addSlashes(reason)+"'"+
 						");");
-				Player playerObj = Main.instance.server.getPlayer(player);
-				if (playerObj != null) {
-					playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.banColor)+"BANNED: "+reason);
-					if (GlobalConf.fancyEffects) {
-						World world = playerObj.getWorld();
-						world.createExplosion(playerObj.getLocation(), 0);
-					}
-				}
+
 			}
 			else {
 				sqlHandler.query("CREATE  TABLE `"+GlobalConf.Sql.db+"`.`"+tbl+"` (" +
@@ -119,14 +112,6 @@ public class MySQLBanHandler extends BanHandler {
 						"'"+addSlashes(player)+"', " +
 						"'"+time+"'"+
 						");");
-				Player playerObj = Main.instance.server.getPlayer(player);
-				if (playerObj != null) {
-					playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.tempBanColor)+"Temporarily banned for "+primTime+" minute"+Main.getPlural(primTime, true)+".");
-					if (GlobalConf.fancyEffects) {
-						World world = playerObj.getWorld();
-						world.createExplosion(playerObj.getLocation(), 0);
-					}
-				}
 			}
 			else {
 				sqlHandler.query("CREATE  TABLE `"+GlobalConf.Sql.db+"`.`"+tbl+"` (" +

@@ -90,6 +90,9 @@ public class Main extends JavaPlugin {
 				if (rawClass.isAssignableFrom(BanHandler.class)) {
 					Class<?>[] arguments = {Map.class};
 					banHandler = (BanHandler) rawClass.getDeclaredMethod("onEnable", arguments).invoke(null, data);
+				} else {
+					Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Wierd ban handler given in config file! Aborting operation.");
+					onFatal();
 				}
 			} catch (ClassNotFoundException e) {
 				Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Non-existant ban handler given in config file! Aborting operation.");
