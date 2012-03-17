@@ -240,15 +240,15 @@ public final class GlobalConf {
 								"        # Set this to the BanHandler you want to use for the backups, or \"None\" to turn off backups.\n"+
 								"        backup: true\n"+
 								"        fullBackups: false\n"+
-								"        #The minimum rep a player can have to join your server."+
-								"        minRep: 10"+
+								"        #The minimum rep a player can have to join your server.\n"+
+								"        minRep: 10\n"+
 								"    yaml:\n"+
 								"        fileName: banlist.yml\n"+
 								"    json:\n"+
 								"        fileName: banlist.json\n"+
 								"    advanced:\n" +
 								"        # The package is where to get the ban handlers. Only change this line if you know what you are doing.\n" +
-								"        package: com.cole2sworld.ColeBans.handlers" +
+								"        package: com.cole2sworld.ColeBans.handlers\n" +
 								"        #The suffix is what is at the end of all the ban handlers. Only change this line if you know what you are doing.\n" +
 								"        suffix: BanHandler";
 						fos.write(defaultConfig.getBytes("utf-8"));
