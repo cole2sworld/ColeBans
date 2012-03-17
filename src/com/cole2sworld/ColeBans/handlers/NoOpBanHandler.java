@@ -1,7 +1,10 @@
 package com.cole2sworld.ColeBans.handlers;
 
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
+
+import javax.naming.OperationNotSupportedException;
 
 import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
@@ -9,6 +12,11 @@ import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 
 public class NoOpBanHandler extends BanHandler {
 
+	public final static BanHandler onEnable(Map<String, String> data) throws OperationNotSupportedException {
+		NoOp();
+		return new NoOpBanHandler();
+	}
+	
 	@Override
 	public final void banPlayer(String player, String reason, String admin)
 			throws PlayerAlreadyBannedException {
@@ -61,7 +69,7 @@ public class NoOpBanHandler extends BanHandler {
 		return new Vector<String>(0);
 	}
 
-	private final void NoOp() {
+	private static final void NoOp() {
 		Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Using No-Operation ban handler. Please change to a finished ban handler.");
 	}
 }
