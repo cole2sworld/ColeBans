@@ -195,6 +195,10 @@ public final class GlobalConf {
 					MCBans.apiKey = MCBans.section.getString("apiKey");
 					MCBans.fullBackups = MCBans.section.getBoolean("fullBackups");
 					MCBans.minRep = MCBans.section.getDouble("minRep");
+					Yaml.section = settings.getConfigurationSection("yaml");
+					Yaml.file = Yaml.section.getString("fileName");
+					Json.section = settings.getConfigurationSection("json");
+					Json.file = Json.section.getString("fileName");
 					Advanced.section = settings.getConfigurationSection("advanced");
 					Advanced.pkg = Advanced.section.getString("package");
 					Advanced.suffix = Advanced.section.getString("suffix");
