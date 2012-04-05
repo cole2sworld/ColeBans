@@ -183,6 +183,7 @@ public final class GlobalConf {
 					tempBanColor = settings.getString("tempBanColor");
 					announceBansAndKicks = settings.getBoolean("announceBansAndKicks");
 					logPrefix = settings.getString("logPrefix")+" ";
+					banHandlerConf = settings.getString("banHandler");
 					Sql.section = settings.getConfigurationSection("mysql");
 					Sql.user = Sql.section.getString("user");
 					Sql.pass = Sql.section.getString("pass");
