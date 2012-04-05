@@ -39,10 +39,10 @@ public class Main extends JavaPlugin {
 	/**
 	 * The Permissions 3/2 (or bridge) that we will use for permissions.
 	 */
-    public PermissionHandler permissionsHandler = null;
-    /**
-     * The instance of Main, for accessing non-static methods.
-     */
+	public PermissionHandler permissionsHandler = null;
+	/**
+	 * The instance of Main, for accessing non-static methods.
+	 */
 	public static Main instance;
 	/**
 	 * The server that ColeBans got on startup.
@@ -61,7 +61,7 @@ public class Main extends JavaPlugin {
 	public Main() {
 		instance = this;
 	}
-	
+
 	/**
 	 * Called when the plugin is disabled.
 	 */
@@ -126,7 +126,7 @@ public class Main extends JavaPlugin {
 			setEnabled(false);
 		}
 	}
-	
+
 	/**
 	 * Manages the dynamic command handler and the static command handler.
 	 */
@@ -176,7 +176,7 @@ public class Main extends JavaPlugin {
 		sender.sendMessage(ChatColor.RED+"Invalid sub-command.");
 		return true;
 	}
-	
+
 	/**
 	 * Kicks a player out of the game, with a fancy effect if enabled.
 	 * @param player The player to kick (name)
@@ -225,19 +225,19 @@ public class Main extends JavaPlugin {
 	 * @param permissionNode Node to check
 	 * @return If there is a permissionsHandler, whether or not the given player has the node. If there isn't, if the player is an operator.
 	 */
-    public boolean hasPermission(Player player, String permissionNode)
-    {
-    	if (permissionsHandler == null) return player.isOp();
-        return permissionsHandler.has(player, permissionNode);
-    }
+	public boolean hasPermission(Player player, String permissionNode)
+	{
+		if (permissionsHandler == null) return player.isOp();
+		return permissionsHandler.has(player, permissionNode);
+	}
 
-    /**
-     * Called when something really bad happens.
-     */
+	/**
+	 * Called when something really bad happens.
+	 */
 	protected void onFatal() throws RuntimeException {
 		throw new RuntimeException("FATAL ERROR");
 	}
-	
+
 	public static Map<String, String> getBanHandlerInitArgs() {
 		HashMap<String, String> data = new HashMap<String, String>(15);
 		data.put("username", GlobalConf.Sql.user);
@@ -251,10 +251,18 @@ public class Main extends JavaPlugin {
 		data.put("apiKey", GlobalConf.MCBans.apiKey);
 		return data;
 	}
-	
+
 	public static final void debug(String msg) {
 		if (debug) {
-			System.out.println(GlobalConf.logPrefix+"[DEBUG] "+msg);
+			String caller = "null";
+			try {
+				throw new Exception("Getting caller");
+			} catch(Exception e) {
+				try {
+					caller = Class.forName(e.getStackTrace()[1].getClassName()).getSimpleName();
+				} catch (ClassNotFoundException e1) {}
+			}
+			System.out.println(GlobalConf.logPrefix+"[DEBUG] ["+caller+"] "+msg);
 		}
 	}
 
