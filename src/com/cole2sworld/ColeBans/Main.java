@@ -84,12 +84,7 @@ public class Main extends JavaPlugin {
 			// FIXME Doesn't work. At all.
 			try {
 				Class<?> rawClass = Class.forName(GlobalConf.Advanced.pkg+"."+GlobalConf.banHandlerConf+GlobalConf.Advanced.suffix);
-				if (rawClass.getSuperclass().equals(BanHandler.class)) {
-					banHandler = (BanHandler) rawClass.getDeclaredMethod("onEnable", new Class<?>[0]).invoke(null);
-				} else {
-					LOG.severe(GlobalConf.logPrefix+"Wierd ban handler given in config file! Aborting operation.");
-					onFatal();
-				}
+				banHandler = (BanHandler) rawClass.getDeclaredMethod("onEnable", new Class<?>[0]).invoke(null);
 			} catch (ClassNotFoundException e) {
 				LOG.severe(GlobalConf.logPrefix+"Non-existant ban handler given in config file! Aborting operation.");
 				onFatal();
