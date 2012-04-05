@@ -52,6 +52,7 @@ public class YAMLBanHandler extends BanHandler {
 	public YAMLBanHandler(File file, YamlConfiguration conf) {
 		this.file = file;
 		this.conf = conf;
+		System.out.println(GlobalConf.logPrefix+"[YAMLBanHandler] Done loading.");
 	}
 
 	@Override
@@ -107,6 +108,7 @@ public class YAMLBanHandler extends BanHandler {
 	@Override
 	public void onDisable() {
 		save();
+		System.out.println(GlobalConf.logPrefix+"[YAMLBanHandler] Saved.");
 	}
 
 	@Override
