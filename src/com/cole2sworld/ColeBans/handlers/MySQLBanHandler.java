@@ -21,7 +21,7 @@ public class MySQLBanHandler extends BanHandler {
 	 * @param prefix - The table prefix
 	 * @param db - The database to use
 	 */
-	public MySQLBanHandler(String username, String password, String host, String port, String prefix, String db) {
+	public MySQLBanHandler(String username, String password, String host, String prefix, String db) {
 		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Opening connection");
 		long oldtime = System.currentTimeMillis();
 		sqlHandler = SimpleMySQL.getInstance();
@@ -31,7 +31,8 @@ public class MySQLBanHandler extends BanHandler {
 		sqlHandler.setReconnectNumRetry(25);
 		Main.debug("Reconnect retries set to 25");
 		sqlHandler.connect(host, username, password);
-		Main.debug("Connected.");
+		Main.debug("Connected. Setting database");
+		sqlHandler.use(db);
 		long newtime = System.currentTimeMillis();
 		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Done. Took "+(newtime-oldtime)+" ms.");
 	}
@@ -204,7 +205,7 @@ public class MySQLBanHandler extends BanHandler {
 	}
 	public static BanHandler onEnable() {
 		Map<String, String> data = Main.getBanHandlerInitArgs();
-		return new MySQLBanHandler(data.get("username"), data.get("password"), data.get("host"), data.get("port"), data.get("prefix"), data.get("db"));
+		return new MySQLBanHandler(data.get("username"), data.get("password"), data.get("host"), data.get("prefix"), data.get("db"));
 	}
 	@Override
 	public void convert(BanHandler handler) {
