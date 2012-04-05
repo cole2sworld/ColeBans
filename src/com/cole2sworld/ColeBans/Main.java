@@ -29,9 +29,9 @@ import com.nijiko.permissions.PermissionHandler;
  */
 public class Main extends JavaPlugin {
 	/**
-	 * Are we a debug build?
+	 * Are we in debug mode? (If this is turned on when compiled, it means the build is a debug build)
 	 */
-	public static final boolean debug = true;
+	public static boolean debug = false;
 	/**
 	 * The Minecraft log.
 	 */
