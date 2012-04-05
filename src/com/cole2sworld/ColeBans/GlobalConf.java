@@ -236,7 +236,7 @@ public final class GlobalConf {
 								"        ###### THIS LINE IS VERY VERY IMPORTANT IF YOU CHOSE MCBANS FOR THE BAN HANDLER ######\n"+
 								"        apiKey: yourAPIKeyHere\n"+
 								"        # Set this to the BanHandler you want to use for the backups, or \"None\" to turn off backups.\n"+
-								"        backup: true\n"+
+								"        backup: None\n"+
 								"        fullBackups: false\n"+
 								"        #The minimum rep a player can have to join your server.\n"+
 								"        minRep: 10\n"+
