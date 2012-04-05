@@ -29,6 +29,10 @@ import com.nijiko.permissions.PermissionHandler;
  */
 public class Main extends JavaPlugin {
 	/**
+	 * Are we a debug build?
+	 */
+	public static final boolean debug = true;
+	/**
 	 * The Minecraft log.
 	 */
 	public static final Logger LOG = Logger.getLogger("Minecraft");
@@ -81,7 +85,7 @@ public class Main extends JavaPlugin {
 			long oldtime = System.currentTimeMillis();
 			GlobalConf.conf = getConfig();
 			GlobalConf.loadConfig();
-			// FIXME Doesn't work. At all.
+			if (debug) LOG.warning("Using a debug build. Expect many messages");
 			try {
 				Class<?> rawClass = Class.forName(GlobalConf.Advanced.pkg+"."+GlobalConf.banHandlerConf+GlobalConf.Advanced.suffix);
 				banHandler = (BanHandler) rawClass.getDeclaredMethod("onEnable", new Class<?>[0]).invoke(null);
@@ -128,7 +132,9 @@ public class Main extends JavaPlugin {
 	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
+		debug("Executing command "+cmdLabel);
 		if (cmdLabel.equalsIgnoreCase("cb")) {
+			debug("It's /cb");
 			if (args.length < 2) return false;
 			else {
 				try {
@@ -155,6 +161,7 @@ public class Main extends JavaPlugin {
 			}
 		}
 		else {
+			debug("Requires static handling. Passing to CommandHandler");
 			return CommandHandler.onCommand(sender, cmd, cmdLabel, args);
 		}
 		sender.sendMessage(ChatColor.RED+"Invalid sub-command.");
@@ -234,6 +241,12 @@ public class Main extends JavaPlugin {
 		data.put("json", GlobalConf.Json.file);
 		data.put("apiKey", GlobalConf.MCBans.apiKey);
 		return data;
+	}
+	
+	public static final void debug(String msg) {
+		if (debug) {
+			System.out.println(GlobalConf.logPrefix+"[DEBUG] "+msg);
+		}
 	}
 
 }
