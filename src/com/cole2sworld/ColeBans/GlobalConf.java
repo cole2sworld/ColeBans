@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.logging.Logger;
-
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -201,8 +199,8 @@ public final class GlobalConf {
 					Advanced.suffix = Advanced.section.getString("suffix");
 				}
 				catch (NullPointerException e) {
-					Logger.getLogger("Minecraft").severe("[ColeBans] Your config file is outdated! Please delete it to regenerate it!");
-					Logger.getLogger("Minecraft").severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
+					Main.logger.severe("[ColeBans] Your config file is outdated! Please delete it to regenerate it!");
+					Main.logger.severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
 					Main.instance.onFatal();
 				}
 			}
@@ -258,7 +256,7 @@ public final class GlobalConf {
 					return;
 				}
 				else {
-					Logger.getLogger("Minecraft").severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
+					Main.logger.severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
 					Main.instance.onFatal();
 				}
 			}

@@ -16,3 +16,4 @@ commands:
         usage: /check <player>
     cb:
         usage: /cb <subcommand> [arguments]
+        aliases: colebans

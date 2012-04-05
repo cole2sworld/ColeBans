@@ -69,7 +69,7 @@ public class NoOpBanHandler extends BanHandler {
 		return new Vector<String>(0);
 	}
 
-	private static final void NoOp() {
+	protected static final void NoOp() {
 		Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Using No-Operation ban handler. Please change to a finished ban handler.");
 	}
 }

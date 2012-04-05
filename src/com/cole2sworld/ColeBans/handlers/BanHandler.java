@@ -33,7 +33,7 @@ public abstract class BanHandler {
 		NOT_BANNED
 	};
 	/**
-	 * The preferred name for the admin name when an action is initiated without player intervention
+	 * The preferred name for the admin when an action is initiated without player intervention
 	 */
 	public static final String SYSTEM_ADMIN_NAME = "[System]";
 	/**
