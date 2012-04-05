@@ -54,7 +54,7 @@ public class MySQLBanHandler extends BanHandler {
 				sanitizer.append(workset.charAt(i));
 			}
 		}
-		Main.debug("Done - workset is now "+workset);
+		Main.debug("Done - workset is now "+sanitizer.toString());
 		return sanitizer.toString();
 	}
 	/**

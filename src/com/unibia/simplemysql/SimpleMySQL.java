@@ -344,17 +344,7 @@ public class SimpleMySQL {
             mysql_result = null;
         }
     }
-    
-    /**
-     * Old style SimpleMySQL query. 
-     * @param Query
-     * @return For SELECT type queries a Java SQL ResultSet object. all other 
-     * type of queries will return null
-     * @see #query(java.lang.String) 
-     */
-    public ResultSet query(String query){
-        return querySMSR(query).getResultSet();
-    }
+   
     
     /**
      * Executes a simple Query on the MySQL database.  You must first
@@ -368,7 +358,7 @@ public class SimpleMySQL {
      * @see #connect(java.lang.String, java.lang.String, java.lang.String) 
      * @see #connect(java.lang.String, java.lang.String, java.lang.String, java.lang.String) 
      */
-    public SimpleMySQLResult querySMSR(String query){
+    public ResultSet query(String query){
     	Main.debug("Running query "+query);
         //Make sure connection is alive
         checkConnection();
@@ -376,7 +366,7 @@ public class SimpleMySQL {
         //Create Statement and result objects
         Statement stmt;
         ResultSet mysql_result;  
-        SimpleMySQLResult result = null;
+        ResultSet result = null;
         
         /*
          * We want to keep things simple, so...
@@ -402,7 +392,7 @@ public class SimpleMySQL {
                 Main.debug("Statement created");
                 mysql_result = stmt.executeQuery(query);
                 Main.debug("Query executed");
-                result = new SimpleMySQLResult(mysql_result);
+                result = mysql_result;
                 Main.debug("Result created");
             }
             else {
