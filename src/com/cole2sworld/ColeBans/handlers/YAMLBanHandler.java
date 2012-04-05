@@ -19,7 +19,8 @@ import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 public class YAMLBanHandler extends BanHandler {
 	private File file;
 	private YamlConfiguration conf;
-	public static BanHandler onEnable(Map<String, String> data) {
+	public static BanHandler onEnable() {
+		Map<String, String> data = Main.getBanHandlerInitArgs();
 		File tFile = new File("./plugins/ColeBans/"+data.get("yaml"));
 		try {
 			tFile.createNewFile();

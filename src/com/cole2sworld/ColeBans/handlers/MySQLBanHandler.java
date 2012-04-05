@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import me.PatPeter.SQLibrary.MySQL;
 
 import com.cole2sworld.ColeBans.GlobalConf;
+import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 
@@ -209,7 +210,8 @@ public class MySQLBanHandler extends BanHandler {
 		long newtime = System.currentTimeMillis();
 		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Done. Took "+(newtime-oldtime)+" ms.");
 	}
-	public static BanHandler onEnable(Map<String, String> data) {
+	public static BanHandler onEnable() {
+		Map<String, String> data = Main.getBanHandlerInitArgs();
 		return new MySQLBanHandler(data.get("username"), data.get("password"), data.get("host"), data.get("port"), data.get("prefix"), data.get("db"));
 	}
 	@Override

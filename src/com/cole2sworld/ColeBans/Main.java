@@ -81,22 +81,11 @@ public class Main extends JavaPlugin {
 			long oldtime = System.currentTimeMillis();
 			GlobalConf.conf = getConfig();
 			GlobalConf.loadConfig();
-			HashMap<String, String> data = new HashMap<String, String>(15);
-			data.put("username", GlobalConf.Sql.user);
-			data.put("password", GlobalConf.Sql.pass);
-			data.put("host", GlobalConf.Sql.host);
-			data.put("port", GlobalConf.Sql.port);
-			data.put("prefix", GlobalConf.Sql.prefix);
-			data.put("db", GlobalConf.Sql.db);
-			data.put("yaml", GlobalConf.Yaml.file);
-			data.put("json", GlobalConf.Json.file);
-			data.put("apiKey", GlobalConf.MCBans.apiKey);
 			// FIXME Doesn't work. At all.
 			try {
 				Class<?> rawClass = Class.forName(GlobalConf.Advanced.pkg+"."+GlobalConf.banHandlerConf+GlobalConf.Advanced.suffix);
 				if (rawClass.getSuperclass().equals(BanHandler.class)) {
-					Class<?>[] arguments = {Map.class};
-					banHandler = (BanHandler) rawClass.getDeclaredMethod("onEnable", arguments).invoke(null, data);
+					banHandler = (BanHandler) rawClass.getDeclaredMethod("onEnable", new Class<?>[0]).invoke(null);
 				} else {
 					LOG.severe(GlobalConf.logPrefix+"Wierd ban handler given in config file! Aborting operation.");
 					onFatal();
@@ -236,6 +225,20 @@ public class Main extends JavaPlugin {
      */
 	protected void onFatal() throws RuntimeException {
 		throw new RuntimeException("FATAL ERROR");
+	}
+	
+	public static Map<String, String> getBanHandlerInitArgs() {
+		HashMap<String, String> data = new HashMap<String, String>(15);
+		data.put("username", GlobalConf.Sql.user);
+		data.put("password", GlobalConf.Sql.pass);
+		data.put("host", GlobalConf.Sql.host);
+		data.put("port", GlobalConf.Sql.port);
+		data.put("prefix", GlobalConf.Sql.prefix);
+		data.put("db", GlobalConf.Sql.db);
+		data.put("yaml", GlobalConf.Yaml.file);
+		data.put("json", GlobalConf.Json.file);
+		data.put("apiKey", GlobalConf.MCBans.apiKey);
+		return data;
 	}
 
 }

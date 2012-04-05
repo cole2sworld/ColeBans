@@ -6,7 +6,8 @@ public class MCBansBanHandler extends NoOpBanHandler {
 		this.api = api;
 	}
 
-	public static BanHandler onEnable(Map<String, String> data) {
+	public static BanHandler onEnable() {
+		Map<String, String> data = 
 		MCBansBanHandler handler = new MCBansBanHandler(data.get("api"));
 		System.out.println(GlobalConf.logPrefix + "[MCBansBanHandler] Verifying connection...");
 	

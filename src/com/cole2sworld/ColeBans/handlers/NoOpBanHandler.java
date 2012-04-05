@@ -1,6 +1,5 @@
 package com.cole2sworld.ColeBans.handlers;
 
-import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -12,7 +11,7 @@ import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 
 public class NoOpBanHandler extends BanHandler {
 
-	public final static BanHandler onEnable(Map<String, String> data) throws OperationNotSupportedException {
+	public final static BanHandler onEnable() throws OperationNotSupportedException {
 		noOp();
 		return new NoOpBanHandler();
 	}
