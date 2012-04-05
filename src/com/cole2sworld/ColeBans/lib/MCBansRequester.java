@@ -34,6 +34,7 @@ public class MCBansRequester extends Thread {
 	 */
 	@Override
 	public void run() {
+		OutputStreamWriter wr = null;
 		try {
 			URL url;
 			url = new URL("http://72.10.39.172/v2/"+key);
@@ -41,7 +42,7 @@ public class MCBansRequester extends Thread {
 			conn.setConnectTimeout(15000);
 			conn.setReadTimeout(120000);
 			conn.setDoOutput(true);
-			OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+			wr = new OutputStreamWriter(conn.getOutputStream());
 			wr.write(instruction);
 			wr.flush();
 			StringBuilder rtrn = new StringBuilder();
@@ -56,6 +57,12 @@ public class MCBansRequester extends Thread {
 		}
 		catch (MalformedURLException e) {}
 		catch (IOException e) {}
+		finally {
+			if (wr != null)
+				try {
+					wr.close();
+				} catch (IOException e) {}
+		}
 		result = null;
 		finished = true;
 	}
