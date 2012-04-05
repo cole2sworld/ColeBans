@@ -31,7 +31,7 @@ public class Main extends JavaPlugin {
 	/**
 	 * Are we in debug mode? (If this is turned on when compiled, it means the build is a debug build)
 	 */
-	public static boolean debug = false;
+	public static boolean debug = true;
 	/**
 	 * The Minecraft log.
 	 */
