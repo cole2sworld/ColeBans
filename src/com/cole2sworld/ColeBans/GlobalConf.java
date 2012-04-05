@@ -234,7 +234,6 @@ public final class GlobalConf {
 								"        user: root\n"+
 								"        pass: pass\n"+
 								"        host: localhost\n"+
-								"        port: 3306\n"+
 								"        db: minecraft\n"+
 								"        prefix: cb_\n"+
 								"    mcbans:\n"+

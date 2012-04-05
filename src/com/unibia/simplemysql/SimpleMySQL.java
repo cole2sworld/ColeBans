@@ -423,7 +423,7 @@ public class SimpleMySQL {
 		}
 		ResultSet result = null;
         try {
-			result = stmt.executeQuery("SELECT * FROM "+tbl+"+ LIMIT 1");
+			result = stmt.executeQuery("SELECT * FROM "+tbl+" LIMIT 1;");
 		} catch (SQLException e) {
 			return false;
 		}

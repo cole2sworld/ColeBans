@@ -25,9 +25,13 @@ public class MySQLBanHandler extends BanHandler {
 		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Opening connection");
 		long oldtime = System.currentTimeMillis();
 		sqlHandler = SimpleMySQL.getInstance();
+		Main.debug("Got instance");
 		sqlHandler.enableReconnect();
+		Main.debug("Enabled reconnect");
 		sqlHandler.setReconnectNumRetry(25);
+		Main.debug("Reconnect retries set to 25");
 		sqlHandler.connect(host, username, password);
+		Main.debug("Connected.");
 		long newtime = System.currentTimeMillis();
 		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Done. Took "+(newtime-oldtime)+" ms.");
 	}
@@ -37,6 +41,7 @@ public class MySQLBanHandler extends BanHandler {
 	 * @return The sanitized string
 	 */
 	public static String addSlashes(String workset) {
+		Main.debug("Sanitizing "+workset);
 		StringBuilder sanitizer = new StringBuilder();
 		for (int i = 0; i<workset.length(); i++) {
 			if (!isSQLSpecialCharacter(workset.charAt(i))) {
@@ -47,6 +52,7 @@ public class MySQLBanHandler extends BanHandler {
 				sanitizer.append(workset.charAt(i));
 			}
 		}
+		Main.debug("Done - workset is now "+workset);
 		return sanitizer.toString();
 	}
 	/**
