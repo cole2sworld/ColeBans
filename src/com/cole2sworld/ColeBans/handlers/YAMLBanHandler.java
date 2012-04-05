@@ -93,10 +93,9 @@ public class YAMLBanHandler extends BanHandler {
 		}
 		if (GlobalConf.allowTempBans) {
 			if (tempBanned <= System.currentTimeMillis()) {
-				try {
-					unbanPlayer(player, BanHandler.SYSTEM_ADMIN_NAME);
-					save();
-				} catch (PlayerNotBannedException e) {}
+				conf.set("permBans."+player, null);
+				conf.set("tempBans."+player, null); //lazy removal, don't check what is actually there
+				save();
 			}
 			if (tempBanned != null) {
 				return new BanData(player, tempBanned);
