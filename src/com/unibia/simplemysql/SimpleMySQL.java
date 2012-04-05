@@ -40,7 +40,7 @@
  */
 
 package com.unibia.simplemysql;
-import static com.cole2sworld.ColeBans.Main.debug;
+import com.cole2sworld.ColeBans.Main;
 import com.mysql.jdbc.CommunicationsException;
 import com.mysql.jdbc.exceptions.MySQLNonTransientConnectionException;
 import java.sql.*;
@@ -91,7 +91,7 @@ public class SimpleMySQL {
      * @see #enableReconnect() 
      */
     public void disableReconnect(){
-    	debug("Disabling reconnections");
+    	Main.debug("Disabling reconnections");
         auto_reconnect = false;
     }
     /**
@@ -114,7 +114,7 @@ public class SimpleMySQL {
      * @param time in milliseconds
      */
     public void setReconnectTime(int time){
-    	debug("Setting reconnect time to "+time+" ms");
+    	Main.debug("Setting reconnect time to "+time+" ms");
         auto_reconnect_time = time;
     }    
     /**
@@ -167,7 +167,7 @@ public class SimpleMySQL {
      * @return
      */
     public boolean connect(){
-    	debug("Connecting with default settings");
+    	Main.debug("Connecting with default settings");
         return connect("mysql", "root", "");
     }
     
@@ -180,7 +180,7 @@ public class SimpleMySQL {
      * @return True on a successful connection
      */
     public boolean connect(String server, String username, String password) {
-    	debug("Connecting");
+    	Main.debug("Connecting");
         String mysql_connectionURL;
         String mysql_driver;  
         
@@ -197,7 +197,7 @@ public class SimpleMySQL {
             //Open Connection
             mysql_connectionURL = "jdbc:mysql://" + server;
             mysql_connection = DriverManager.getConnection(mysql_connectionURL, username, password);
-            debug("Connected");
+            Main.debug("Connected");
             return true;
         }        
         catch( Exception x ) {
@@ -257,10 +257,10 @@ public class SimpleMySQL {
      * @return True on close
      */
     public boolean close(){
-    	debug("Closing connection");
+    	Main.debug("Closing connection");
         try{
             mysql_connection.close();
-            debug("Close succeeded");
+            Main.debug("Close succeeded");
             return true;
         }
         catch (Exception x) {
@@ -270,7 +270,7 @@ public class SimpleMySQL {
     }
     
     private boolean reconnect(String server, String username, String password, String database) throws SQLTransientConnectionException {  
-    	debug("Attempting reconnect");
+    	Main.debug("Attempting reconnect");
         boolean connected = false;
         try{
             connected = connect(server, username, password, database);
@@ -282,12 +282,12 @@ public class SimpleMySQL {
         if (!connected){            
             throw new SQLTransientConnectionException("Unable to re-establish database connection, please try again later.");
         }
-        debug("Database connection re-established");
+        Main.debug("Database connection re-established");
         return connected;
     }
     
     private synchronized void auto_reconnect(){
-        debug("Attempting Auto-Reconnect...");
+        Main.debug("Attempting Auto-Reconnect...");
         
         //Clean and desrtoy anything that may be left
         try{mysql_connection.close(); mysql_connection = null;}catch(SQLException e){}
@@ -369,7 +369,7 @@ public class SimpleMySQL {
      * @see #connect(java.lang.String, java.lang.String, java.lang.String, java.lang.String) 
      */
     public SimpleMySQLResult querySMSR(String query){
-    	debug("Running query "+query);
+    	Main.debug("Running query "+query);
         //Make sure connection is alive
         checkConnection();
         
@@ -391,30 +391,30 @@ public class SimpleMySQL {
          * 
         */                      
         try{
-        	debug("Detecting query type");
+        	Main.debug("Detecting query type");
             if (query.startsWith("SELECT")) {
-            	debug("SELECT");
+            	Main.debug("SELECT");
                 //Use the "executeQuery" function becuase we have to retrive data
                 //Return the data as a resultset
 
                 //Execute Query
                 stmt = mysql_connection.createStatement();
-                debug("Statement created");
+                Main.debug("Statement created");
                 mysql_result = stmt.executeQuery(query);
-                debug("Query executed");
+                Main.debug("Query executed");
                 result = new SimpleMySQLResult(mysql_result);
-                debug("Result created");
+                Main.debug("Result created");
             }
             else {
-            	debug("UPDATE/INSERT/DELETE");
+            	Main.debug("UPDATE/INSERT/DELETE");
                 //It's an UPDATE, INSERT, or DELETE statement
                 //Use the "executeUpdate" function and return a null result
 
                 //Execute Query
                 stmt = mysql_connection.createStatement();
-                debug("Statement created");
+                Main.debug("Statement created");
                 stmt.executeUpdate(query);
-                debug("Query executed");
+                Main.debug("Query executed");
             }
         }
         catch(NullPointerException y){
@@ -432,34 +432,34 @@ public class SimpleMySQL {
     }
     
 	public boolean checkTable(String tbl) {
-		debug("Checking table");
+		Main.debug("Checking table");
 		checkConnection();
 		Statement stmt = null;
 		try {
-			debug("Creating statement");
+			Main.debug("Creating statement");
 			stmt = mysql_connection.createStatement();
 		} catch (SQLException e) {
-			debug("SQLException creating statement: "+e.getMessage());
+			Main.debug("SQLException creating statement: "+e.getMessage());
 			return false;
 		}
 		ResultSet result = null;
         try {
-        	debug("Executing query");
+        	Main.debug("Executing query");
 			result = stmt.executeQuery("SELECT * FROM "+tbl+" LIMIT 1;");
 		} catch (SQLException e) {
-			debug("SQLException executing query: SELECT * FROM "+tbl+" LIMIT 1; ("+e.getMessage()+")");
+			Main.debug("SQLException executing query: SELECT * FROM "+tbl+" LIMIT 1; ("+e.getMessage()+")");
 			return false;
 		}
         finally {
         	if (result != null)
 				try {
-					debug("Closing result set");
+					Main.debug("Closing result set");
 					result.close();
 				} catch (SQLException e) {
-					debug("SQLException closing result set: "+e.getMessage());
+					Main.debug("SQLException closing result set: "+e.getMessage());
 				}
         }
-        debug("Reached end of method, returning true");
+        Main.debug("Reached end of method, returning true");
 		return true;
 	}    
 }
