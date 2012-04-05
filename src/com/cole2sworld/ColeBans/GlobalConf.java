@@ -199,8 +199,8 @@ public final class GlobalConf {
 					Advanced.suffix = Advanced.section.getString("suffix");
 				}
 				catch (NullPointerException e) {
-					Main.logger.severe("[ColeBans] Your config file is outdated! Please delete it to regenerate it!");
-					Main.logger.severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
+					Main.LOG.severe("[ColeBans] Your config file is outdated! Please delete it to regenerate it!");
+					Main.LOG.severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
 					Main.instance.onFatal();
 				}
 			}
@@ -256,7 +256,7 @@ public final class GlobalConf {
 					return;
 				}
 				else {
-					Main.logger.severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
+					Main.LOG.severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
 					Main.instance.onFatal();
 				}
 			}

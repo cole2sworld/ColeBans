@@ -31,7 +31,7 @@ public class Main extends JavaPlugin {
 	/**
 	 * The Minecraft log.
 	 */
-	public static Logger logger = Logger.getLogger("Minecraft");
+	public static final Logger LOG = Logger.getLogger("Minecraft");
 	/**
 	 * The Permissions 3/2 (or bridge) that we will use for permissions.
 	 */
@@ -95,32 +95,32 @@ public class Main extends JavaPlugin {
 					Class<?>[] arguments = {Map.class};
 					banHandler = (BanHandler) rawClass.getDeclaredMethod("onEnable", arguments).invoke(null, data);
 				} else {
-					logger.severe(GlobalConf.logPrefix+"Wierd ban handler given in config file! Aborting operation.");
+					LOG.severe(GlobalConf.logPrefix+"Wierd ban handler given in config file! Aborting operation.");
 					onFatal();
 				}
 			} catch (ClassNotFoundException e) {
-				logger.severe(GlobalConf.logPrefix+"Non-existant ban handler given in config file! Aborting operation.");
+				LOG.severe(GlobalConf.logPrefix+"Non-existant ban handler given in config file! Aborting operation.");
 				onFatal();
 			} catch (SecurityException e) {
-				logger.severe(GlobalConf.logPrefix+"Somehow, a SecurityException occurred. Plugin conflict? Aborting operation.");
+				LOG.severe(GlobalConf.logPrefix+"Somehow, a SecurityException occurred. Plugin conflict? Aborting operation.");
 				onFatal();
 			} catch (NoSuchMethodException e) {
-				logger.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+				LOG.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
 				onFatal();
 			} catch (IllegalArgumentException e) {
-				logger.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+				LOG.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
 				onFatal();
 			} catch (IllegalAccessException e) {
-				logger.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+				LOG.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
 				onFatal();
 			} catch (InvocationTargetException e) {
-				logger.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+				LOG.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
 				onFatal();
 			} catch (NullPointerException e) {
-				logger.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+				LOG.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
 				onFatal();
 			} catch (ClassCastException e) {
-				logger.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
+				LOG.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
 				onFatal();
 			}
 			long newtime = System.currentTimeMillis();

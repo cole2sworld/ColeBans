@@ -25,7 +25,7 @@ public class YAMLBanHandler extends BanHandler {
 			tFile.createNewFile();
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			Main.logger.severe(GlobalConf.logPrefix+"[YAMLBanHandler] IOException when creating file. Plugin will fail to operate correctly.");
+			Main.LOG.severe(GlobalConf.logPrefix+"[YAMLBanHandler] IOException when creating file. Plugin will fail to operate correctly.");
 			return null;
 		}
 		YamlConfiguration tConf = new YamlConfiguration();
@@ -33,15 +33,15 @@ public class YAMLBanHandler extends BanHandler {
 			tConf.load(tFile);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			Main.logger.severe(GlobalConf.logPrefix+"[YAMLBanHandler] FileNotFoundException when loading. Plugin will fail to operate correctly.");
+			Main.LOG.severe(GlobalConf.logPrefix+"[YAMLBanHandler] FileNotFoundException when loading. Plugin will fail to operate correctly.");
 			return null;
 		} catch (IOException e) {
 			e.printStackTrace();
-			Main.logger.severe(GlobalConf.logPrefix+"[YAMLBanHandler] IOException when loading. Plugin will fail to operate correctly.");
+			Main.LOG.severe(GlobalConf.logPrefix+"[YAMLBanHandler] IOException when loading. Plugin will fail to operate correctly.");
 			return null;
 		} catch (InvalidConfigurationException e) {
 			e.printStackTrace();
-			Main.logger.severe(GlobalConf.logPrefix+"[YAMLBanHandler] InvalidConfigurationException when loading. Plugin will fail to operate correctly.");
+			Main.LOG.severe(GlobalConf.logPrefix+"[YAMLBanHandler] InvalidConfigurationException when loading. Plugin will fail to operate correctly.");
 			return null;
 		}
 		
@@ -163,7 +163,7 @@ public class YAMLBanHandler extends BanHandler {
 			conf.save(file);
 		} catch (IOException e) {
 			e.printStackTrace();
-			Main.logger.severe(GlobalConf.logPrefix+"[YAMLBanHandler] IOException when saving config. Plugin will fail to operate correctly.");
+			Main.LOG.severe(GlobalConf.logPrefix+"[YAMLBanHandler] IOException when saving config. Plugin will fail to operate correctly.");
 		}
 	}
 
