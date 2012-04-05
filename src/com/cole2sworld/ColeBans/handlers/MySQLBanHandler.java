@@ -1,5 +1,6 @@
 package com.cole2sworld.ColeBans.handlers;
 
+import static com.cole2sworld.ColeBans.Main.debug;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
@@ -151,19 +152,29 @@ public class MySQLBanHandler extends BanHandler {
 
 	@Override
 	public BanData getBanData(String player, String admin) {
+		debug("Getting ban data for "+player);
 		String tbl = GlobalConf.Sql.prefix+"perm";
 		if (sqlHandler.checkTable(tbl)) {
+			debug(tbl+" exists");
 			ResultSet reasonResult = sqlHandler.query("SELECT reason FROM `"+GlobalConf.Sql.db+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
+			debug("got reasonResult, it is "+reasonResult);
 			boolean results = false;
 			try {
 				results = reasonResult.first();
-			} catch (SQLException e) {}
+			} catch (SQLException e) {
+				debug("SQLException getting first reason - "+e.getMessage());
+			}
 			if (results) {
+				debug("There's a reason");
 				String reason = "";
 				try {
 					reason = reasonResult.getString("reason");
-				} catch (SQLException e) {}
+					debug(reason);
+				} catch (SQLException e) {
+					debug("SQLException getting reason - "+e.getMessage());
+				}
 				if (!reason.isEmpty()) {
+					debug("Reason not empty");
 					return new BanData(player, reason);
 				}
 			}
