@@ -91,7 +91,7 @@ public class Main extends JavaPlugin {
 			data.put("yaml", GlobalConf.Yaml.file);
 			data.put("json", GlobalConf.Json.file);
 			data.put("apiKey", GlobalConf.MCBans.apiKey);
-			// Reflection :(
+			//FIXME Doesn't work. At all.
 			try {
 				Class<?> rawClass = Class.forName(GlobalConf.Advanced.pkg+"."+GlobalConf.banHandlerConf+GlobalConf.Advanced.suffix);
 				if (rawClass.isAssignableFrom(BanHandler.class)) {
