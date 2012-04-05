@@ -91,6 +91,7 @@ public class SimpleMySQL {
      * @see #enableReconnect() 
      */
     public void disableReconnect(){
+    	debug("Disabling reconnections");
         auto_reconnect = false;
     }
     /**
@@ -113,6 +114,7 @@ public class SimpleMySQL {
      * @param time in milliseconds
      */
     public void setReconnectTime(int time){
+    	debug("Setting reconnect time to "+time+" ms");
         auto_reconnect_time = time;
     }    
     /**
@@ -165,6 +167,7 @@ public class SimpleMySQL {
      * @return
      */
     public boolean connect(){
+    	debug("Connecting with default settings");
         return connect("mysql", "root", "");
     }
     
@@ -177,6 +180,7 @@ public class SimpleMySQL {
      * @return True on a successful connection
      */
     public boolean connect(String server, String username, String password) {
+    	debug("Connecting");
         String mysql_connectionURL;
         String mysql_driver;  
         
@@ -193,6 +197,7 @@ public class SimpleMySQL {
             //Open Connection
             mysql_connectionURL = "jdbc:mysql://" + server;
             mysql_connection = DriverManager.getConnection(mysql_connectionURL, username, password);
+            debug("Connected");
             return true;
         }        
         catch( Exception x ) {
@@ -252,8 +257,10 @@ public class SimpleMySQL {
      * @return True on close
      */
     public boolean close(){
+    	debug("Closing connection");
         try{
             mysql_connection.close();
+            debug("Close succeeded");
             return true;
         }
         catch (Exception x) {
@@ -262,7 +269,8 @@ public class SimpleMySQL {
         }
     }
     
-    private boolean reconnect(String server, String username, String password, String database) throws SQLTransientConnectionException {        
+    private boolean reconnect(String server, String username, String password, String database) throws SQLTransientConnectionException {  
+    	debug("Attempting reconnect");
         boolean connected = false;
         try{
             connected = connect(server, username, password, database);
@@ -272,14 +280,14 @@ public class SimpleMySQL {
         }
         
         if (!connected){            
-            throw new SQLTransientConnectionException("Unable to re-establish database connection, please try agian later.");
+            throw new SQLTransientConnectionException("Unable to re-establish database connection, please try again later.");
         }
-        System.out.println("Database connection re-established");
+        debug("Database connection re-established");
         return connected;
     }
     
     private synchronized void auto_reconnect(){
-        System.out.println("Attempting Auto-Reconnect...");
+        debug("Attempting Auto-Reconnect...");
         
         //Clean and desrtoy anything that may be left
         try{mysql_connection.close(); mysql_connection = null;}catch(SQLException e){}
@@ -297,13 +305,13 @@ public class SimpleMySQL {
                 connected = reconnect(hostname_local_cache, username_local_cache, password_local_cache, database_local_cache);                
             }
             catch(InterruptedException i){
-                System.err.println("Reconnect Canceled!");
+                System.err.println("Reconnect Cancelled!");
             }      
             catch(SQLTransientConnectionException e){
                 System.err.println("AUTO RECONNECT: " + e.getMessage());
             }
             catch(Exception e){
-                System.err.println("Unkown faliure: " + e.getLocalizedMessage());
+                System.err.println("Unknown failure: " + e.getLocalizedMessage());
             }
         }
     }
@@ -361,6 +369,7 @@ public class SimpleMySQL {
      * @see #connect(java.lang.String, java.lang.String, java.lang.String, java.lang.String) 
      */
     public SimpleMySQLResult querySMSR(String query){
+    	debug("Running query "+query);
         //Make sure connection is alive
         checkConnection();
         
@@ -382,22 +391,30 @@ public class SimpleMySQL {
          * 
         */                      
         try{
+        	debug("Detecting query type");
             if (query.startsWith("SELECT")) {
+            	debug("SELECT");
                 //Use the "executeQuery" function becuase we have to retrive data
                 //Return the data as a resultset
 
                 //Execute Query
                 stmt = mysql_connection.createStatement();
+                debug("Statement created");
                 mysql_result = stmt.executeQuery(query);
-                result = new SimpleMySQLResult(mysql_result);                
+                debug("Query executed");
+                result = new SimpleMySQLResult(mysql_result);
+                debug("Result created");
             }
             else {
+            	debug("UPDATE/INSERT/DELETE");
                 //It's an UPDATE, INSERT, or DELETE statement
                 //Use the "executeUpdate" function and return a null result
 
                 //Execute Query
                 stmt = mysql_connection.createStatement();
+                debug("Statement created");
                 stmt.executeUpdate(query);
+                debug("Query executed");
             }
         }
         catch(NullPointerException y){
