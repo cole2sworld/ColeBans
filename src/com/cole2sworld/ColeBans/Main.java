@@ -79,6 +79,7 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		try {
 			System.out.println(GlobalConf.logPrefix+"Initalizing...");
+			
 			server = getServer();
 			PluginManager pm = server.getPluginManager();
 			System.out.println(GlobalConf.logPrefix+"Loading config and ban handler...");

@@ -1,6 +1,6 @@
 name: ColeBans
 main: com.cole2sworld.ColeBans.Main
-version: BUILDNUMBER
+version: 4 BUILDNUMBER
 commands:
     ban:
         usage: /ban <player> <reason>
