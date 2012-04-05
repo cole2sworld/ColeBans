@@ -13,63 +13,63 @@ import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 public class NoOpBanHandler extends BanHandler {
 
 	public final static BanHandler onEnable(Map<String, String> data) throws OperationNotSupportedException {
-		NoOp();
+		noOp();
 		return new NoOpBanHandler();
 	}
 	
 	@Override
 	public final void banPlayer(String player, String reason, String admin)
 			throws PlayerAlreadyBannedException {
-		NoOp();
+		noOp();
 	}
 
 	@Override
 	public final void tempBanPlayer(String player, long time, String admin)
 			throws PlayerAlreadyBannedException, UnsupportedOperationException {
-		NoOp();
+		noOp();
 	}
 
 	@Override
 	public final void unbanPlayer(String player, String admin)
 			throws PlayerNotBannedException {
-		NoOp();
+		noOp();
 	}
 
 	@Override
 	public final boolean isPlayerBanned(String player, String admin) {
-		NoOp();
+		noOp();
 		return false;
 	}
 
 	@Override
 	public final BanData getBanData(String player, String admin) {
-		NoOp();
+		noOp();
 		return new BanData(player);
 	}
 
 	@Override
 	public final void onDisable() {
-		NoOp();
+		noOp();
 	}
 
 	@Override
 	public final void convert(BanHandler handler) {
-		NoOp();
+		noOp();
 	}
 
 	@Override
 	public final Vector<BanData> dump(String admin) {
-		NoOp();
+		noOp();
 		return new Vector<BanData>(0);
 	}
 
 	@Override
 	public final Vector<String> listBannedPlayers(String admin) {
-		NoOp();
+		noOp();
 		return new Vector<String>(0);
 	}
 
-	protected static final void NoOp() {
+	protected static final void noOp() {
 		Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Using No-Operation ban handler. Please change to a finished ban handler.");
 	}
 }
