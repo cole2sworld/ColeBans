@@ -140,7 +140,7 @@ public class Main extends JavaPlugin {
 				try {
 					String cmdName = args[0].substring(1);
 					debug("cmdName = "+cmdName);
-					Character firstChar = args[0].charAt(1);
+					Character firstChar = args[0].charAt(0);
 					debug("firstChar = "+firstChar);
 					cmdName = Character.toUpperCase(firstChar)+cmdName.toLowerCase();
 					debug("cmdName = "+cmdName);
@@ -161,7 +161,7 @@ public class Main extends JavaPlugin {
 					}
 				}
 				catch (ClassNotFoundException e) {
-					debug("ClassNotFound (invalid subcommand)");
+					debug("ClassNotFoundException (invalid subcommand)");
 				} catch (InstantiationException e) {
 					debug("InstantiationException (???)");
 				} catch (IllegalAccessException e) {
