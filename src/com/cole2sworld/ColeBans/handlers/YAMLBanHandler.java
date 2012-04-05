@@ -99,15 +99,15 @@ public class YAMLBanHandler extends BanHandler {
 	public BanData getBanData(String player, String admin) {
 		Main.debug("Getting ban data");
 		String permBanned = conf.getString("permBans."+player);
-		Long tempBanned = conf.getLong("tempBans."+player);
+		long tempBanned = conf.getLong("tempBans."+player);
 		Main.debug("permBanned = '"+permBanned+"' tempBanned = "+tempBanned);
 		if (permBanned != null) {
-			Main.debug("permBanned not null, returning bandata");
+			Main.debug("permBanned not null, returning PERMANENT data");
 			return new BanData(player, permBanned);
 		}
 		if (GlobalConf.allowTempBans) {
 			Main.debug("Temp bans allowed, continuing");
-			if (tempBanned <= System.currentTimeMillis()) {
+			if (tempBanned != 0 && tempBanned <= System.currentTimeMillis()) {
 				Main.debug("Temp ban is older than current time, removing");
 				conf.set("permBans."+player, null);
 				conf.set("tempBans."+player, null); //lazy removal, don't check what is actually there
@@ -116,8 +116,8 @@ public class YAMLBanHandler extends BanHandler {
 			}
 			tempBanned = conf.getLong("tempBans."+player);
 			Main.debug("Reassigning tempBanned ("+tempBanned+")");
-			if (tempBanned != null) {
-				Main.debug("tempBanned not null, returning bandata");
+			if (tempBanned != 0) {
+				Main.debug("tempBanned not zero, returning TEMPORARY data");
 				return new BanData(player, tempBanned);
 			}
 		}
