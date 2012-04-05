@@ -135,7 +135,7 @@ public class Main extends JavaPlugin {
 		debug("Executing command "+cmdLabel);
 		if (cmdLabel.equalsIgnoreCase("cb")) {
 			debug("It's /cb");
-			if (args.length < 2) return false;
+			if (args.length < 1) return false;
 			else {
 				try {
 					String cmdName = args[0].substring(1);
