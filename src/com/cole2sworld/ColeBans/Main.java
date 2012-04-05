@@ -139,10 +139,15 @@ public class Main extends JavaPlugin {
 			else {
 				try {
 					String cmdName = args[0].substring(1);
+					debug("cmdName = "+cmdName);
 					Character firstChar = args[0].charAt(1);
+					debug("firstChar = "+firstChar);
 					cmdName = Character.toUpperCase(firstChar)+cmdName.toLowerCase();
+					debug("cmdName = "+cmdName);
 					Object rawObject = Class.forName("com.cole2sworld.ColeBans.commands."+cmdName).newInstance();
+					debug("rawObject = "+rawObject.getClass().getSimpleName());
 					if (rawObject instanceof CBCommand) {
+						debug("rawObject is a CBCommand");
 						CBCommand cmdObj = (CBCommand) rawObject;
 						Vector<String> newArgs = new Vector<String>(args.length);
 						for (int i = 1; i<args.length; i++) {
@@ -156,8 +161,12 @@ public class Main extends JavaPlugin {
 					}
 				}
 				catch (ClassNotFoundException e) {
+					debug("ClassNotFound (invalid subcommand)");
 				} catch (InstantiationException e) {
-				} catch (IllegalAccessException e) {}
+					debug("InstantiationException (???)");
+				} catch (IllegalAccessException e) {
+					debug("IllegalAccessException (non-public class)");
+				}
 			}
 		}
 		else {
