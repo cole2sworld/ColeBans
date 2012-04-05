@@ -40,6 +40,7 @@
  */
 
 package com.unibia.simplemysql;
+import static com.cole2sworld.ColeBans.Main.debug;
 import com.mysql.jdbc.CommunicationsException;
 import com.mysql.jdbc.exceptions.MySQLNonTransientConnectionException;
 import java.sql.*;
@@ -414,25 +415,34 @@ public class SimpleMySQL {
     }
     
 	public boolean checkTable(String tbl) {
+		debug("Checking table");
 		checkConnection();
 		Statement stmt = null;
 		try {
+			debug("Creating statement");
 			stmt = mysql_connection.createStatement();
 		} catch (SQLException e) {
+			debug("SQLException creating statement: "+e.getMessage());
 			return false;
 		}
 		ResultSet result = null;
         try {
+        	debug("Executing query");
 			result = stmt.executeQuery("SELECT * FROM "+tbl+" LIMIT 1;");
 		} catch (SQLException e) {
+			debug("SQLException executing query: SELECT * FROM "+tbl+" LIMIT 1; ("+e.getMessage()+")");
 			return false;
 		}
         finally {
         	if (result != null)
 				try {
+					debug("Closing result set");
 					result.close();
-				} catch (SQLException e) {}
+				} catch (SQLException e) {
+					debug("SQLException closing result set: "+e.getMessage());
+				}
         }
+        debug("Reached end of method, returning true");
 		return true;
 	}    
 }
