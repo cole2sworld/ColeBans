@@ -219,14 +219,14 @@ public final class GlobalConf {
 						String defaultConfig = ""+
 								"# For information on how to configure ColeBans, go to http://c2wr.com/cbconf\n"+
 								"settings:\n"+
-								"    allowTempBans: true\n"+
+								"    allowTempBans: yes\n"+
 								"    banMessage: You are banned for %reason!\n"+
 								"    tempBanMessage: You are tempbanned! %time minute%plural remaining!\n"+
-								"    fancyEffects: true\n"+
+								"    fancyEffects: yes\n"+
 								"    banColor: DARK_RED\n"+
 								"    kickColor: YELLOW\n"+
 								"    tempBanColor: RED\n"+
-								"    announceBansAndKicks: true\n"+
+								"    announceBansAndKicks: yes\n"+
 								"    logPrefix: [ColeBans]\n"+
 								"    #banHandler can be MySQL, MCBans, YAML, or JSON.\n"+
 								"    banHandler: YAML\n"+
@@ -241,7 +241,7 @@ public final class GlobalConf {
 								"        apiKey: yourAPIKeyHere\n"+
 								"        # Set this to the BanHandler you want to use for the backups, or \"None\" to turn off backups.\n"+
 								"        backup: None\n"+
-								"        fullBackups: false\n"+
+								"        fullBackups: no\n"+
 								"        #The minimum rep a player can have to join your server.\n"+
 								"        minRep: 10\n"+
 								"    yaml:\n"+

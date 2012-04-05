@@ -1,0 +1,11 @@
+Name: com/cole2sworld/ColeBans/commands
+Sealed: true
+
+Name: com/cole2sworld/ColeBans/framework
+Sealed: true
+
+Name: com/cole2sworld/ColeBans
+Sealed: true
+
+Name: com/cole2sworld/ColeBans/handlers
+Sealed: false
