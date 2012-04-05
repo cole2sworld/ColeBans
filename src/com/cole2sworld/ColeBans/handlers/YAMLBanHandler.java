@@ -57,25 +57,36 @@ public class YAMLBanHandler extends BanHandler {
 
 	@Override
 	public void banPlayer(String player, String reason, String admin) throws PlayerAlreadyBannedException {
+		Main.debug("banPlayer called");
 		if (isPlayerBanned(player, admin)) throw new PlayerAlreadyBannedException(player+" is already banned!");
+		Main.debug("Not already banned");
 		conf.set("permBans."+player, reason);
+		Main.debug("Saved");
 		save();
 	}
 
 	@Override
 	public void tempBanPlayer(String player, long primTime, String admin) throws PlayerAlreadyBannedException, UnsupportedOperationException {
+		Main.debug("tempBanPlayer called");
 		if (!GlobalConf.allowTempBans) throw new UnsupportedOperationException("Temp bans are disabled!");
+		Main.debug("TempBans enabled");
 		if (isPlayerBanned(player, admin)) throw new PlayerAlreadyBannedException(player+" is already banned!");
+		Main.debug("Tempbanning");
 		long time = System.currentTimeMillis()+((primTime*60)*1000);
+		Main.debug("Tempban primTime is "+primTime+", final time is "+time);
 		conf.set("tempBans."+player, time);
+		Main.debug("Saved");
 		save();
 	}
 
 	@Override
 	public void unbanPlayer(String player, String admin) throws PlayerNotBannedException {
+		Main.debug("unbanPlayer called");
 		if (!isPlayerBanned(player, admin)) throw new PlayerNotBannedException(player+" is not banned!");
+		Main.debug("Erasing bans");
 		conf.set("permBans."+player, null);
 		conf.set("tempBans."+player, null); //lazy removal, don't check what is actually there
+		Main.debug("Saved");
 		save();
 	}
 
@@ -86,21 +97,31 @@ public class YAMLBanHandler extends BanHandler {
 
 	@Override
 	public BanData getBanData(String player, String admin) {
+		Main.debug("Getting ban data");
 		String permBanned = conf.getString("permBans."+player);
 		Long tempBanned = conf.getLong("tempBans."+player);
+		Main.debug("permBanned = '"+permBanned+"' tempBanned = "+tempBanned);
 		if (permBanned != null) {
+			Main.debug("permBanned not null, returning bandata");
 			return new BanData(player, permBanned);
 		}
 		if (GlobalConf.allowTempBans) {
+			Main.debug("Temp bans allowed, continuing");
 			if (tempBanned <= System.currentTimeMillis()) {
+				Main.debug("Temp ban is older than current time, removing");
 				conf.set("permBans."+player, null);
 				conf.set("tempBans."+player, null); //lazy removal, don't check what is actually there
+				Main.debug("Saving");
 				save();
 			}
+			tempBanned = conf.getLong("tempBans."+player);
+			Main.debug("Reassigning tempBanned ("+tempBanned+")");
 			if (tempBanned != null) {
+				Main.debug("tempBanned not null, returning bandata");
 				return new BanData(player, tempBanned);
 			}
 		}
+		Main.debug("Returning NOT_BANNED data");
 		return new BanData(player);
 	}
 

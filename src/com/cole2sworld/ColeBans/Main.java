@@ -85,7 +85,7 @@ public class Main extends JavaPlugin {
 			long oldtime = System.currentTimeMillis();
 			GlobalConf.conf = getConfig();
 			GlobalConf.loadConfig();
-			if (debug) LOG.warning("Using a debug build. Expect many messages");
+			if (debug) LOG.warning(GlobalConf.logPrefix+"Using a debug build. Expect many messages");
 			try {
 				Class<?> rawClass = Class.forName(GlobalConf.Advanced.pkg+"."+GlobalConf.banHandlerConf+GlobalConf.Advanced.suffix);
 				banHandler = (BanHandler) rawClass.getDeclaredMethod("onEnable", new Class<?>[0]).invoke(null);
