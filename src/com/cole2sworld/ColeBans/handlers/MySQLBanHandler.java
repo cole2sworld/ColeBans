@@ -74,9 +74,12 @@ public class MySQLBanHandler extends BanHandler {
 
 	@Override
 	public void banPlayer(String player, String reason, String admin) throws PlayerAlreadyBannedException {
+		debug("Banning player "+player);
 		if (isPlayerBanned(player, admin)) throw new PlayerAlreadyBannedException(player+" is already banned!");
+		debug("Not already banned");
 		String tbl = GlobalConf.Sql.prefix+"perm";
 		if (sqlHandler.checkTable(tbl)) {
+			debug("Table exists");
 			sqlHandler.query("INSERT INTO "+tbl+" (" +
 					"username, " +
 					"reason" +
@@ -84,15 +87,20 @@ public class MySQLBanHandler extends BanHandler {
 					"'"+addSlashes(player)+"', " +
 					"'"+addSlashes(reason)+"'"+
 					");");
+			debug("Query executed! SUCCESS!");
 		}
 		else {
+			debug("Table does not exist");
 			sqlHandler.query("CREATE  TABLE `"+GlobalConf.Sql.db+"`.`"+tbl+"` (" +
 					"`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ," +
 					"`username` VARCHAR(255) NULL ," +
 					"`reason` VARCHAR(255) NULL ," +
 					"PRIMARY KEY (`id`) );");
+			debug("Table created");
 			sqlHandler.query("ALTER TABLE `"+GlobalConf.Sql.db+"`.`"+tbl+"`"+
 					"ADD INDEX `NAMEINDEX` (`username` ASC);");
+			debug("Table altered");
+			debug("Re-calling");
 			banPlayer(player, reason, admin);
 		}
 	}
