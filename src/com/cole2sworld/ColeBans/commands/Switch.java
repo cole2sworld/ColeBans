@@ -21,7 +21,7 @@ public class Switch extends CBCommand {
 		else {
 			try {
 				BanHandler dest = Util.lookupHandler(args[0]);
-				Main.LOG.info("Starting conversion from "+Main.instance.banHandler.getClass().getSimpleName().replace(GlobalConf.Advanced.suffix, "")+" to "+args[0]);
+				Main.LOG.info(GlobalConf.logPrefix+"Starting conversion from "+Main.instance.banHandler.getClass().getSimpleName().replace(GlobalConf.Advanced.suffix, "")+" to "+args[0]);
 				if (!perm.console) admin.sendMessage(ChatColor.YELLOW+"Starting conversion...");
 				long oldTime = System.currentTimeMillis()/1000;
 				Main.instance.banHandler.convert(dest);
@@ -30,7 +30,7 @@ public class Switch extends CBCommand {
 				Main.instance.saveConfig();
 				Main.instance.banHandler = dest;
 				long timeSince = (System.currentTimeMillis()/1000)-oldTime;
-				Main.LOG.info("Conversion succeeded! Took "+timeSince+" seconds.");
+				Main.LOG.info(GlobalConf.logPrefix+"Conversion succeeded! Took "+timeSince+" seconds.");
 				if (!perm.console) admin.sendMessage(ChatColor.GREEN+"Conversion succeeded! Took "+timeSince+" seconds.");
 			} catch (IllegalArgumentException e) {
 				return ChatColor.DARK_RED+"Given ban handler is wierdly implemented";

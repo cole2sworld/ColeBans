@@ -255,7 +255,7 @@ public final class MySQLBanHandler extends BanHandler {
 					}
 			} catch (SQLException e) {
 				e.printStackTrace();
-				Main.LOG.warning("Dump on MySQL failed due to SQLException -- dump will be truncated!");
+				Main.LOG.warning(GlobalConf.logPrefix+"Dump on MySQL failed due to SQLException -- dump will be truncated!");
 			} finally {
 				try {
 					temp.close();
@@ -271,7 +271,7 @@ public final class MySQLBanHandler extends BanHandler {
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
-				Main.LOG.warning("Dump on MySQL failed due to SQLException -- dump will be truncated!");
+				Main.LOG.warning(GlobalConf.logPrefix+"Dump on MySQL failed due to SQLException -- dump will be truncated!");
 			} finally {
 				try {
 					perm.close();

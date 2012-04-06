@@ -19,6 +19,7 @@ public class Reload extends CBCommand {
 		if (Main.instance.banHandler instanceof YAMLBanHandler) {
 			((YAMLBanHandler) Main.instance.banHandler).reload();
 		}
+		admin.sendMessage("Configuration reloaded.");
 		return null;
 	}
 
