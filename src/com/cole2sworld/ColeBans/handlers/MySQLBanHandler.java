@@ -258,7 +258,7 @@ public final class MySQLBanHandler extends BanHandler {
 				Main.LOG.warning("Dump on MySQL failed due to SQLException -- dump will be truncated!");
 			} finally {
 				try {
-					perm.close();
+					temp.close();
 				} catch (SQLException e) {}
 			}
 		}
