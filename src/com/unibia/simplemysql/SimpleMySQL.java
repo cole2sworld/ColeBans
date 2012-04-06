@@ -36,7 +36,7 @@
 
 /*
  * Simple MySQL Java Class
- * Makes it similair to PHP
+ * Makes it similar to PHP
  */
 
 package com.unibia.simplemysql;

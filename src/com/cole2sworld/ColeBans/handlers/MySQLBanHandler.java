@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Vector;
+
 import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
@@ -227,18 +228,66 @@ public final class MySQLBanHandler extends BanHandler {
 	}
 	@Override
 	public void convert(BanHandler handler) {
-		// TODO Auto-generated method stub
-
+		Vector<BanData> dump = dump(BanHandler.SYSTEM_ADMIN_NAME);
+		for (BanData data : dump) {
+			if (GlobalConf.allowTempBans && data.getType() == Type.TEMPORARY) {
+				try {
+					handler.tempBanPlayer(data.getVictim(), data.getTime(), BanHandler.SYSTEM_ADMIN_NAME);
+				} catch (UnsupportedOperationException e) {} catch (PlayerAlreadyBannedException e) {} //just skip it
+			} else if (data.getType() == Type.PERMANENT) {
+				try {
+					handler.banPlayer(data.getVictim(), data.getReason(), BanHandler.SYSTEM_ADMIN_NAME);
+				} catch (PlayerAlreadyBannedException e) {} //just skip it
+			}
+		}
 	}
 	@Override
 	public Vector<BanData> dump(String admin) {
-		// TODO Auto-generated method stub
-		return null;
+		Vector<BanData> data = new Vector<BanData>(50);
+		ResultSet temp = sqlHandler.query("SELECT * FROM "+GlobalConf.Sql.prefix+"temp;");
+		ResultSet perm = sqlHandler.query("SELECT * FROM "+GlobalConf.Sql.prefix+"perm;");
+		if (temp != null) {
+			try {
+				for (; temp.next();) {
+					String name = temp.getString("username");
+					long time = temp.getLong("time");
+					data.add(new BanData(name, time));
+					}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				Main.LOG.warning("Dump on MySQL failed due to SQLException -- dump will be truncated!");
+			} finally {
+				try {
+					perm.close();
+				} catch (SQLException e) {}
+			}
+		}
+		if (perm != null) {
+			try {
+				for (; perm.next();) {
+					String name = perm.getString("username");
+					String reason = perm.getString("reason");
+					data.add(new BanData(name, reason));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				Main.LOG.warning("Dump on MySQL failed due to SQLException -- dump will be truncated!");
+			} finally {
+				try {
+					perm.close();
+				} catch (SQLException e) {}
+			}
+		}
+		return data;
 	}
 	@Override
 	public Vector<String> listBannedPlayers(String admin) {
-		// TODO Auto-generated method stub
-		return null;
+		Vector<String> list = new Vector<String>(50);
+		Vector<BanData> verbData = dump(admin);
+		for (BanData data : verbData) {
+			list.add(data.getVictim());
+		}
+		return list;
 	}
 
 
