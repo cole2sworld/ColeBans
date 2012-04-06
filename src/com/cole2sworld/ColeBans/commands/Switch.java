@@ -26,6 +26,7 @@ public class Switch extends CBCommand {
 				Main.instance.banHandler.convert(dest);
 				Main.instance.banHandler.onDisable();
 				GlobalConf.conf.set("settings.banHandler", args[0]);
+				Main.instance.saveConfig();
 				Main.instance.banHandler = dest;
 				Main.LOG.info("Conversion succeeded!");
 				admin.sendMessage(ChatColor.GREEN+"Conversion succeeded!");
