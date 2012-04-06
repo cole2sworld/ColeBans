@@ -15,6 +15,7 @@ public final class PermissionSet {
 	public final boolean canKick;
 	public final boolean canLookup;
 	public final boolean canSwitch;
+	public final boolean canReload;
 	public final boolean console;
 	public PermissionSet(CommandSender sender) {
 		if (sender instanceof Player) {
@@ -25,6 +26,7 @@ public final class PermissionSet {
 			canLookup = Main.instance.hasPermission(player, "colebans.lookup") | Main.instance.hasPermission(player, "colebans.check");
 			canKick = Main.instance.hasPermission(player, "colebans.kick");
 			canSwitch = Main.instance.hasPermission(player, "colebans.switch");
+			canReload = Main.instance.hasPermission(player, "colebans.reload");
 			console = false;
 		}
 		else {
@@ -34,6 +36,7 @@ public final class PermissionSet {
 			canLookup = true;
 			canKick = true;
 			canSwitch = true;
+			canReload = true;
 			console = true;
 		}
 	}

@@ -190,4 +190,12 @@ public final class YAMLBanHandler extends BanHandler {
 		}
 	}
 
+	public void reload() {
+		try {
+			conf.load(file);
+		} catch (FileNotFoundException e) {}
+		catch (IOException e) {}
+		catch (InvalidConfigurationException e) {}
+	}
+
 }
