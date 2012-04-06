@@ -88,8 +88,7 @@ public final class Main extends JavaPlugin {
 			GlobalConf.loadConfig();
 			if (debug) LOG.warning(GlobalConf.logPrefix+"Using a debug build. Expect many messages");
 			try {
-				Class<?> rawClass = Class.forName(GlobalConf.Advanced.pkg+"."+GlobalConf.banHandlerConf+GlobalConf.Advanced.suffix);
-				banHandler = (BanHandler) rawClass.getDeclaredMethod("onEnable", new Class<?>[0]).invoke(null);
+				banHandler = Util.lookupHandler(GlobalConf.banHandlerConf);
 			} catch (ClassNotFoundException e) {
 				LOG.severe(GlobalConf.logPrefix+"Non-existant ban handler given in config file! Aborting operation.");
 				onFatal();
@@ -200,26 +199,6 @@ public final class Main extends JavaPlugin {
 			if (GlobalConf.announceBansAndKicks) server.broadcastMessage(ChatColor.valueOf(GlobalConf.kickColor)+player+" was kicked! ["+reason+"]");
 		}
 		else throw new PlayerOfflineException(player+" is offline!");
-	}
-	/**
-	 * Check if the number "check" should be pluralized in speech with an s.
-	 * Returns "s" if yes, "" if no when plural is true, "are" if yes or "is" if no when plural is false.
-	 * <br/><b>Example:</b><br/>
-	 * "There "+Main.getPlural(apples, false)+" "+apples+" apple"+Main.getPlural(apples, true)+" in the bowl."<br/>
-	 * <br/>
-	 * If 'apples' was 4, the string would be "There are 4 apples in the bowl."<br/>
-	 * If 'apples' was 1, the string would be "There is 1 apple in the bowl."<br/>
-	 * If 'apples' was 0, the string would be "There are 0 apples in the bowl."
-	 * @param check The number to check
-	 * @param plural Return s?
-	 * @return Plural
-	 */
-	public static String getPlural(long check, boolean plural) {
-		boolean isPlural = check < 0 || check == 0 || check > 1;
-		if (plural && isPlural) return "s";
-		if (plural && !isPlural) return "";
-		if (!plural && isPlural) return "are";
-		return "is";
 	}
 	/**
 	 * @param player Player to check (name)

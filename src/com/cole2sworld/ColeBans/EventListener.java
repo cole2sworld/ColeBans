@@ -39,7 +39,7 @@ final class EventListener implements Listener {
 				tempBanMins /= 1000;
 				tempBanMins /= 60;
 				event.setResult(Result.KICK_BANNED);
-				event.setKickMessage(ChatColor.valueOf(GlobalConf.tempBanColor)+GlobalConf.tempBanMessage.replace("%time", tempBanMins.toString()).replace("%plural", Main.getPlural(tempBanMins, true)));
+				event.setKickMessage(ChatColor.valueOf(GlobalConf.tempBanColor)+GlobalConf.tempBanMessage.replace("%time", tempBanMins.toString()).replace("%plural", Util.getPlural(tempBanMins, true)));
 				return;
 			}
 		}
