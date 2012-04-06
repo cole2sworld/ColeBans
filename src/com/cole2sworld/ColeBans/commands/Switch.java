@@ -22,14 +22,16 @@ public class Switch extends CBCommand {
 			try {
 				BanHandler dest = Util.lookupHandler(args[0]);
 				Main.LOG.info("Starting conversion from "+Main.instance.banHandler.getClass().getSimpleName().replace(GlobalConf.Advanced.suffix, "")+" to "+args[0]);
-				admin.sendMessage(ChatColor.YELLOW+"Starting conversion...");
+				if (!perm.console) admin.sendMessage(ChatColor.YELLOW+"Starting conversion...");
+				long oldTime = System.currentTimeMillis()/1000;
 				Main.instance.banHandler.convert(dest);
 				Main.instance.banHandler.onDisable();
 				GlobalConf.conf.set("settings.banHandler", args[0]);
 				Main.instance.saveConfig();
 				Main.instance.banHandler = dest;
-				Main.LOG.info("Conversion succeeded!");
-				admin.sendMessage(ChatColor.GREEN+"Conversion succeeded!");
+				long timeSince = (System.currentTimeMillis()/1000)-oldTime;
+				Main.LOG.info("Conversion succeeded! Took "+timeSince+" seconds.");
+				if (!perm.console) admin.sendMessage(ChatColor.GREEN+"Conversion succeeded! Took "+timeSince+" seconds.");
 			} catch (IllegalArgumentException e) {
 				return ChatColor.DARK_RED+"Given ban handler is wierdly implemented";
 			} catch (SecurityException e) {
