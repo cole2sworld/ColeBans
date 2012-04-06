@@ -49,7 +49,7 @@ import java.sql.*;
  *
  * @author Daniel Morante
  */
-public class SimpleMySQL {
+public final class SimpleMySQL {
     
     private Connection mysql_connection;        
         

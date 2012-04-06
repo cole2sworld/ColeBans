@@ -16,7 +16,7 @@ import com.nijikokun.bukkit.Permissions.Permissions;
  * Event listener for ColeBans.
  *
  */
-public class EventListener implements Listener {
+final class EventListener implements Listener {
 	/**
 	 * Checks if the player is banned, if so it will kick them out.
 	 * @param event The PlayerPreLoginEvent created by Bukkit.

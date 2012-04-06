@@ -11,7 +11,7 @@ import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 import com.unibia.simplemysql.SimpleMySQL;
 
-public class MySQLBanHandler extends BanHandler {
+public final class MySQLBanHandler extends BanHandler {
 	private SimpleMySQL sqlHandler;
 	/**
 	 * Creates a new MySQLBanHandler using a database with the given settings

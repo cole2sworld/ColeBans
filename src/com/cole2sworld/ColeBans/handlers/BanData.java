@@ -4,7 +4,7 @@ import com.cole2sworld.ColeBans.handlers.BanHandler.Type;
  * Holds data about a ban.
  *
  */
-public class BanData {
+public final class BanData {
 	private Type type = Type.NOT_BANNED;
 	private String reason = "";
 	private String victim = "";

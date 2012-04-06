@@ -3,7 +3,7 @@ package com.cole2sworld.ColeBans.framework;
  * Thrown when an attempt is made to ban a player, but they are already banned.
  *
  */
-public class PlayerAlreadyBannedException extends Exception {
+public final class PlayerAlreadyBannedException extends Exception {
 	private static final long serialVersionUID = 8392525539750353813L;
 	private String detail = null;
 	public PlayerAlreadyBannedException(String detail) {

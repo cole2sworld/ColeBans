@@ -12,7 +12,7 @@ import java.net.URLConnection;
  * @see MCBans
  */
 //TODO check if this thing actually works
-public class MCBansRequester extends Thread {
+final class MCBansRequester extends Thread {
 	private String key;
 	private String instruction;
 	private String result;

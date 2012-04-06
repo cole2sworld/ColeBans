@@ -1,5 +1,5 @@
 package com.cole2sworld.ColeBans.handlers;
 
-public class JSONBanHandler extends NoOpBanHandler {
+public final class JSONBanHandler extends NoOpBanHandler {
 
 }

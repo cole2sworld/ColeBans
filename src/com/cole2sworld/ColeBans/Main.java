@@ -27,7 +27,7 @@ import com.nijiko.permissions.PermissionHandler;
  * The main class for ColeBans.
  *
  */
-public class Main extends JavaPlugin {
+public final class Main extends JavaPlugin {
 	/**
 	 * Are we in debug mode? (If this is turned on when compiled, it means the build is a debug build)
 	 */

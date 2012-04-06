@@ -18,7 +18,7 @@ import com.cole2sworld.ColeBans.handlers.BanData;
  * @author cole2
  *
  */
-public class MCBans {
+public final class MCBans {
 	private String key;
 	public MCBans(String key) {
 		this.key = key;

@@ -16,7 +16,7 @@ import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 
-public class YAMLBanHandler extends BanHandler {
+public final class YAMLBanHandler extends BanHandler {
 	private File file;
 	private YamlConfiguration conf;
 	public static BanHandler onEnable() {

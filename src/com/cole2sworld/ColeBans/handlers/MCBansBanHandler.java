@@ -1,6 +1,6 @@
 package com.cole2sworld.ColeBans.handlers;
 
-public class MCBansBanHandler extends NoOpBanHandler {
+public final class MCBansBanHandler extends NoOpBanHandler {
 	/*private String api;
 	public MCBansBanHandler(String api) {
 		this.api = api;

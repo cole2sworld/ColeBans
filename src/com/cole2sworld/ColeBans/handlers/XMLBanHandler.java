@@ -1,5 +1,5 @@
 package com.cole2sworld.ColeBans.handlers;
 
-public class XMLBanHandler extends NoOpBanHandler {
+public final class XMLBanHandler extends NoOpBanHandler {
 
 }

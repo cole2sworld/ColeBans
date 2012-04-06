@@ -8,7 +8,7 @@ import com.cole2sworld.ColeBans.Main;
  * Holds all possible permissions for a player using ColeBans, or a Console. If it is a Console, all permissions will be 'true'
  *
  */
-public class PermissionSet {
+public final class PermissionSet {
 	public final boolean canBan;
 	public final boolean canTempBan;
 	public final boolean canUnBan;
