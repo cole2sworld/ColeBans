@@ -227,7 +227,7 @@ public final class GlobalConf {
 								"    kickColor: YELLOW\n"+
 								"    tempBanColor: RED\n"+
 								"    announceBansAndKicks: yes\n"+
-								"    logPrefix: [ColeBans]\n"+
+								"    logPrefix: '[ColeBans]'\n"+
 								"    #banHandler can be MySQL, MCBans, YAML, or JSON.\n"+
 								"    banHandler: YAML\n"+
 								"    mysql:\n"+
