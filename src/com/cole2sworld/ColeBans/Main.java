@@ -133,7 +133,7 @@ public final class Main extends JavaPlugin {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		debug("Executing command "+cmdLabel);
-		if (cmdLabel.equalsIgnoreCase("cb")) {
+		if (cmdLabel.equalsIgnoreCase("cb") || cmdLabel.equalsIgnoreCase("colebans")) {
 			debug("It's /cb");
 			if (args.length < 1) return false;
 			else {
