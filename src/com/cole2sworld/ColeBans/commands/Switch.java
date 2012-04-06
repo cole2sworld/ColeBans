@@ -17,7 +17,7 @@ public class Switch extends CBCommand {
 	public String run(String[] args, CommandSender admin) {
 		PermissionSet perm = new PermissionSet(admin);
 		if (!perm.canSwitch) return ChatColor.RED+"You don't have permission to do that."; 
-		if (args.length > 1) return ChatColor.RED+"The switch command must be used with only the destination handler as an argument";
+		if (args.length > 1 || args.length == 0) return ChatColor.RED+"The switch command must be used with only the destination handler as an argument";
 		else {
 			try {
 				BanHandler dest = Util.lookupHandler(args[0]);
