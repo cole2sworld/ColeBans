@@ -19,6 +19,7 @@ public class Switch extends CBCommand {
 		if (!perm.canSwitch) return ChatColor.RED+"You don't have permission to do that."; 
 		if (args.length > 1 || args.length == 0) return ChatColor.RED+"The switch command must be used with only the destination handler as an argument";
 		else {
+			if (Main.instance.banHandler.getClass().getSimpleName().replace(GlobalConf.Advanced.suffix, "").equals(args[0])) return ChatColor.YELLOW+"You're already using that ban handler!";
 			try {
 				BanHandler dest = Util.lookupHandler(args[0]);
 				Main.LOG.info(GlobalConf.logPrefix+"Starting conversion from "+Main.instance.banHandler.getClass().getSimpleName().replace(GlobalConf.Advanced.suffix, "")+" to "+args[0]);
