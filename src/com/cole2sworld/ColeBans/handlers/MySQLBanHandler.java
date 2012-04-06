@@ -18,7 +18,6 @@ public class MySQLBanHandler extends BanHandler {
 	 * @param username - The username to log into the server
 	 * @param password - The password to log into the server
 	 * @param host - The hostname to log into the server
-	 * @param port - The port to log into the server
 	 * @param prefix - The table prefix
 	 * @param db - The database to use
 	 */

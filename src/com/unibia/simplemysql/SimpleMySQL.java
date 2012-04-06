@@ -65,7 +65,7 @@ public class SimpleMySQL {
     /**
      * Gets an existing SimpleMySQL instance.
      * 
-     * @return
+     * @return the existing instance
      */
     public static SimpleMySQL getInstance() {
         return SimpleMySQLHolder.INSTANCE;
@@ -164,7 +164,7 @@ public class SimpleMySQL {
      * No Password
      * </p>
      * 
-     * @return
+     * @return if the connect succeeded
      */
     public boolean connect(){
     	Main.debug("Connecting with default settings");
@@ -351,7 +351,7 @@ public class SimpleMySQL {
      * connect to a MySQL database.  If a MySQL database is not connected
      * this will return null.
      * 
-     * @param Query
+     * @param query The SQL query
      * @return For SELECT type queries a SimpleMySQLResult. All other type of 
      * queries will return null
      * @see #connect() 

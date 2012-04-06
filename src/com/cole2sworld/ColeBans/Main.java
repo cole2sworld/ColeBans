@@ -244,7 +244,6 @@ public class Main extends JavaPlugin {
 		data.put("username", GlobalConf.Sql.user);
 		data.put("password", GlobalConf.Sql.pass);
 		data.put("host", GlobalConf.Sql.host);
-		data.put("port", GlobalConf.Sql.port);
 		data.put("prefix", GlobalConf.Sql.prefix);
 		data.put("db", GlobalConf.Sql.db);
 		data.put("yaml", GlobalConf.Yaml.file);
