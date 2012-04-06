@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -207,7 +208,7 @@ public final class Main extends JavaPlugin {
 	 */
 	public boolean hasPermission(Player player, String permissionNode)
 	{
-		if (permissionsHandler == null) return player.isOp();
+		if (permissionsHandler == null) return player.hasPermission(new Permission(permissionNode)) || player.isOp();
 		return permissionsHandler.has(player, permissionNode);
 	}
 
