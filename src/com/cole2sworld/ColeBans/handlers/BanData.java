@@ -7,10 +7,7 @@ import com.cole2sworld.ColeBans.handlers.BanHandler.Type;
  *
  */
 public final class BanData {
-	private Type type = Type.NOT_BANNED;
-	private String reason = "";
-	private String victim = "";
-	private Long time = -1L;
+	private HashMap<String, String> standard = new HashMap<String, String>(4);
 	private HashMap<String, Object> custom = new HashMap<String, Object>(5);
 	/**
 	 * Build a new permanent ban.
@@ -48,49 +45,49 @@ public final class BanData {
 	 * @return the reason
 	 */
 	public String getReason() {
-		return reason;
+		return standard.get("reason");
 	}
 	/**
 	 * @param reason the reason to set
 	 */
 	public void setReason(String reason) {
-		this.reason = reason;
+		standard.put("reason", reason);
 	}
 	/**
 	 * @return the victim
 	 */
 	public String getVictim() {
-		return victim;
+		return standard.get("victim");
 	}
 	/**
 	 * @param victim the victim to set
 	 */
 	public void setVictim(String victim) {
-		this.victim = victim;
+		standard.put("victim", victim);
 	}
 	/**
 	 * @return the type
 	 */
 	public Type getType() {
-		return type;
+		return Type.valueOf(standard.get("type"));
 	}
 	/**
 	 * @param type the type to set
 	 */
 	protected void setType(Type type) {
-		this.type = type;
+		standard.put("type", type.name());
 	}
 	/**
 	 * @return the Unix Timestamp at which the ban will expire
 	 */
 	public Long getTime() {
-		return time;
+		return Long.parseLong(standard.get("time"));
 	}
 	/**
 	 * @param time the time to set
 	 */
 	public void setTime(Long time) {
-		this.time = time;
+		standard.put("time", time.toString());
 	}
 	/**
 	 * Sets the value of a custom data, overwriting any previous values. If data is <code>null</code>, the custom data will be deleted.
