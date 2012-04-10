@@ -12,6 +12,12 @@ import com.cole2sworld.ColeBans.framework.PermissionSet;
  */
 //LOWPRI deprecate when applicable
 public class CommandHandler {
+	/**
+	 * @param sender The originator of the command
+	 * @param cmd The command
+	 * @param cmdLabel The command label
+	 * @param args The space-seperated arguments
+	 */
 	public static boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		Main.debug("Static handler called");
 		String error = ChatColor.YELLOW+"An unspecified error has occurred while running this command.";
@@ -23,7 +29,7 @@ public class CommandHandler {
 				Main.debug("Has permission - executing");
 				String result = new Ban().run(args, sender);
 				if (result == null) return true;
-				else error = result;
+				error = result;
 			}
 			else error = ChatColor.RED+"You do not have permission to use the "+cmdLabel+" command.";
 		}
@@ -33,7 +39,7 @@ public class CommandHandler {
 				Main.debug("Has permission - executing");
 				String result = new Tempban().run(args, sender);
 				if (result == null) return true;
-				else error = result;
+				error = result;
 			}
 			else error = ChatColor.RED+"You do not have permission to use the "+cmdLabel+" command.";
 		}
@@ -43,7 +49,7 @@ public class CommandHandler {
 				Main.debug("Has permission - executing");
 				String result = new Unban().run(args, sender);
 				if (result == null) return true;
-				else error = result;
+				error = result;
 			}
 			else error = ChatColor.RED+"You do not have permission to use the "+cmdLabel+" command.";
 		}
@@ -53,7 +59,7 @@ public class CommandHandler {
 				Main.debug("Has permission - executing");
 				String result = new Check().run(args, sender);
 				if (result == null) return true;
-				else error = result;
+				error = result;
 			}
 			else error = ChatColor.RED+"You do not have permission to use the "+cmdLabel+" command.";
 		}
@@ -63,7 +69,7 @@ public class CommandHandler {
 				Main.debug("Has permission - executing");
 				String result = new Kick().run(args, sender);
 				if (result == null) return true;
-				else error = result;
+				error = result;
 			}
 			else error = ChatColor.RED+"You do not have permission to use the "+cmdLabel+" command.";
 		}

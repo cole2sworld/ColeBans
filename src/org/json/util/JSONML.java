@@ -185,9 +185,8 @@ public class JSONML {
 	                    if (ja == null) {
 	                    	if (arrayForm) {
 	                    		return newja;
-	                    	} else {
-	                    		return newjo;
 	                    	}
+							return newjo;
 	                    }
 
 // Content, between <...> and </...>
@@ -209,9 +208,8 @@ public class JSONML {
 		                	if (ja == null) {
 		                    	if (arrayForm) {
 		                    		return newja;
-		                    	} else {
-		                    		return newjo;
 		                    	}
+								return newjo;
 		                	}
 	                	}
                 	}

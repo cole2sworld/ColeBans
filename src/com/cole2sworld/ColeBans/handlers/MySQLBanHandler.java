@@ -193,7 +193,9 @@ public final class MySQLBanHandler extends BanHandler {
 			boolean resultsB = false;
 			try {
 				resultsB = reasonResultB.first();
-			} catch (SQLException e) {}
+			} catch (SQLException e) {
+				//we don't care, discard it
+			}
 			if (resultsB) {
 				long time = -1L;
 				try {
@@ -205,7 +207,9 @@ public final class MySQLBanHandler extends BanHandler {
 						return new BanData(player);
 					}
 				}
-				catch (SQLException e) {}
+				catch (SQLException e) {
+					//if there's a sql exception we don't really care
+				}
 				if (time > -1) {
 					return new BanData(player, time);
 				}
@@ -233,11 +237,17 @@ public final class MySQLBanHandler extends BanHandler {
 			if (GlobalConf.allowTempBans && data.getType() == Type.TEMPORARY) {
 				try {
 					handler.tempBanPlayer(data.getVictim(), data.getTime(), BanHandler.SYSTEM_ADMIN_NAME);
-				} catch (UnsupportedOperationException e) {} catch (PlayerAlreadyBannedException e) {} //just skip it
+				} catch (UnsupportedOperationException e) {
+					//just skip it, tempbans are off
+				} catch (PlayerAlreadyBannedException e) {
+					//just skip it, they are already banned in the target
+				}
 			} else if (data.getType() == Type.PERMANENT) {
 				try {
 					handler.banPlayer(data.getVictim(), data.getReason(), BanHandler.SYSTEM_ADMIN_NAME);
-				} catch (PlayerAlreadyBannedException e) {} //just skip it
+				} catch (PlayerAlreadyBannedException e) {
+					//just skip it, they are already banned in the target
+				}
 			}
 		}
 	}
@@ -259,7 +269,9 @@ public final class MySQLBanHandler extends BanHandler {
 			} finally {
 				try {
 					temp.close();
-				} catch (SQLException e) {}
+				} catch (SQLException e) {
+					//nothing we can do at this point if it fails
+				}
 			}
 		}
 		if (perm != null) {
@@ -275,7 +287,9 @@ public final class MySQLBanHandler extends BanHandler {
 			} finally {
 				try {
 					perm.close();
-				} catch (SQLException e) {}
+				} catch (SQLException e) {
+					//nothing we can do at this point if it fails
+				}
 			}
 		}
 		return data;

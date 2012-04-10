@@ -30,7 +30,7 @@ public abstract class BanHandler {
 		 * Represents a player not being banned.
 		 */
 		NOT_BANNED
-	};
+	}
 	/**
 	 * The preferred name for the admin when an action is initiated without player intervention
 	 */

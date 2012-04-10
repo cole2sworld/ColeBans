@@ -228,9 +228,7 @@ public final class SimpleMySQL {
         if (connect(server, username, password)){
             return use(database);
         }
-        else {
-            return false;
-        }
+		return false;
     }
     
     /**
@@ -290,7 +288,7 @@ public final class SimpleMySQL {
         Main.debug("Attempting Auto-Reconnect...");
         
         //Clean and desrtoy anything that may be left
-        try{mysql_connection.close(); mysql_connection = null;}catch(SQLException e){}
+        try{mysql_connection.close(); mysql_connection = null;}catch(SQLException e){ /* doesn't matter */}
        
         //On a sucesufull connection stop retrying
         boolean connected = false;        

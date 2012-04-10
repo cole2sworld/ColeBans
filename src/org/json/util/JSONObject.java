@@ -169,6 +169,7 @@ public class JSONObject {
             try {
                 putOnce(names[i], jo.opt(names[i]));
             } catch (Exception ignore) {
+            	//ignore it
             }
         }
     }
@@ -297,6 +298,7 @@ public class JSONObject {
             try {
                 putOpt(name, c.getField(name).get(object));
             } catch (Exception ignore) {
+            	// ignore it
             }
         }
     }
@@ -986,6 +988,7 @@ public class JSONObject {
                     }
                 }
             } catch (Exception ignore) {
+            	//ignore it
             }
         }
     }
@@ -1259,21 +1262,21 @@ public class JSONObject {
                 try {
                     return new Integer(Integer.parseInt(string.substring(2), 16));
                 } catch (Exception ignore) {
+                	//ignore it
                 }
             }
             try {
                 if (string.indexOf('.') > -1 || 
                         string.indexOf('e') > -1 || string.indexOf('E') > -1) {
                     return Double.valueOf(string);
-                } else {
-                    Long myLong = new Long(string);
-                    if (myLong.longValue() == myLong.intValue()) {
-                        return new Integer(myLong.intValue());
-                    } else {
-                        return myLong;
-                    }
                 }
+				Long myLong = new Long(string);
+				if (myLong.longValue() == myLong.intValue()) {
+				    return new Integer(myLong.intValue());
+				}
+				return myLong;
             }  catch (Exception ignore) {
+            	//ignore it
             }
         }
         return string;
@@ -1514,6 +1517,7 @@ public class JSONObject {
                 }
             }
         } catch (Exception ignore) {
+        	//ignore it
         }
         if (value instanceof Number) {
             return numberToString((Number) value);

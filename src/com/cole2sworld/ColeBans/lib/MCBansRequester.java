@@ -27,7 +27,7 @@ final class MCBansRequester extends Thread {
 	}
 	public String getResult() {
 		if (finished) return result;
-		else return null;
+		return null;
 	}
 	/**
 	 * Requests from MCBans with the given instruction and api key.
@@ -55,13 +55,19 @@ final class MCBansRequester extends Thread {
 			finished = true;
 			return;
 		}
-		catch (MalformedURLException e) {}
-		catch (IOException e) {}
+		catch (MalformedURLException e) {
+			//impossible
+		}
+		catch (IOException e) {
+			//doesn't really matter
+		}
 		finally {
 			if (wr != null)
 				try {
 					wr.close();
-				} catch (IOException e) {}
+				} catch (IOException e) {
+					//nothing we can do at this point
+				}
 		}
 		result = null;
 		finished = true;

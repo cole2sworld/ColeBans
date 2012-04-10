@@ -335,12 +335,12 @@ public class XML {
                     Long myLong = new Long(string);
                     if (myLong.longValue() == myLong.intValue()) {
                         return new Integer(myLong.intValue());
-                    } else {
-                        return myLong;
                     }
+					return myLong;
                 }
 	        }
         }  catch (Exception ignore) {
+        	//ignore it
         }
         return string;
     }
@@ -388,7 +388,8 @@ public class XML {
      * @return A string.
      * @throws JSONException
      */
-    public static String toString(Object object, String tagName)
+    @SuppressWarnings("null")
+	public static String toString(Object object, String tagName)
             throws JSONException {
         StringBuffer sb = new StringBuffer();
         int          i;
@@ -484,23 +485,21 @@ public class XML {
 // XML does not have good support for arrays. If an array appears in a place
 // where XML is lacking, synthesize an <array> element.
 
-        } else {
-            if (object.getClass().isArray()) {
-                object = new JSONArray(object);
-            }
-            if (object instanceof JSONArray) {
-                ja = (JSONArray)object;
-                length = ja.length();
-                for (i = 0; i < length; i += 1) {
-                    sb.append(toString(ja.opt(i), tagName == null ? "array" : tagName));
-                }
-                return sb.toString();
-            } else {
-                string = (object == null) ? "null" : escape(object.toString());
-                return (tagName == null) ? "\"" + string + "\"" :
-                    (string.length() == 0) ? "<" + tagName + "/>" :
-                    "<" + tagName + ">" + string + "</" + tagName + ">";
-            }
         }
+		if (object.getClass().isArray()) {
+		    object = new JSONArray(object);
+		}
+		if (object instanceof JSONArray) {
+		    ja = (JSONArray)object;
+		    length = ja.length();
+		    for (i = 0; i < length; i += 1) {
+		        sb.append(toString(ja.opt(i), tagName == null ? "array" : tagName));
+		    }
+		    return sb.toString();
+		}
+		string = (object == null) ? "null" : escape(object.toString());
+		return (tagName == null) ? "\"" + string + "\"" :
+		    (string.length() == 0) ? "<" + tagName + "/>" :
+		    "<" + tagName + ">" + string + "</" + tagName + ">";
     }
 }

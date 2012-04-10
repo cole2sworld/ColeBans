@@ -137,37 +137,35 @@ public final class Main extends JavaPlugin {
 		if (cmdLabel.equalsIgnoreCase("cb") || cmdLabel.equalsIgnoreCase("colebans")) {
 			debug("It's /cb");
 			if (args.length < 1) return false;
-			else {
-				try {
-					String cmdName = args[0].substring(1);
-					debug("cmdName = "+cmdName);
-					Character firstChar = args[0].charAt(0);
-					debug("firstChar = "+firstChar);
-					cmdName = Character.toUpperCase(firstChar)+cmdName.toLowerCase();
-					debug("cmdName = "+cmdName);
-					Object rawObject = Class.forName("com.cole2sworld.ColeBans.commands."+cmdName).newInstance();
-					debug("rawObject = "+rawObject.getClass().getSimpleName());
-					if (rawObject instanceof CBCommand) {
-						debug("rawObject is a CBCommand");
-						CBCommand cmdObj = (CBCommand) rawObject;
-						Vector<String> newArgs = new Vector<String>(args.length);
-						for (int i = 1; i<args.length; i++) {
-							newArgs.add(args[i]);
-						}
-						String error = cmdObj.run(newArgs.toArray(new String[newArgs.size()]), sender);
-						if (error != null) {
-							sender.sendMessage(error);
-						}
-						return true;
+			try {
+				String cmdName = args[0].substring(1);
+				debug("cmdName = "+cmdName);
+				Character firstChar = args[0].charAt(0);
+				debug("firstChar = "+firstChar);
+				cmdName = Character.toUpperCase(firstChar)+cmdName.toLowerCase();
+				debug("cmdName = "+cmdName);
+				Object rawObject = Class.forName("com.cole2sworld.ColeBans.commands."+cmdName).newInstance();
+				debug("rawObject = "+rawObject.getClass().getSimpleName());
+				if (rawObject instanceof CBCommand) {
+					debug("rawObject is a CBCommand");
+					CBCommand cmdObj = (CBCommand) rawObject;
+					Vector<String> newArgs = new Vector<String>(args.length);
+					for (int i = 1; i<args.length; i++) {
+						newArgs.add(args[i]);
 					}
+					String error = cmdObj.run(newArgs.toArray(new String[newArgs.size()]), sender);
+					if (error != null) {
+						sender.sendMessage(error);
+					}
+					return true;
 				}
-				catch (ClassNotFoundException e) {
-					debug("ClassNotFoundException (invalid subcommand)");
-				} catch (InstantiationException e) {
-					debug("InstantiationException (???)");
-				} catch (IllegalAccessException e) {
-					debug("IllegalAccessException (non-public class)");
-				}
+			}
+			catch (ClassNotFoundException e) {
+				debug("ClassNotFoundException (invalid subcommand)");
+			} catch (InstantiationException e) {
+				debug("InstantiationException (???)");
+			} catch (IllegalAccessException e) {
+				debug("IllegalAccessException (non-public class)");
 			}
 		}
 		else {
@@ -240,7 +238,9 @@ public final class Main extends JavaPlugin {
 			} catch(Exception e) {
 				try {
 					caller = Class.forName(e.getStackTrace()[1].getClassName()).getSimpleName();
-				} catch (ClassNotFoundException e1) {}
+				} catch (ClassNotFoundException e1) {
+					//we don't really care
+				}
 			}
 			System.out.println(GlobalConf.logPrefix+"[DEBUG] ["+caller+"] "+msg);
 		}

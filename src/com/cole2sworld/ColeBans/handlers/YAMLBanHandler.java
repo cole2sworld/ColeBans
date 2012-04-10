@@ -138,11 +138,17 @@ public final class YAMLBanHandler extends BanHandler {
 			if (GlobalConf.allowTempBans && data.getType() == Type.TEMPORARY) {
 				try {
 					handler.tempBanPlayer(data.getVictim(), data.getTime(), BanHandler.SYSTEM_ADMIN_NAME);
-				} catch (UnsupportedOperationException e) {} catch (PlayerAlreadyBannedException e) {} //just skip it
+				} catch (UnsupportedOperationException e) {
+					//just skip it, tempbans are disabled
+				} catch (PlayerAlreadyBannedException e) {
+					//just skip it, they are already banned in the target
+				}
 			} else if (data.getType() == Type.PERMANENT) {
 				try {
 					handler.banPlayer(data.getVictim(), data.getReason(), BanHandler.SYSTEM_ADMIN_NAME);
-				} catch (PlayerAlreadyBannedException e) {} //just skip it
+				} catch (PlayerAlreadyBannedException e) {
+					//just skip it, they are already banned in the target
+				}
 			}
 		}
 	}
@@ -193,9 +199,15 @@ public final class YAMLBanHandler extends BanHandler {
 	public void reload() {
 		try {
 			conf.load(file);
-		} catch (FileNotFoundException e) {}
-		catch (IOException e) {}
-		catch (InvalidConfigurationException e) {}
+		} catch (FileNotFoundException e) {
+			//so what
+		}
+		catch (IOException e) {
+			//meh
+		}
+		catch (InvalidConfigurationException e) {
+			//then how did this work before
+		}
 	}
 
 }

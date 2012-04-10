@@ -259,10 +259,8 @@ public final class GlobalConf {
 					}
 					return;
 				}
-				else {
-					Main.LOG.severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
-					Main.instance.onFatal();
-				}
+				Main.LOG.severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
+				Main.instance.onFatal();
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
