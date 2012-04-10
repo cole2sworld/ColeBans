@@ -1,4 +1,6 @@
 package com.cole2sworld.ColeBans.handlers;
+import java.util.HashMap;
+
 import com.cole2sworld.ColeBans.handlers.BanHandler.Type;
 /**
  * Holds data about a ban.
@@ -9,6 +11,7 @@ public final class BanData {
 	private String reason = "";
 	private String victim = "";
 	private Long time = -1L;
+	private HashMap<String, Object> custom = new HashMap<String, Object>(5);
 	/**
 	 * Build a new permanent ban.
 	 * @param victim The banned player's name
@@ -88,5 +91,24 @@ public final class BanData {
 	 */
 	public void setTime(Long time) {
 		this.time = time;
+	}
+	/**
+	 * Sets the value of a custom data, overwriting any previous values. If data is <code>null</code>, the custom data will be deleted.
+	 * @param key The key to use later to retrieve this value
+	 * @param data The value
+	 */
+	public void setCustomData(String key, Object data) {
+		if (data == null) {
+			custom.remove(key);
+		} else {
+			custom.put(key, data);
+		}
+	}
+	/**
+	 * Gets the value of a custom data, or null if it doesn't exist.
+	 * @return The custom data's value
+	 */
+	public Object getCustomData(String key) {
+		return custom.get(key);
 	}
 }
