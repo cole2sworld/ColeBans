@@ -181,6 +181,13 @@ public final class MySQLBanHandler extends BanHandler {
 				} catch (SQLException e) {
 					debug("SQLException getting reason - "+e.getMessage());
 				}
+				finally {
+					try {
+						reasonResult.close();
+					} catch (SQLException e) {
+						debug("SQLException closing ResultSet");
+					}
+				}
 				if (!reason.isEmpty()) {
 					debug("Reason not empty");
 					return new BanData(player, reason);
@@ -209,6 +216,12 @@ public final class MySQLBanHandler extends BanHandler {
 				}
 				catch (SQLException e) {
 					//if there's a sql exception we don't really care
+				} finally {
+					try {
+						reasonResultB.close();
+					} catch (SQLException e) {
+						debug("SQLException closing ResultSet");
+					}
 				}
 				if (time > -1) {
 					return new BanData(player, time);
