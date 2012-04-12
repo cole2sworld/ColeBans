@@ -209,7 +209,7 @@ public final class MySQLBanHandler extends BanHandler {
 					time = reasonResultB.getLong("time");
 					if (time <= System.currentTimeMillis()) {
 						if (sqlHandler.checkTable(tblB)) {
-							sqlHandler.query("DELETE FROM `"+GlobalConf.Sql.db+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
+							sqlHandler.query("DELETE FROM `"+GlobalConf.Sql.db+"`.`"+tblB+"` WHERE username='"+addSlashes(player)+"';");
 						}
 						return new BanData(player);
 					}
