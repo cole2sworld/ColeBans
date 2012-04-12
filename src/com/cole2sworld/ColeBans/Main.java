@@ -91,29 +91,21 @@ public final class Main extends JavaPlugin {
 			try {
 				banHandler = Util.lookupHandler(GlobalConf.banHandlerConf);
 			} catch (ClassNotFoundException e) {
-				LOG.severe(GlobalConf.logPrefix+"Non-existant ban handler given in config file! Aborting operation.");
-				onFatal();
+				onFatal("Non-existant ban handler given in config file");
 			} catch (SecurityException e) {
-				LOG.severe(GlobalConf.logPrefix+"Somehow, a SecurityException occurred. Plugin conflict? Aborting operation.");
-				onFatal();
+				onFatal("Somehow, a SecurityException occurred. Plugin conflict?");
 			} catch (NoSuchMethodException e) {
-				LOG.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
-				onFatal();
+				onFatal("Bad ban handler given in config file!");
 			} catch (IllegalArgumentException e) {
-				LOG.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
-				onFatal();
+				onFatal("Bad ban handler given in config file!");
 			} catch (IllegalAccessException e) {
-				LOG.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
-				onFatal();
+				onFatal("Bad ban handler given in config file!");
 			} catch (InvocationTargetException e) {
-				LOG.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
-				onFatal();
+				onFatal("Bad ban handler given in config file!");
 			} catch (NullPointerException e) {
-				LOG.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
-				onFatal();
+				onFatal("Bad ban handler given in config file!");
 			} catch (ClassCastException e) {
-				LOG.severe(GlobalConf.logPrefix+"Bad ban handler given in config file! Aborting operation.");
-				onFatal();
+				onFatal("Bad ban handler given in config file!");
 			}
 			long newtime = System.currentTimeMillis();
 			System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
@@ -123,7 +115,8 @@ public final class Main extends JavaPlugin {
 			newtime = System.currentTimeMillis();
 			System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
 		}
-		catch (RuntimeException e) {
+		catch (Exception e) {
+			LOG.severe(GlobalConf.logPrefix+"Aborting operation: "+e.getMessage());
 			setEnabled(false);
 		}
 	}
@@ -166,6 +159,8 @@ public final class Main extends JavaPlugin {
 				debug("InstantiationException (???)");
 			} catch (IllegalAccessException e) {
 				debug("IllegalAccessException (non-public class)");
+			} catch (Exception e) {
+				return true;
 			}
 		}
 		else {
@@ -213,8 +208,8 @@ public final class Main extends JavaPlugin {
 	/**
 	 * Called when something really bad happens.
 	 */
-	protected void onFatal() throws RuntimeException {
-		throw new RuntimeException("FATAL ERROR");
+	protected void onFatal(String reason) throws Exception {
+		throw new Exception(reason);
 	}
 
 	public static Map<String, String> getBanHandlerInitArgs() {

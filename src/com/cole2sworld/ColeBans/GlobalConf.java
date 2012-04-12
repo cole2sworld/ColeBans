@@ -166,8 +166,9 @@ public final class GlobalConf {
 	}
 	/**
 	 * Loads up the config from disk, or creates it if it does not exist.
+	 * @throws Exception 
 	 */
-	public static void loadConfig() throws RuntimeException {
+	public static void loadConfig() throws Exception {
 		File confFile = new File("./plugins/ColeBans/config.yml");
 		try {
 			if (confFile.exists()) {
@@ -205,8 +206,7 @@ public final class GlobalConf {
 				}
 				catch (NullPointerException e) {
 					Main.LOG.severe("[ColeBans] Your config file is outdated! Please delete it to regenerate it!");
-					Main.LOG.severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
-					Main.instance.onFatal();
+					Main.instance.onFatal("COULD NOT LOAD WORKING CONFIG FILE");
 				}
 			}
 			else {
@@ -259,8 +259,7 @@ public final class GlobalConf {
 					}
 					return;
 				}
-				Main.LOG.severe("[ColeBans] COULD NOT LOAD WORKING CONFIG FILE. Aborting operation.");
-				Main.instance.onFatal();
+				Main.instance.onFatal("COULD NOT LOAD WORKING CONFIG FILE");
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

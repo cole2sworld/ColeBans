@@ -11,7 +11,7 @@ import com.cole2sworld.ColeBans.handlers.YAMLBanHandler;
 public class Reload extends CBCommand {
 
 	@Override
-	public String run(String[] args, CommandSender admin) {
+	public String run(String[] args, CommandSender admin) throws Exception {
 		PermissionSet pset = new PermissionSet(admin);
 		if (!pset.canReload) return ChatColor.RED+"You do not have permission to do that.";
 		Main.instance.reloadConfig();
