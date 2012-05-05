@@ -14,16 +14,21 @@ final class Kick implements CBCommand {
 	@Override
 	public String run(String[] args, CommandSender admin) {
 		String error = null;
-		if (args.length < 2) error = ChatColor.RED+"You must specify a player and reason.";
+		if (args.length < 1) error = ChatColor.RED+"You must specify a player, or a player and a reason.";
 		else {
 			String victim = args[0];
+			String reason;
 			StringBuilder reasonBuilder = new StringBuilder();
-			reasonBuilder.append(args[1]);
-			for (int i = 2; i<args.length; i++) {
-				reasonBuilder.append(" ");
-				reasonBuilder.append(args[i]);
+			if (args.length > 1) {
+				reasonBuilder.append(args[1]);
+				for (int i = 2; i<args.length; i++) {
+					reasonBuilder.append(" ");
+					reasonBuilder.append(args[i]);
+				}
+				reason = reasonBuilder.toString();
+			} else {
+				reason = null;
 			}
-			String reason = reasonBuilder.toString();
 			try {
 				Main.instance.kickPlayer(victim, reason);
 				if (GlobalConf.announceBansAndKicks) Main.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.kickColor)+victim+" was kicked! ["+reason+"]");

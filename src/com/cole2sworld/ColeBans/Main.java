@@ -179,7 +179,7 @@ public final class Main extends JavaPlugin {
 	 */
 	public void kickPlayer(String player, String reason) throws PlayerOfflineException {
 		Player playerObj = server.getPlayer(player);
-		if (playerObj != null) {
+		if (playerObj != null && playerObj.isOnline()) {
 			if (GlobalConf.fancyEffects) {
 				World world = playerObj.getWorld();
 				world.playEffect(playerObj.getLocation(), Effect.SMOKE, 1);
@@ -189,8 +189,16 @@ public final class Main extends JavaPlugin {
 				world.playEffect(playerObj.getLocation(), Effect.SMOKE, 5);
 				world.playEffect(playerObj.getLocation(), Effect.SMOKE, 6);
 			}
-			playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.kickColor)+"KICKED: "+reason);
-			if (GlobalConf.announceBansAndKicks) server.broadcastMessage(ChatColor.valueOf(GlobalConf.kickColor)+player+" was kicked! ["+reason+"]");
+			if (reason != null) {
+				playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.kickColor)+"KICKED: "+reason);
+			} else {
+				playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.kickColor)+"Kicked!");
+			}
+			if (GlobalConf.announceBansAndKicks && reason != null) {
+				server.broadcastMessage(ChatColor.valueOf(GlobalConf.kickColor)+player+" was kicked! ["+reason+"]");
+			} else if (GlobalConf.announceBansAndKicks) {
+				server.broadcastMessage(ChatColor.valueOf(GlobalConf.kickColor)+player+" was kicked!");
+			}
 		}
 		else throw new PlayerOfflineException(player+" is offline!");
 	}
