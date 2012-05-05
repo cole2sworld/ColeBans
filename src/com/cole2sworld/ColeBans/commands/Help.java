@@ -3,7 +3,7 @@ package com.cole2sworld.ColeBans.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public class Help extends CBCommand {
+public class Help implements CBCommand {
 
 	@Override
 	public String run(String[] args, CommandSender admin) {

@@ -33,7 +33,7 @@ import java.util.Iterator;
  * @author JSON.org
  * @version 2011-01-13
  */
-@SuppressWarnings({ "rawtypes" })
+@SuppressWarnings("rawtypes")
 public class XML {
 
     /** The Character '&'. */
@@ -388,8 +388,7 @@ public class XML {
      * @return A string.
      * @throws JSONException
      */
-    @SuppressWarnings("null")
-	public static String toString(Object object, String tagName)
+    public static String toString(Object object, String tagName)
             throws JSONException {
         StringBuffer sb = new StringBuffer();
         int          i;

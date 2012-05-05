@@ -10,7 +10,7 @@ import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
  * The Unban command. Handles unbanning players through commands.
  *
  */
-final class Unban extends CBCommand {
+final class Unban implements CBCommand {
 	@Override
 	public String run(String[] args, CommandSender admin) {
 		String error = null;

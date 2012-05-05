@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
  * Abstract class for the dynamic command handler.
  *
  */
-public abstract class CBCommand {
+public interface CBCommand {
 	/**
 	 * Called when a CommandSender sends a command relevant to this CBCommand.
 	 * @param args The String[] passed by onCommand.
