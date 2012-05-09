@@ -60,6 +60,7 @@ public final class Main extends JavaPlugin {
 	 */
 
 	public Main() {
+		super();
 		instance = this;
 	}
 
