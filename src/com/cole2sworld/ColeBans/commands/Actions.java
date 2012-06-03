@@ -87,21 +87,21 @@ final class Actions implements CBCommand {
 		List<LogEntry> entries = LogManager.getTo(args[1]);
 		for (LogEntry entry : entries) {
 			if (entry.getType() == Type.BAN) {
-				admin.sendMessage(ChatColor.DARK_RED+entry.getAdmin()+" banned "+entry.getVictim());
+				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.DARK_RED+entry.getAdmin()+" banned "+entry.getVictim());
 			} else if (entry.getType() == Type.KICK) {
-				admin.sendMessage(ChatColor.YELLOW+entry.getAdmin()+" kicked "+entry.getVictim());
+				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.YELLOW+entry.getAdmin()+" kicked "+entry.getVictim());
 			} else if (entry.getType() == Type.TEMPBAN) {
-				admin.sendMessage(ChatColor.RED+entry.getAdmin()+" tempbanned "+entry.getVictim());
+				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.RED+entry.getAdmin()+" tempbanned "+entry.getVictim());
 			} else if (entry.getType() == Type.LOCAL_BAN) {
-				admin.sendMessage(ChatColor.GRAY+entry.getAdmin()+" local banned "+entry.getVictim());
+				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.GRAY+entry.getAdmin()+" local banned "+entry.getVictim());
 			} else if (entry.getType() == Type.UNBAN) {
-				admin.sendMessage(ChatColor.GREEN+entry.getAdmin()+" unbanned "+entry.getVictim());
+				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.GREEN+entry.getAdmin()+" unbanned "+entry.getVictim());
 			} else if (entry.getType() == Type.SWITCH) {
-				admin.sendMessage(ChatColor.BLUE+entry.getAdmin()+" switched ban handlers to "+entry.getVictim());
+				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.BLUE+entry.getAdmin()+" switched ban handlers to "+entry.getVictim());
 			} else if (entry.getType() == Type.UNKNOWN) {
-				admin.sendMessage(ChatColor.DARK_PURPLE+entry.getAdmin()+" did an unknown action on "+entry.getVictim());
+				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.DARK_PURPLE+entry.getAdmin()+" did an unknown action on "+entry.getVictim());
 			}  else if (entry.getType() == Type.OTHER) {
-				admin.sendMessage(ChatColor.AQUA+entry.getAdmin()+" did something to "+entry.getVictim());
+				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.AQUA+entry.getAdmin()+" did something to "+entry.getVictim());
 			}
 		}
 		admin.sendMessage(ChatColor.GREEN+"Report complete.");
