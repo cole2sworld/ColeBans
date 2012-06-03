@@ -12,7 +12,7 @@ import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
  * The Ban command. Handles banning players through commands.
  *
  */
-final class Ban implements CBCommand {
+public final class Ban implements CBCommand {
 	@Override
 	public String run(String[] args, CommandSender admin) {
 		String error = null;

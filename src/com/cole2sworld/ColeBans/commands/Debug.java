@@ -10,7 +10,7 @@ import com.cole2sworld.ColeBans.Main;
  * @author cole2
  *
  */
-final class Debug implements CBCommand {
+public final class Debug implements CBCommand {
 
 	@Override
 	public String run(String[] args, CommandSender admin) {

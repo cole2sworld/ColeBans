@@ -9,7 +9,7 @@ import com.cole2sworld.ColeBans.framework.PlayerOfflineException;
  * The Kick command. Handles kicking players through commands.
  *
  */
-final class Kick implements CBCommand {
+public final class Kick implements CBCommand {
 	@Override
 	public String run(String[] args, CommandSender admin) {
 		String error = null;

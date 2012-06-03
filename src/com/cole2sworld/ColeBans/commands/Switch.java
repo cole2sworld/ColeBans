@@ -11,7 +11,7 @@ import com.cole2sworld.ColeBans.Util;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.handlers.BanHandler;
 
-public class Switch implements CBCommand {
+public final class Switch implements CBCommand {
 
 	@Override
 	public String run(String[] args, CommandSender admin) {

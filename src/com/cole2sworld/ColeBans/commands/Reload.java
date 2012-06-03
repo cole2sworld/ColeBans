@@ -8,7 +8,7 @@ import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.handlers.YAMLBanHandler;
 
-public class Reload implements CBCommand {
+public final class Reload implements CBCommand {
 
 	@Override
 	public String run(String[] args, CommandSender admin) throws Exception {

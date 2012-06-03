@@ -13,7 +13,7 @@ import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
  * The Tempban command. Handles temporarily banning players through commands.
  *
  */
-final class Tempban implements CBCommand {
+public final class Tempban implements CBCommand {
 	@Override
 	public String run(String[] args, CommandSender admin) {
 		String error = null;
