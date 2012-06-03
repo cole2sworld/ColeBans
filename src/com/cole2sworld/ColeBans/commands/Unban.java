@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 
 import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
+import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 /**
  * The Unban command. Handles unbanning players through commands.
@@ -13,6 +14,7 @@ import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 public final class Unban implements CBCommand {
 	@Override
 	public String run(String[] args, CommandSender admin) {
+		if (!(new PermissionSet(admin).canUnBan)) return ChatColor.RED+"You don't have permission to do that.";
 		String error = null;
 		if (args.length < 1) error = ChatColor.RED+"You must specify a player";
 		else if (args.length > 1) error = ChatColor.RED+"Too many arguments. Usage: /unban <player>";

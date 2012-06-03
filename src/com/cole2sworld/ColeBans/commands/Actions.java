@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import com.cole2sworld.ColeBans.LogEntry;
 import com.cole2sworld.ColeBans.LogManager;
 import com.cole2sworld.ColeBans.LogManager.Type;
+import com.cole2sworld.ColeBans.framework.PermissionSet;
 /**
  * The actions command. Handles getting action logs.
  * @author cole2
@@ -37,6 +38,7 @@ final class Actions implements CBCommand {
 	
 	@Override
 	public String run(String[] args, CommandSender admin) throws Exception {
+		if (!(new PermissionSet(admin).canLog)) return ChatColor.RED+"You don't have permission to do that.";
 		if (args.length < 2) return ChatColor.RED+"Not enough arguments.";
 		String by = null;
 		String to = null;

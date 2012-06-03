@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.cole2sworld.ColeBans.Main;
+import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.framework.PlayerOfflineException;
 /**
  * The Kick command. Handles kicking players through commands.
@@ -12,6 +13,7 @@ import com.cole2sworld.ColeBans.framework.PlayerOfflineException;
 public final class Kick implements CBCommand {
 	@Override
 	public String run(String[] args, CommandSender admin) {
+		if (!(new PermissionSet(admin).canKick)) return ChatColor.RED+"You don't have permission to do that.";
 		String error = null;
 		if (args.length < 1) error = ChatColor.RED+"You must specify a player, or a player and a reason.";
 		else {

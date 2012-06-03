@@ -12,8 +12,7 @@ public final class Reload implements CBCommand {
 
 	@Override
 	public String run(String[] args, CommandSender admin) throws Exception {
-		PermissionSet pset = new PermissionSet(admin);
-		if (!pset.canReload) return ChatColor.RED+"You do not have permission to do that.";
+		if (!(new PermissionSet(admin).canReload)) return ChatColor.RED+"You don't have permission to do that.";
 		Main.instance.reloadConfig();
 		GlobalConf.loadConfig();
 		if (Main.instance.banHandler instanceof YAMLBanHandler) {

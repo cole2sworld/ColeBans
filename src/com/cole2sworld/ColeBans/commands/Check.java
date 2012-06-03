@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.cole2sworld.ColeBans.Main;
+import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.handlers.BanData;
 import com.cole2sworld.ColeBans.handlers.BanHandler;
 /**
@@ -13,6 +14,7 @@ import com.cole2sworld.ColeBans.handlers.BanHandler;
 public final class Check implements CBCommand {
 	@Override
 	public String run(String[] args, CommandSender sender) {
+		if (!(new PermissionSet(sender).canLookup)) return ChatColor.RED+"You don't have permission to do that.";
 		String error = null;
 		if (args.length < 1) error = ChatColor.RED+"You must specify a player";
 		else if (args.length > 1) error = ChatColor.RED+"Too many arguments. Usage: /lookup <player>";

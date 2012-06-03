@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
+import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 /**
  * The Ban command. Handles banning players through commands.
@@ -15,6 +16,7 @@ import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 public final class Ban implements CBCommand {
 	@Override
 	public String run(String[] args, CommandSender admin) {
+		if (!(new PermissionSet(admin).canBan)) return ChatColor.RED+"You don't have permission to do that.";
 		String error = null;
 		if (args.length < 2) error = ChatColor.RED+"You must specify a player and reason.";
 		else {

@@ -17,6 +17,7 @@ public final class PermissionSet {
 	public final boolean canSwitch;
 	public final boolean canReload;
 	public final boolean canCount;
+	public final boolean canLog;
 	public final boolean console;
 	public PermissionSet(CommandSender sender) {
 		if (sender instanceof Player) {
@@ -29,6 +30,7 @@ public final class PermissionSet {
 			canSwitch = Main.instance.hasPermission(player, "colebans.switch");
 			canReload = Main.instance.hasPermission(player, "colebans.reload");
 			canCount = Main.instance.hasPermission(player, "colebans.count");
+			canLog = Main.instance.hasPermission(player, "colebans.viewlog");
 			console = false;
 		}
 		else {
@@ -40,6 +42,7 @@ public final class PermissionSet {
 			canSwitch = true;
 			canReload = true;
 			canCount = true;
+			canLog = true;
 			console = true;
 		}
 	}
