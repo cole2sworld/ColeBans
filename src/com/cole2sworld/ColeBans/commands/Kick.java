@@ -3,7 +3,9 @@ package com.cole2sworld.ColeBans.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import com.cole2sworld.ColeBans.LogManager;
 import com.cole2sworld.ColeBans.Main;
+import com.cole2sworld.ColeBans.LogManager.Type;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.framework.PlayerOfflineException;
 /**
@@ -32,6 +34,7 @@ public final class Kick implements CBCommand {
 			}
 			try {
 				Main.instance.kickPlayer(victim, reason);
+				LogManager.addEntry(Type.KICK, admin.getName(), victim);
 			} catch (PlayerOfflineException e) {
 				error = ChatColor.DARK_RED+victim+" is not online!";
 			}

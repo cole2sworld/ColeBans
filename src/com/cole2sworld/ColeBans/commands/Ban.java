@@ -6,6 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.cole2sworld.ColeBans.GlobalConf;
+import com.cole2sworld.ColeBans.LogManager;
+import com.cole2sworld.ColeBans.LogManager.Type;
 import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
@@ -39,6 +41,7 @@ public final class Ban implements CBCommand {
 					}
 				}
 				if (GlobalConf.announceBansAndKicks) Main.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.banColor)+victim+" was banned! ["+reason+"]");
+				LogManager.addEntry(Type.BAN, admin.getName(), victim);
 			} catch (PlayerAlreadyBannedException e) {
 				error = ChatColor.DARK_RED+victim+" is already banned!";
 			}

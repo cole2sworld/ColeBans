@@ -6,8 +6,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.cole2sworld.ColeBans.GlobalConf;
+import com.cole2sworld.ColeBans.LogManager;
 import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.Util;
+import com.cole2sworld.ColeBans.LogManager.Type;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 /**
@@ -40,6 +42,7 @@ public final class Tempban implements CBCommand {
 							}
 						}
 						if (GlobalConf.announceBansAndKicks) Main.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.tempBanColor)+victim+" was temporarily banned! ["+time+" minute"+Util.getPlural(time, true)+"]");
+						LogManager.addEntry(Type.TEMPBAN, admin.getName(), victim);
 					} catch (PlayerAlreadyBannedException e) {
 						error = ChatColor.DARK_RED+victim+" is already banned!";
 					} catch (UnsupportedOperationException e) {

@@ -4,7 +4,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.cole2sworld.ColeBans.GlobalConf;
+import com.cole2sworld.ColeBans.LogManager;
 import com.cole2sworld.ColeBans.Main;
+import com.cole2sworld.ColeBans.LogManager.Type;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 /**
@@ -23,6 +25,7 @@ public final class Unban implements CBCommand {
 			try {
 				Main.instance.banHandler.unbanPlayer(victim, admin.getName());
 				if (GlobalConf.announceBansAndKicks) Main.instance.server.broadcastMessage(ChatColor.GREEN+victim+" was unbanned!");
+				LogManager.addEntry(Type.UNBAN, admin.getName(), victim);
 			} catch (PlayerNotBannedException e) {
 				error = ChatColor.DARK_RED+victim+" is not banned!";
 			}
