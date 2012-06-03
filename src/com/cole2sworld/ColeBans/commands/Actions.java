@@ -3,6 +3,7 @@ package com.cole2sworld.ColeBans.commands;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -10,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import com.cole2sworld.ColeBans.LogEntry;
 import com.cole2sworld.ColeBans.LogManager;
 import com.cole2sworld.ColeBans.LogManager.Type;
+import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
 /**
  * The actions command. Handles getting action logs.
@@ -60,7 +62,7 @@ public final class Actions implements CBCommand {
 			try {
 				if (args[i].equalsIgnoreCase("since")) {
 					units = Long.parseLong(args[i+1]);
-					unit = Unit.valueOf(args[i+2]);
+					unit = Unit.valueOf(args[i+2].toUpperCase(Locale.ENGLISH));
 				}
 			} catch (NumberFormatException e) {
 				return ChatColor.RED+"Expected number, got String (or number too large)";
@@ -87,7 +89,9 @@ public final class Actions implements CBCommand {
 		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm");
 		admin.sendMessage(ChatColor.AQUA+"Retrieving all records for actions made on "+ChatColor.ITALIC+to+ChatColor.AQUA+" by "+ChatColor.ITALIC+by+ChatColor.AQUA+" since "+formatter.format(new Date(since))+"...");
 		List<LogEntry> entries = LogManager.since(since, LogManager.getByOn(by, to));
+		Main.debug("Got entries");
 		for (LogEntry entry : entries) {
+			Main.debug("Loop");
 			if (entry.getType() == Type.BAN) {
 				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.DARK_RED+entry.getAdmin()+" banned "+entry.getVictim());
 			} else if (entry.getType() == Type.KICK) {
@@ -100,10 +104,10 @@ public final class Actions implements CBCommand {
 				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.GREEN+entry.getAdmin()+" unbanned "+entry.getVictim());
 			} else if (entry.getType() == Type.SWITCH) {
 				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.BLUE+entry.getAdmin()+" switched ban handlers to "+entry.getVictim());
-			} else if (entry.getType() == Type.UNKNOWN) {
-				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.DARK_PURPLE+entry.getAdmin()+" did an unknown action on "+entry.getVictim());
-			}  else if (entry.getType() == Type.OTHER) {
+			} else if (entry.getType() == Type.OTHER) {
 				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.AQUA+entry.getAdmin()+" did something to "+entry.getVictim());
+			} else {
+				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.DARK_PURPLE+entry.getAdmin()+" did an unknown action on "+entry.getVictim());
 			}
 		}
 		admin.sendMessage(ChatColor.GREEN+"Report complete.");

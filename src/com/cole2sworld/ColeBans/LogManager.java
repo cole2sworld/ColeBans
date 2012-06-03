@@ -64,6 +64,7 @@ public class LogManager {
 		verify();
 		PreparedStatement stmt = sql.prepare("INSERT INTO "+tbl+" (type, admin, victim, time) VALUES (?, ?, ?, ?);");
 		try {
+			Main.debug("Logging "+admin.toLowerCase()+" doing something to "+victim.toLowerCase());
 			stmt.setInt(1, type.ordinal());
 			stmt.setString(2, admin.toLowerCase());
 			stmt.setString(3, victim.toLowerCase());
@@ -181,10 +182,16 @@ public class LogManager {
 	public static List<LogEntry> getByOn(String admin, String victim) {
 		verify();
 		ArrayList<LogEntry> entries = new ArrayList<LogEntry>();
-		PreparedStatement stmt = sql.prepare("SELECT * FROM "+tbl+" WHERE (admin=?, victim=?)");
+		String st = "SELECT * FROM "+tbl+" WHERE ("+(admin.equals("*") ? "" : "admin=?")+(victim.equals("*") || admin.equals("*") ? "" : ", ")+(victim.equals("*") ? "" : "victim=?")+");";
+		Main.debug(st);
+		PreparedStatement stmt = sql.prepare(st);
 		try {
-			stmt.setString(1, admin.toLowerCase());
-			stmt.setString(2, victim.toLowerCase());
+			try {
+				stmt.setString(1, admin.toLowerCase());
+			} catch (Exception e) {}
+			try {
+				stmt.setString(2, victim.toLowerCase());
+			} catch (Exception e) {}
 			ResultSet result = stmt.executeQuery();
 			for (; result.next();) {
 				entries.add(new LogEntry(
@@ -194,6 +201,7 @@ public class LogManager {
 						result.getLong("time")
 						));
 			}
+			return entries;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -227,7 +235,7 @@ public class LogManager {
 					"`admin` VARCHAR(45) NULL ,"+
 					"`victim` VARCHAR(45) NULL ,"+
 					"`time` BIGINT UNSIGNED NULL ,"+
-					"INDEX `main` (`type` ASC, `admin` ASC, `victim` ASC, `time` ASC) );");
+					"INDEX `main` (`time` ASC) );");
 		}
 	}
 }
