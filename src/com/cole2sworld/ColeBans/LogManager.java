@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+import static com.cole2sworld.ColeBans.handlers.MySQLBanHandler.addSlashes;
+
 import com.unibia.simplemysql.SimpleMySQL;
 
 /**
@@ -182,16 +184,10 @@ public class LogManager {
 	public static List<LogEntry> getByOn(String admin, String victim) {
 		verify();
 		ArrayList<LogEntry> entries = new ArrayList<LogEntry>();
-		String st = "SELECT * FROM "+tbl+" WHERE ("+(admin.equals("*") ? "" : "admin=?")+(victim.equals("*") || admin.equals("*") ? "" : ", ")+(victim.equals("*") ? "" : "victim=?")+");";
+		String st = "SELECT * FROM "+tbl+" WHERE ("+(admin.equals("*") ? "" : "admin='"+addSlashes(admin.toLowerCase())+"'")+(victim.equals("*") || admin.equals("*") ? "" : ", ")+(victim.equals("*") ? "" : "victim='"+addSlashes(victim.toLowerCase())+"'")+");";
 		Main.debug(st);
 		PreparedStatement stmt = sql.prepare(st);
 		try {
-			try {
-				stmt.setString(1, admin.toLowerCase());
-			} catch (Exception e) {}
-			try {
-				stmt.setString(2, victim.toLowerCase());
-			} catch (Exception e) {}
 			ResultSet result = stmt.executeQuery();
 			for (; result.next();) {
 				entries.add(new LogEntry(
