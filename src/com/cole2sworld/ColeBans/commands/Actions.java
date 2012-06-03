@@ -16,7 +16,7 @@ import com.cole2sworld.ColeBans.framework.PermissionSet;
  * @author cole2
  *
  */
-final class Actions implements CBCommand {
+public final class Actions implements CBCommand {
 
 	public enum Unit {
 		MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS, YEARS, TIMESTAMP;

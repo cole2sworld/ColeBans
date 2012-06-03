@@ -60,6 +60,11 @@ public final class Lban implements CBCommand {
 	}
 	static {
 		try {
+			confFile.createNewFile();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try {
 			conf.load(confFile);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
