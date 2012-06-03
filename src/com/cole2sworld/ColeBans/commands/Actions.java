@@ -84,9 +84,9 @@ public final class Actions implements CBCommand {
 		if (to == null) {
 			to = "*";
 		}
-		SimpleDateFormat formatter = new SimpleDateFormat("M/d/y hh:mm");
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm");
 		admin.sendMessage(ChatColor.AQUA+"Retrieving all records for actions made on "+ChatColor.ITALIC+to+ChatColor.AQUA+" by "+ChatColor.ITALIC+by+ChatColor.AQUA+" since "+formatter.format(new Date(since))+"...");
-		List<LogEntry> entries = LogManager.getTo(args[1]);
+		List<LogEntry> entries = LogManager.since(since, LogManager.getByOn(by, to));
 		for (LogEntry entry : entries) {
 			if (entry.getType() == Type.BAN) {
 				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.DARK_RED+entry.getAdmin()+" banned "+entry.getVictim());
