@@ -28,7 +28,7 @@ public final class Ban implements CBCommand {
 			String reason = reasonBuilder.toString();
 			try {
 				Main.instance.banHandler.banPlayer(victim, reason, admin.getName());
-				Player playerObj = Main.instance.server.getPlayer(victim);
+				Player playerObj = Main.instance.server.getPlayerExact(victim);
 				if (playerObj != null) {
 					playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.banColor)+"BANNED: "+reason);
 					if (GlobalConf.fancyEffects) {
