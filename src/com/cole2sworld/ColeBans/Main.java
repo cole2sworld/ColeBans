@@ -2,6 +2,7 @@ package com.cole2sworld.ColeBans;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -136,7 +137,7 @@ public final class Main extends JavaPlugin {
 				debug("cmdName = "+cmdName);
 				Character firstChar = args[0].charAt(0);
 				debug("firstChar = "+firstChar);
-				cmdName = Character.toUpperCase(firstChar)+cmdName.toLowerCase();
+				cmdName = Character.toUpperCase(firstChar)+cmdName.toLowerCase(Locale.ENGLISH);
 				debug("cmdName = "+cmdName);
 				Object rawObject = Class.forName("com.cole2sworld.ColeBans.commands."+cmdName).newInstance();
 				debug("rawObject = "+rawObject.getClass().getSimpleName());
