@@ -222,7 +222,7 @@ public class LogManager {
 	private static void verify() {
 		initialize();
 		if (!sql.checkTable(tbl)) {
-			sql.query("CREATE  TABLE "+tbl+".`new_table` ("+
+			sql.query("CREATE  TABLE "+tbl+" ("+
 					"`type` INT UNSIGNED NOT NULL ,"+
 					"`admin` VARCHAR(45) NULL ,"+
 					"`victim` VARCHAR(45) NULL ,"+
