@@ -65,8 +65,8 @@ public class LogManager {
 		PreparedStatement stmt = sql.prepare("INSERT INTO "+tbl+" (type, admin, victim, time) VALUES (?, ?, ?, ?);");
 		try {
 			stmt.setInt(1, type.ordinal());
-			stmt.setString(2, admin);
-			stmt.setString(3, victim);
+			stmt.setString(2, admin.toLowerCase());
+			stmt.setString(3, victim.toLowerCase());
 			stmt.setLong(4, System.currentTimeMillis());
 			stmt.execute();
 		} catch (SQLException e) {
@@ -120,7 +120,7 @@ public class LogManager {
 		ArrayList<LogEntry> entries = new ArrayList<LogEntry>();
 		PreparedStatement stmt = sql.prepare("SELECT * FROM "+tbl+" WHERE admin=?");
 		try {
-			stmt.setString(1, admin);
+			stmt.setString(1, admin.toLowerCase());
 			ResultSet result = stmt.executeQuery();
 			for (; result.next();) {
 				entries.add(new LogEntry(
@@ -151,7 +151,7 @@ public class LogManager {
 		ArrayList<LogEntry> entries = new ArrayList<LogEntry>();
 		PreparedStatement stmt = sql.prepare("SELECT * FROM "+tbl+" WHERE victim=?");
 		try {
-			stmt.setString(1, victim);
+			stmt.setString(1, victim.toLowerCase());
 			ResultSet result = stmt.executeQuery();
 			for (; result.next();) {
 				entries.add(new LogEntry(
@@ -183,8 +183,8 @@ public class LogManager {
 		ArrayList<LogEntry> entries = new ArrayList<LogEntry>();
 		PreparedStatement stmt = sql.prepare("SELECT * FROM "+tbl+" WHERE (admin=?, victim=?)");
 		try {
-			stmt.setString(1, admin);
-			stmt.setString(2, victim);
+			stmt.setString(1, admin.toLowerCase());
+			stmt.setString(2, victim.toLowerCase());
 			ResultSet result = stmt.executeQuery();
 			for (; result.next();) {
 				entries.add(new LogEntry(
