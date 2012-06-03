@@ -1,5 +1,6 @@
 package com.cole2sworld.ColeBans.handlers;
 
+import java.util.Locale;
 import java.util.Vector;
 
 import javax.naming.OperationNotSupportedException;
@@ -113,4 +114,12 @@ public abstract class BanHandler {
 	 * Gets a simple list of the banned players, with no reasons.
 	 */
 	public abstract Vector<String> listBannedPlayers(String admin);
+	/**
+	 * Returns the name of this class, minus "BanHandler". For use with detecting what ban handler is in use.
+	 * @return Truncated name of this class. MySQLBanHandler becomes 'mysql'
+	 */
+	public String getTruncatedName() {
+		return this.getClass().getSimpleName().replace("BanHandler", "").toLowerCase(Locale.ENGLISH);
+	}
+	
 }
