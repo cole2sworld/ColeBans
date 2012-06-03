@@ -25,7 +25,7 @@ public final class MySQLBanHandler extends BanHandler {
 	public MySQLBanHandler(String username, String password, String host, String prefix, String db) {
 		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Opening connection");
 		long oldtime = System.currentTimeMillis();
-		sqlHandler = SimpleMySQL.getInstance();
+		sqlHandler = new SimpleMySQL();
 		Main.debug("Got instance");
 		sqlHandler.enableReconnect();
 		Main.debug("Enabled reconnect");

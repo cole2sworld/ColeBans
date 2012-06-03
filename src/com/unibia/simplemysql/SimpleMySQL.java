@@ -61,19 +61,6 @@ public final class SimpleMySQL {
     private String password_local_cache = null;
     private String hostname_local_cache = null;
     private String database_local_cache = null;
-            
-    /**
-     * Gets an existing SimpleMySQL instance.
-     * 
-     * @return the existing instance
-     */
-    public static SimpleMySQL getInstance() {
-        return SimpleMySQLHolder.INSTANCE;
-    }
-    
-    private static class SimpleMySQLHolder {
-        private static final SimpleMySQL INSTANCE = new SimpleMySQL();
-    }        
     
     /**
      * Enable automatic auto_reconnect if the MySQL Database Connection is lost
