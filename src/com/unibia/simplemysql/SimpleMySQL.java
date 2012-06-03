@@ -437,4 +437,13 @@ public final class SimpleMySQL {
         Main.debug("Reached end of method, returning true");
 		return true;
 	}    
+	
+	public PreparedStatement prepare(String prepare) {
+		try {
+			return mysql_connection.prepareStatement(prepare);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
