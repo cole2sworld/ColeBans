@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 /**
  * Requester -- sends raw requests to MCBans. <b>This class should not be directly interfaced by classes, instead it should be accessed through the MCBans class.
  * @see MCBans
@@ -17,6 +18,8 @@ final class MCBansRequester extends Thread {
 	private String instruction;
 	private String result;
 	private boolean finished;
+	private RequesterHashSet waitFor = null;
+	private ArrayList<RequesterCallback> callbacks = new ArrayList<RequesterCallback>();
 	public MCBansRequester(String key, String inst) {
 		super("MCBans requester thread - '"+inst+"'");
 		setKey(key);
@@ -34,6 +37,16 @@ final class MCBansRequester extends Thread {
 	 */
 	@Override
 	public void run() {
+		if (waitFor != null) {
+			try {
+				if (waitFor.getProcessing().size() > 10) waitFor.wait();
+			} catch (InterruptedException e) {
+				finished = true;
+				result = "Aborted";
+				callCallbacks();
+				return;
+			}
+		}
 		OutputStreamWriter wr = null;
 		try {
 			URL url;
@@ -53,6 +66,7 @@ final class MCBansRequester extends Thread {
 			}
 			result = rtrn.toString();
 			finished = true;
+			callCallbacks();
 			return;
 		}
 		catch (MalformedURLException e) {
@@ -71,6 +85,13 @@ final class MCBansRequester extends Thread {
 		}
 		result = null;
 		finished = true;
+		callCallbacks();
+	}
+	private void callCallbacks() {
+		for (RequesterCallback callback : callbacks) {
+			callback.requestFinished(this);
+		}
+		callbacks.clear();
 	}
 	/**
 	 * @return the key
@@ -83,5 +104,11 @@ final class MCBansRequester extends Thread {
 	 */
 	public void setKey(String key) {
 		this.key = key;
+	}
+	public void setWaitForSize(RequesterHashSet requesterHashSet) {
+		waitFor = requesterHashSet;
+	}
+	public synchronized final String getInstruction() {
+		return instruction;
 	}
 }

@@ -42,6 +42,11 @@ public final class BanData {
 		setType(Type.NOT_BANNED);
 	}
 	/**
+	 * Do nothing, allowing you to use .set* methods
+	 */
+	public BanData() {
+	}
+	/**
 	 * @return the reason
 	 */
 	public String getReason() {

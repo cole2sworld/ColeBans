@@ -3,7 +3,8 @@ package com.cole2sworld.ColeBans.lib;
 import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
+import java.util.ArrayList;
+import java.util.List;
 import org.json.util.JSONArray;
 import org.json.util.JSONException;
 import org.json.util.JSONObject;
@@ -11,6 +12,7 @@ import org.json.util.JSONTokener;
 
 import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
+import com.cole2sworld.ColeBans.Util;
 import com.cole2sworld.ColeBans.handlers.BanData;
 
 /**
@@ -18,7 +20,7 @@ import com.cole2sworld.ColeBans.handlers.BanData;
  * @author cole2
  *
  */
-public final class MCBans {
+public final class MCBans implements RequesterCallback {
 	private String key;
 	public MCBans(String key) {
 		this.key = key;
@@ -78,7 +80,7 @@ public final class MCBans {
 					if (val instanceof String) {
 						String valString = (String) localBans.get(i);
 						String[] splitString = valString.split(" .:. ");
-						String ip = InetAddress.getByName(splitString[0]).toString();
+						String ip = InetAddress.getByAddress(Util.processIp(splitString[0])).toString();
 						if (ip.equals(Main.instance.server.getIp())) {
 							if (splitString.length > 1) {
 								return new BanData(player, splitString[1]);
@@ -96,5 +98,45 @@ public final class MCBans {
 			}
 		}
 		return new BanData(player);
+	}
+	public Future<List<BanData>> dump(String admin) {
+		try {
+			MCBansRequester requester = new MCBansRequester(key, "exec=backup");
+			requester.start();
+			try {
+				requester.join();
+			}
+			catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			String a = requester.getResult();
+			String[] c = a.split(",");
+			ArrayList<BanData> data = new ArrayList<BanData>();
+			if (!GlobalConf.MCBans.fullBackups) {
+				for (String player : c) {
+					data.add(new BanData(player, "Imported from MCBans"));
+				}
+			} else {
+				// lets see what the MCBans server can do!
+				//LOWPRI Make this more like a backup, and less like a DDoS attack.
+				RequesterHashSet requesters = new RequesterHashSet(this);
+				for (String player : c) {
+					requesters.add(new MCBansRequester(key, "exec=playerLookup&player="+player+"&admin="+admin));
+				}
+				Future<List<BanData>> future = new Future<List<BanData>>();
+				requesters.use(future);
+				return future;
+			}
+			return new Future<List<BanData>>(data);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@Override
+	public void requestFinished(MCBansRequester requester) {
+		if (requester != null) return; //sanity check, when we are called by a RequesterHashSet it will pass null.
+		
 	}
 }

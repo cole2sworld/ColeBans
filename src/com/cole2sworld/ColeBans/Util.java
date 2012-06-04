@@ -1,6 +1,7 @@
 package com.cole2sworld.ColeBans;
 
 import java.lang.reflect.InvocationTargetException;
+import java.net.UnknownHostException;
 
 import javax.management.InstanceAlreadyExistsException;
 
@@ -21,7 +22,7 @@ public class Util {
 	 * @return Plural
 	 */
 	public static String getPlural(long check, boolean plural) {
-		boolean isPlural = check < 0 || check == 0 || check > 1;
+		boolean isPlural = check <= 0 || check > 1;
 		if (plural && isPlural) return "s";
 		if (plural && !isPlural) return "";
 		if (!plural && isPlural) return "are";
@@ -42,5 +43,27 @@ public class Util {
 	 */
 	public static BanHandler lookupHandler(String shortName) throws ClassNotFoundException, IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassCastException {
 		return (BanHandler) Class.forName(GlobalConf.Advanced.pkg+"."+shortName+GlobalConf.Advanced.suffix).getDeclaredMethod("onEnable", new Class<?>[0]).invoke(null);
+	}
+	/**
+	 * Turn a IP in format A.B.C.D into an array of bytes.
+	 * @param str IP to process
+	 * @return Processed IP
+	 * @throws UnknownHostException if the IP has bad formatting
+	 */
+	public static byte[] processIp(String str) throws UnknownHostException {
+		String[] ip = str.split("\\.");
+		byte[] procIp = new byte[4];
+		if (ip.length < 4) {
+			throw new UnknownHostException();
+		}
+		try {
+			procIp[0] = Byte.parseByte(ip[0]);
+			procIp[1] = Byte.parseByte(ip[1]);
+			procIp[2] = Byte.parseByte(ip[2]);
+			procIp[3] = Byte.parseByte(ip[3]);
+		} catch (NumberFormatException e) {
+			throw new UnknownHostException();
+		}
+		return procIp;
 	}
 }
