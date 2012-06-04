@@ -83,16 +83,15 @@ public class LogManager {
 		}
 	}
 	/**
-	 * Get all actions of the specified type
-	 * @param type Type to look up
+	 * Get all actions limiting to <code>limit</code>
+	 * @param limit Amount of entries to limit to, or -1 to get all entires
 	 * @return All results
 	 */
-	public static List<LogEntry> getAll(Type type) {
+	public static List<LogEntry> getAll(int limit) {
 		verify();
 		ArrayList<LogEntry> entries = new ArrayList<LogEntry>();
-		PreparedStatement stmt = sql.prepare("SELECT * FROM "+tbl+" WHERE type=?");
+		PreparedStatement stmt = sql.prepare("SELECT * FROM "+tbl+" ORDER BY time DESC "+(limit == -1 ? ";" : "LIMIT "+limit+";"));
 		try {
-			stmt.setInt(1, type.ordinal());
 			ResultSet result = stmt.executeQuery();
 			for (; result.next();) {
 				entries.add(new LogEntry(
@@ -102,6 +101,7 @@ public class LogManager {
 						result.getLong("time")
 						));
 			}
+			return entries;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -133,6 +133,7 @@ public class LogManager {
 						result.getLong("time")
 						));
 			}
+			return entries;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -164,6 +165,7 @@ public class LogManager {
 						result.getLong("time")
 						));
 			}
+			return entries;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -230,7 +232,7 @@ public class LogManager {
 					"`type` INT UNSIGNED NOT NULL ,"+
 					"`admin` VARCHAR(45) NULL ,"+
 					"`victim` VARCHAR(45) NULL ,"+
-					"`time` BIGINT UNSIGNED NULL ,"+
+					"`time` BIGINT PK UNSIGNED NULL ,"+
 					"INDEX `main` (`time` ASC) );");
 		}
 	}

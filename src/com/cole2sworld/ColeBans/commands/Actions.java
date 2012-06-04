@@ -32,6 +32,7 @@ public final class Actions implements CBCommand {
 			return 1;
 		}
 	}
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm");
 	public static final long millisPerSecond = 1000L;
 	public static final long millisPerMinute = millisPerSecond*60;
 	public static final long millisPerHour = millisPerMinute*60;
@@ -41,7 +42,41 @@ public final class Actions implements CBCommand {
 	@Override
 	public String run(String[] args, CommandSender admin) throws Exception {
 		if (!(new PermissionSet(admin).canLog)) return ChatColor.RED+"You don't have permission to do that.";
-		if (args.length < 2) return ChatColor.RED+"Not enough arguments.";
+		if (args.length < 2) {
+			int count = 10;
+			try {
+				count = Integer.parseInt(args[0]);
+			} catch (NumberFormatException e) {
+				return ChatColor.RED+"Invalid number";
+			} catch (ArrayIndexOutOfBoundsException e) {
+				count = 10;
+			}
+			Main.debug("count is "+count);
+			if (count <= 0) return ChatColor.RED+"Count must be greater than 0";
+			admin.sendMessage(ChatColor.AQUA+"Retrieving the last "+count+" actions to happen...");
+			List<LogEntry> entries = LogManager.getAll(count);
+			for (LogEntry entry : entries) {
+				if (entry.getType() == Type.BAN) {
+					admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.DARK_RED+entry.getAdmin()+" banned "+entry.getVictim());
+				} else if (entry.getType() == Type.KICK) {
+					admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.YELLOW+entry.getAdmin()+" kicked "+entry.getVictim());
+				} else if (entry.getType() == Type.TEMPBAN) {
+					admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.RED+entry.getAdmin()+" tempbanned "+entry.getVictim());
+				} else if (entry.getType() == Type.LOCAL_BAN) {
+					admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.GRAY+entry.getAdmin()+" local banned "+entry.getVictim());
+				} else if (entry.getType() == Type.UNBAN) {
+					admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.GREEN+entry.getAdmin()+" unbanned "+entry.getVictim());
+				} else if (entry.getType() == Type.SWITCH) {
+					admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.BLUE+entry.getAdmin()+" switched ban handlers to "+entry.getVictim());
+				} else if (entry.getType() == Type.OTHER) {
+					admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.AQUA+entry.getAdmin()+" did something to "+entry.getVictim());
+				} else {
+					admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.DARK_PURPLE+entry.getAdmin()+" did an unknown action on "+entry.getVictim());
+				}
+			}
+			admin.sendMessage(ChatColor.GREEN+"Report complete.");
+			return null;
+		}
 		String by = null;
 		String to = null;
 		long units = -1;
@@ -86,12 +121,10 @@ public final class Actions implements CBCommand {
 		if (to == null) {
 			to = "*";
 		}
-		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm");
 		admin.sendMessage(ChatColor.AQUA+"Retrieving all records for actions made on "+ChatColor.ITALIC+to+ChatColor.AQUA+" by "+ChatColor.ITALIC+by+ChatColor.AQUA+" since "+formatter.format(new Date(since))+"...");
 		List<LogEntry> entries = LogManager.since(since, LogManager.getByOn(by, to));
 		Main.debug("Got entries");
 		for (LogEntry entry : entries) {
-			Main.debug("Loop");
 			if (entry.getType() == Type.BAN) {
 				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.DARK_RED+entry.getAdmin()+" banned "+entry.getVictim());
 			} else if (entry.getType() == Type.KICK) {
