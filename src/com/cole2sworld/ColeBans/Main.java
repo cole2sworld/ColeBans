@@ -230,7 +230,6 @@ public final class Main extends JavaPlugin {
 		data.put("prefix", GlobalConf.Sql.prefix);
 		data.put("db", GlobalConf.Sql.db);
 		data.put("yaml", GlobalConf.Yaml.file);
-		data.put("json", GlobalConf.Json.file);
 		data.put("apiKey", GlobalConf.MCBans.apiKey);
 		return data;
 	}

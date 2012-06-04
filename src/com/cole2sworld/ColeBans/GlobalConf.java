@@ -132,20 +132,6 @@ public final class GlobalConf {
 		public static String file;
 	}
 	/**
-	 * Configuration section for YAML.
-	 *
-	 */
-	public static class Json {
-		/**
-		 * The raw section.
-		 */
-		public static ConfigurationSection section;
-		/**
-		 * The file to use.
-		 */
-		public static String file;
-	}
-	/**
 	 * Stuff the user shouldn't touch unless they know what they are doing.
 	 * @author cole2
 	 *
@@ -198,8 +184,6 @@ public final class GlobalConf {
 					MCBans.minRep = MCBans.section.getDouble("minRep");
 					Yaml.section = settings.getConfigurationSection("yaml");
 					Yaml.file = Yaml.section.getString("fileName");
-					Json.section = settings.getConfigurationSection("json");
-					Json.file = Json.section.getString("fileName");
 					Advanced.section = settings.getConfigurationSection("advanced");
 					Advanced.pkg = Advanced.section.getString("package");
 					Advanced.suffix = Advanced.section.getString("suffix");
@@ -246,8 +230,6 @@ public final class GlobalConf {
 								"        minRep: 10\n"+
 								"    yaml:\n"+
 								"        fileName: banlist.yml\n"+
-								"    json:\n"+
-								"        fileName: banlist.json\n"+
 								"    advanced:\n" +
 								"        # The package is where to get the ban handlers. Only change this line if you know what you are doing.\n" +
 								"        package: com.cole2sworld.ColeBans.handlers\n" +
