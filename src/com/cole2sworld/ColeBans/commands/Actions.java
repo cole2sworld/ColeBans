@@ -97,6 +97,7 @@ public final class Actions implements CBCommand {
 			try {
 				if (args[i].equalsIgnoreCase("since")) {
 					units = Long.parseLong(args[i+1]);
+					if (!args[i+2].endsWith("s")) args[i+2] = args[i+2]+"s";
 					unit = Unit.valueOf(args[i+2].toUpperCase(Locale.ENGLISH));
 				}
 			} catch (NumberFormatException e) {
