@@ -1,13 +1,13 @@
 package com.cole2sworld.ColeBans.handlers;
 
-import java.util.Map;
+/*import java.util.Map;
 import java.util.Vector;
 
 import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
-import com.cole2sworld.ColeBans.lib.MCBans;
+import com.cole2sworld.ColeBans.lib.MCBans;*/
 
 public final class MCBansBanHandler extends NoOpBanHandler {
 /*	private String api;

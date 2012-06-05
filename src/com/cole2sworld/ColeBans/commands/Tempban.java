@@ -35,13 +35,13 @@ public final class Tempban implements CBCommand {
 						Main.instance.banHandler.tempBanPlayer(victim, time, admin.getName());
 						Player playerObj = Main.instance.server.getPlayer(victim);
 						if (playerObj != null) {
-							playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.tempBanColor)+"Temporarily banned for "+time+" minute"+Util.getPlural(time, true)+".");
-							if (GlobalConf.fancyEffects) {
+							playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.get("tempBanColor").asString())+"Temporarily banned for "+time+" minute"+Util.getPlural(time, true)+".");
+							if (GlobalConf.get("fancyEffects").asBoolean()) {
 								World world = playerObj.getWorld();
 								world.createExplosion(playerObj.getLocation(), 0);
 							}
 						}
-						if (GlobalConf.announceBansAndKicks) Main.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.tempBanColor)+victim+" was temporarily banned! ["+time+" minute"+Util.getPlural(time, true)+"]");
+						if (GlobalConf.get("announceBansAndKicks").asBoolean()) Main.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.get("tempBanColor").asString())+victim+" was temporarily banned! ["+time+" minute"+Util.getPlural(time, true)+"]");
 						LogManager.addEntry(Type.TEMPBAN, admin.getName(), victim);
 					} catch (PlayerAlreadyBannedException e) {
 						error = ChatColor.DARK_RED+victim+" is already banned!";

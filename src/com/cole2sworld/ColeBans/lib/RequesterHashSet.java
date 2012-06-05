@@ -120,7 +120,7 @@ public class RequesterHashSet implements RequesterCallback, Closeable {
 	 */
 	@Override
 	public void close() {
-		verifyNotClosed();
+		if (isClosed()) return;
 		abort();
 		closed = true;
 	}

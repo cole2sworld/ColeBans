@@ -1,7 +1,11 @@
 package com.cole2sworld.ColeBans;
 
 import java.util.HashMap;
-
+/**
+ * Log entry, for Actions.
+ * @author cole2
+ * @since v5 Elderberry
+ */
 public class LogEntry {
 	private final HashMap<String, String> map = new HashMap<String, String>();
 	public LogEntry() {

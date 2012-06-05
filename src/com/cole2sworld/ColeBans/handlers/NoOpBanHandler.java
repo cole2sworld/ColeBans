@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import javax.naming.OperationNotSupportedException;
 
-import com.cole2sworld.ColeBans.GlobalConf;
+import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 
@@ -69,6 +69,6 @@ public class NoOpBanHandler extends BanHandler {
 	}
 
 	protected static final void noOp() {
-		Logger.getLogger("Minecraft").severe(GlobalConf.logPrefix+"Using No-Operation ban handler. Please change to a finished ban handler.");
+		Logger.getLogger("Minecraft").severe(Main.PREFIX+"Using No-Operation ban handler. Please change to a finished ban handler.");
 	}
 }

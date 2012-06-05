@@ -14,7 +14,7 @@ import com.cole2sworld.ColeBans.handlers.BanHandler.Type;
 import com.nijikokun.bukkit.Permissions.Permissions;
 /**
  * Event listener for ColeBans.
- *
+ * @since v1 Apricot
  */
 final class EventListener implements Listener {
 	/**
@@ -29,17 +29,17 @@ final class EventListener implements Listener {
 		if (banType == Type.PERMANENT) {
 			String banReason = bd.getReason();
 			event.setResult(Result.KICK_BANNED);
-			event.setKickMessage(ChatColor.valueOf(GlobalConf.banColor)+GlobalConf.banMessage.replace("%reason", banReason));
+			event.setKickMessage(ChatColor.valueOf(GlobalConf.get("banColor").asString())+GlobalConf.get("banMessage").asString().replace("%reason", banReason));
 			return;
 		}
-		if (GlobalConf.allowTempBans) {
+		if (GlobalConf.get("allowTempBans").asBoolean()) {
 			Long tempBanTime = Main.instance.banHandler.getBanData(player, BanHandler.SYSTEM_ADMIN_NAME).getTime();
 			if (tempBanTime > -1) {
 				Long tempBanMins = tempBanTime-System.currentTimeMillis();
 				tempBanMins /= 1000;
 				tempBanMins /= 60;
 				event.setResult(Result.KICK_BANNED);
-				event.setKickMessage(ChatColor.valueOf(GlobalConf.tempBanColor)+GlobalConf.tempBanMessage.replace("%time", tempBanMins.toString()).replace("%plural", Util.getPlural(tempBanMins, true)));
+				event.setKickMessage(ChatColor.valueOf(GlobalConf.get("tempBanColor").asString())+GlobalConf.get("tempBanMessage").asString().replace("%time", tempBanMins.toString()).replace("%plural", Util.getPlural(tempBanMins, true)));
 				return;
 			}
 		}
@@ -56,7 +56,7 @@ final class EventListener implements Listener {
     		if (permissions != null) {
     			if (permissions.isEnabled() && permissions.getClass().getName().equals("com.nijikokun.bukkit.Permissions.Permissions")) {
     				Main.instance.permissionsHandler = ((Permissions)permissions).getHandler();
-    				System.out.println(GlobalConf.logPrefix+"Hooked into Nijikokun-like permissions.");
+    				System.out.println(Main.PREFIX+"Hooked into Nijikokun-like permissions.");
     			}
     		}
     	}

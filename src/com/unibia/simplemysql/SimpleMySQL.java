@@ -286,12 +286,8 @@ public final class SimpleMySQL {
             retries_left--;
             System.out.println("Auto-Reconnect Attempt #" + (auto_reconnect_retry - retries_left) + " of " + auto_reconnect_retry);
             try{
-                wait(auto_reconnect_time);
                 connected = reconnect(hostname_local_cache, username_local_cache, password_local_cache, database_local_cache);                
             }
-            catch(InterruptedException i){
-                System.err.println("Reconnect Cancelled!");
-            }      
             catch(SQLTransientConnectionException e){
                 System.err.println("AUTO RECONNECT: " + e.getMessage());
             }

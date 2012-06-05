@@ -26,7 +26,7 @@ public final class YAMLBanHandler extends BanHandler {
 			tFile.createNewFile();
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			Main.LOG.severe(GlobalConf.logPrefix+"[YAMLBanHandler] IOException when creating file. Plugin will fail to operate correctly.");
+			Main.LOG.severe(Main.PREFIX+"[YAMLBanHandler] IOException when creating file. Plugin will fail to operate correctly.");
 			return null;
 		}
 		YamlConfiguration tConf = new YamlConfiguration();
@@ -34,15 +34,15 @@ public final class YAMLBanHandler extends BanHandler {
 			tConf.load(tFile);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			Main.LOG.severe(GlobalConf.logPrefix+"[YAMLBanHandler] FileNotFoundException when loading. Plugin will fail to operate correctly.");
+			Main.LOG.severe(Main.PREFIX+"[YAMLBanHandler] FileNotFoundException when loading. Plugin will fail to operate correctly.");
 			return null;
 		} catch (IOException e) {
 			e.printStackTrace();
-			Main.LOG.severe(GlobalConf.logPrefix+"[YAMLBanHandler] IOException when loading. Plugin will fail to operate correctly.");
+			Main.LOG.severe(Main.PREFIX+"[YAMLBanHandler] IOException when loading. Plugin will fail to operate correctly.");
 			return null;
 		} catch (InvalidConfigurationException e) {
 			e.printStackTrace();
-			Main.LOG.severe(GlobalConf.logPrefix+"[YAMLBanHandler] InvalidConfigurationException when loading. Plugin will fail to operate correctly.");
+			Main.LOG.severe(Main.PREFIX+"[YAMLBanHandler] InvalidConfigurationException when loading. Plugin will fail to operate correctly.");
 			return null;
 		}
 		
@@ -52,7 +52,7 @@ public final class YAMLBanHandler extends BanHandler {
 	public YAMLBanHandler(File file, YamlConfiguration conf) {
 		this.file = file;
 		this.conf = conf;
-		System.out.println(GlobalConf.logPrefix+"[YAMLBanHandler] Done loading.");
+		System.out.println(Main.PREFIX+"[YAMLBanHandler] Done loading.");
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public final class YAMLBanHandler extends BanHandler {
 	@Override
 	public void tempBanPlayer(String player, long primTime, String admin) throws PlayerAlreadyBannedException, UnsupportedOperationException {
 		Main.debug("tempBanPlayer called");
-		if (!GlobalConf.allowTempBans) throw new UnsupportedOperationException("Temp bans are disabled!");
+		if (!GlobalConf.get("allowTempBans").asBoolean()) throw new UnsupportedOperationException("Temp bans are disabled!");
 		Main.debug("TempBans enabled");
 		if (isPlayerBanned(player, admin)) throw new PlayerAlreadyBannedException(player+" is already banned!");
 		Main.debug("Tempbanning");
@@ -105,7 +105,7 @@ public final class YAMLBanHandler extends BanHandler {
 			Main.debug("permBanned not null, returning PERMANENT data");
 			return new BanData(player, permBanned);
 		}
-		if (GlobalConf.allowTempBans) {
+		if (GlobalConf.get("allowTempBans").asBoolean()) {
 			Main.debug("Temp bans allowed, continuing");
 			if (tempBanned != 0 && tempBanned <= System.currentTimeMillis()) {
 				Main.debug("Temp ban is older than current time, removing");
@@ -128,14 +128,14 @@ public final class YAMLBanHandler extends BanHandler {
 	@Override
 	public void onDisable() {
 		save();
-		System.out.println(GlobalConf.logPrefix+"[YAMLBanHandler] Saved.");
+		System.out.println(Main.PREFIX+"[YAMLBanHandler] Saved.");
 	}
 
 	@Override
 	public void convert(BanHandler handler) {
 		Vector<BanData> dump = dump(BanHandler.SYSTEM_ADMIN_NAME);
 		for (BanData data : dump) {
-			if (GlobalConf.allowTempBans && data.getType() == Type.TEMPORARY) {
+			if (GlobalConf.get("allowTempBans").asBoolean() && data.getType() == Type.TEMPORARY) {
 				try {
 					handler.tempBanPlayer(data.getVictim(), data.getTime(), BanHandler.SYSTEM_ADMIN_NAME);
 				} catch (UnsupportedOperationException e) {
@@ -192,7 +192,7 @@ public final class YAMLBanHandler extends BanHandler {
 			conf.save(file);
 		} catch (IOException e) {
 			e.printStackTrace();
-			Main.LOG.severe(GlobalConf.logPrefix+"[YAMLBanHandler] IOException when saving config. Plugin will fail to operate correctly.");
+			Main.LOG.severe(Main.PREFIX+"[YAMLBanHandler] IOException when saving config. Plugin will fail to operate correctly.");
 		}
 	}
 

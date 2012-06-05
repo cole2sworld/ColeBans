@@ -44,13 +44,13 @@ public final class Lban implements CBCommand {
 				handler.banPlayer(victim, reason, admin.getName());
 				Player playerObj = Main.instance.server.getPlayerExact(victim);
 				if (playerObj != null) {
-					playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.banColor)+"BANNED: "+reason);
-					if (GlobalConf.fancyEffects) {
+					playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.get("banColor").asString())+"BANNED: "+reason);
+					if (GlobalConf.get("fancyEffects").asBoolean()) {
 						World world = playerObj.getWorld();
 						world.createExplosion(playerObj.getLocation(), 0);
 					}
 				}
-				if (GlobalConf.announceBansAndKicks) Main.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.banColor)+victim+" was local banned! ["+reason+"]");
+				if (GlobalConf.get("announceBansAndKicks").asBoolean()) Main.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.get("banColor").asString())+victim+" was local banned! ["+reason+"]");
 				LogManager.addEntry(Type.LOCAL_BAN, admin.getName(), victim);
 			} catch (PlayerAlreadyBannedException e) {
 				error = ChatColor.DARK_RED+victim+" is already banned!";

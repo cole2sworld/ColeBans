@@ -27,7 +27,7 @@ import com.nijiko.permissions.PermissionHandler;
 
 /**
  * The main class for ColeBans.
- *
+ * @since v1 Apricot
  */
 public final class Main extends JavaPlugin {
 	/**
@@ -38,6 +38,7 @@ public final class Main extends JavaPlugin {
 	 * The Minecraft log.
 	 */
 	public static final Logger LOG = Logger.getLogger("Minecraft");
+	public static final String PREFIX = "[ColeBans] ";
 	/**
 	 * The Permissions 3/2 (or bridge) that we will use for permissions.
 	 */
@@ -72,7 +73,8 @@ public final class Main extends JavaPlugin {
 	public void onDisable() {
 		if (banHandler != null)
 			banHandler.onDisable();
-		System.out.println(GlobalConf.logPrefix+"Disabled.");
+		GlobalConf.save();
+		System.out.println(PREFIX+"Disabled.");
 	}
 
 	/**
@@ -81,17 +83,16 @@ public final class Main extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		try {
-			System.out.println(GlobalConf.logPrefix+"Initalizing...");
+			System.out.println(PREFIX+"Initalizing...");
 			
 			server = getServer();
 			PluginManager pm = server.getPluginManager();
-			System.out.println(GlobalConf.logPrefix+"Loading config and ban handler...");
+			System.out.println(PREFIX+"Loading config and ban handler...");
 			long oldtime = System.currentTimeMillis();
-			GlobalConf.conf = getConfig();
-			GlobalConf.loadConfig();
-			if (debug) LOG.warning(GlobalConf.logPrefix+"Using a debug build. Expect many messages");
+			GlobalConf.load();
+			if (debug) LOG.warning(PREFIX+"Using a debug build. Expect many messages");
 			try {
-				banHandler = Util.lookupHandler(GlobalConf.banHandlerConf);
+				banHandler = Util.lookupHandler(GlobalConf.get("banHandler").asString());
 			} catch (ClassNotFoundException e) {
 				onFatal("Non-existant ban handler given in config file");
 			} catch (SecurityException e) {
@@ -110,15 +111,16 @@ public final class Main extends JavaPlugin {
 				onFatal("Bad ban handler given in config file!");
 			}
 			long newtime = System.currentTimeMillis();
-			System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
-			System.out.println(GlobalConf.logPrefix+"Registering events...");
+			System.out.println(PREFIX+"Done. Took "+(newtime-oldtime)+" ms.");
+			System.out.println(PREFIX+"Registering events...");
 			oldtime = System.currentTimeMillis();
 			pm.registerEvents(new EventListener(), this);
+			pm.registerEvents(new BanhammerListener(), this);
 			newtime = System.currentTimeMillis();
-			System.out.println(GlobalConf.logPrefix+"Done. Took "+(newtime-oldtime)+" ms.");
+			System.out.println(PREFIX+"Done. Took "+(newtime-oldtime)+" ms.");
 		}
 		catch (Exception e) {
-			LOG.severe(GlobalConf.logPrefix+"Aborting operation: "+e.getMessage());
+			LOG.severe(PREFIX+"Aborting operation: "+e.getMessage());
 			setEnabled(false);
 		}
 	}
@@ -182,7 +184,7 @@ public final class Main extends JavaPlugin {
 	public void kickPlayer(String player, String reason) throws PlayerOfflineException {
 		Player playerObj = server.getPlayer(player);
 		if (playerObj != null && playerObj.isOnline()) {
-			if (GlobalConf.fancyEffects) {
+			if (GlobalConf.get("fancyEffects").asBoolean()) {
 				World world = playerObj.getWorld();
 				world.playEffect(playerObj.getLocation(), Effect.SMOKE, 1);
 				world.playEffect(playerObj.getLocation(), Effect.SMOKE, 2);
@@ -192,14 +194,14 @@ public final class Main extends JavaPlugin {
 				world.playEffect(playerObj.getLocation(), Effect.SMOKE, 6);
 			}
 			if (reason != null) {
-				playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.kickColor)+"KICKED: "+reason);
+				playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.get("kickColor").asString())+"KICKED: "+reason);
 			} else {
-				playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.kickColor)+"Kicked!");
+				playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.get("kickColor").asString())+"Kicked!");
 			}
-			if (GlobalConf.announceBansAndKicks && reason != null) {
-				server.broadcastMessage(ChatColor.valueOf(GlobalConf.kickColor)+player+" was kicked! ["+reason+"]");
-			} else if (GlobalConf.announceBansAndKicks) {
-				server.broadcastMessage(ChatColor.valueOf(GlobalConf.kickColor)+player+" was kicked!");
+			if (GlobalConf.get("announceBansAndKicks").asBoolean() && reason != null) {
+				server.broadcastMessage(ChatColor.valueOf(GlobalConf.get("kickColor").asString())+player+" was kicked! ["+reason+"]");
+			} else if (GlobalConf.get("announceBansAndKicks").asBoolean()) {
+				server.broadcastMessage(ChatColor.valueOf(GlobalConf.get("kickColor").asString())+player+" was kicked!");
 			}
 		}
 		else throw new PlayerOfflineException(player+" is offline!");
@@ -224,13 +226,13 @@ public final class Main extends JavaPlugin {
 
 	public static Map<String, String> getBanHandlerInitArgs() {
 		HashMap<String, String> data = new HashMap<String, String>(15);
-		data.put("username", GlobalConf.Sql.user);
-		data.put("password", GlobalConf.Sql.pass);
-		data.put("host", GlobalConf.Sql.host);
-		data.put("prefix", GlobalConf.Sql.prefix);
-		data.put("db", GlobalConf.Sql.db);
-		data.put("yaml", GlobalConf.Yaml.file);
-		data.put("apiKey", GlobalConf.MCBans.apiKey);
+		data.put("username", GlobalConf.get("mysql.user").asString());
+		data.put("password", GlobalConf.get("mysql.pass").asString());
+		data.put("host", GlobalConf.get("mysql.host").asString());
+		data.put("prefix", GlobalConf.get("mysql.prefix").asString());
+		data.put("db", GlobalConf.get("mysql.db").asString());
+		data.put("yaml", GlobalConf.get("yaml.fileName").asString());
+		data.put("apiKey", GlobalConf.get("mcbans.apiKey").asString());
 		return data;
 	}
 
@@ -246,7 +248,7 @@ public final class Main extends JavaPlugin {
 					//we don't really care
 				}
 			}
-			System.out.println(GlobalConf.logPrefix+"[DEBUG] ["+caller+"] "+msg);
+			System.out.println(PREFIX+"[DEBUG] ["+caller+"] "+msg);
 		}
 	}
 

@@ -42,7 +42,7 @@ public class Util {
 	 * @throws ClassCastException If the handler is not actually a handler
 	 */
 	public static BanHandler lookupHandler(String shortName) throws ClassNotFoundException, IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassCastException {
-		return (BanHandler) Class.forName(GlobalConf.Advanced.pkg+"."+shortName+GlobalConf.Advanced.suffix).getDeclaredMethod("onEnable", new Class<?>[0]).invoke(null);
+		return (BanHandler) Class.forName(GlobalConf.get("advanced.package").asString()+"."+shortName+GlobalConf.get("advanced.suffix").asString()).getDeclaredMethod("onEnable", new Class<?>[0]).invoke(null);
 	}
 	/**
 	 * Turn a IP in format A.B.C.D into an array of bytes.

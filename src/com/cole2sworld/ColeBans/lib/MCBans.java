@@ -71,7 +71,7 @@ public final class MCBans implements RequesterCallback {
 				JSONTokener tokener = new JSONTokener(reader);
 				JSONObject jobject = new JSONObject(tokener);
 				double reputation = jobject.getDouble("reputation");
-				if (reputation < GlobalConf.MCBans.minRep) {
+				if (reputation < GlobalConf.get("mcbans.minRep").asInteger()) {
 					return new BanData(player, "Your MCBans reputation is too low to play on this server!");
 				}
 				JSONArray localBans = jobject.getJSONArray("local");
@@ -112,7 +112,7 @@ public final class MCBans implements RequesterCallback {
 			String a = requester.getResult();
 			String[] c = a.split(",");
 			ArrayList<BanData> data = new ArrayList<BanData>();
-			if (!GlobalConf.MCBans.fullBackups) {
+			if (!GlobalConf.get("mcbans.fullBackups").asBoolean()) {
 				for (String player : c) {
 					data.add(new BanData(player, "Imported from MCBans"));
 				}

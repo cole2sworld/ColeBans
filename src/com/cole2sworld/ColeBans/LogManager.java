@@ -33,7 +33,7 @@ public class LogManager {
 	public static void initialize() {
 		if (initialized) return;
 		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) {
-			Main.LOG.warning(GlobalConf.logPrefix+" [ActionLogger] Could not initalize - current ban handler is not MySQL.");
+			Main.LOG.warning(Main.PREFIX+"[ActionLogger] Could not initalize - current ban handler is not MySQL.");
 			return;
 		}
 		Map<String, String> data = Main.getBanHandlerInitArgs();

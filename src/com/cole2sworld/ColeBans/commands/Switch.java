@@ -20,19 +20,19 @@ public final class Switch implements CBCommand {
 		PermissionSet perm = new PermissionSet(admin);
 		if (!perm.canSwitch) return ChatColor.RED+"You don't have permission to do that."; 
 		if (args.length > 1 || args.length == 0) return ChatColor.RED+"The switch command must be used with only the destination handler as an argument";
-		if (Main.instance.banHandler.getClass().getSimpleName().replace(GlobalConf.Advanced.suffix, "").equals(args[0])) return ChatColor.YELLOW+"You're already using that ban handler!";
+		if (Main.instance.banHandler.getClass().getSimpleName().replace(GlobalConf.get("advanced.suffix").asString(), "").equals(args[0])) return ChatColor.YELLOW+"You're already using that ban handler!";
 		try {
 			BanHandler dest = Util.lookupHandler(args[0]);
-			Main.LOG.info(GlobalConf.logPrefix+"Starting conversion from "+Main.instance.banHandler.getClass().getSimpleName().replace(GlobalConf.Advanced.suffix, "")+" to "+args[0]);
+			Main.LOG.info(Main.PREFIX+"Starting conversion from "+Main.instance.banHandler.getClass().getSimpleName().replace(GlobalConf.get("advanced.suffix").asString(), "")+" to "+args[0]);
 			if (!perm.console) admin.sendMessage(ChatColor.YELLOW+"Starting conversion...");
 			long oldTime = System.currentTimeMillis()/1000;
 			Main.instance.banHandler.convert(dest);
 			Main.instance.banHandler.onDisable();
-			GlobalConf.conf.set("settings.banHandler", args[0]);
+			GlobalConf.set("settings.banHandler", args[0]);
 			Main.instance.saveConfig();
 			Main.instance.banHandler = dest;
 			long timeSince = (System.currentTimeMillis()/1000)-oldTime;
-			Main.LOG.info(GlobalConf.logPrefix+"Conversion succeeded! Took "+timeSince+" seconds.");
+			Main.LOG.info(Main.PREFIX+"Conversion succeeded! Took "+timeSince+" seconds.");
 			if (!perm.console) admin.sendMessage(ChatColor.GREEN+"Conversion succeeded! Took "+timeSince+" seconds.");
 			LogManager.addEntry(Type.SWITCH, admin.getName(), args[0]);
 		} catch (IllegalArgumentException e) {

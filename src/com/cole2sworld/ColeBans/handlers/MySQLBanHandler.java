@@ -23,7 +23,7 @@ public final class MySQLBanHandler extends BanHandler {
 	 * @param db - The database to use
 	 */
 	public MySQLBanHandler(String username, String password, String host, String prefix, String db) {
-		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Opening connection");
+		System.out.println(Main.PREFIX+"[MySQLBanHandler] Opening connection");
 		long oldtime = System.currentTimeMillis();
 		sqlHandler = new SimpleMySQL();
 		Main.debug("Got instance");
@@ -35,7 +35,7 @@ public final class MySQLBanHandler extends BanHandler {
 		Main.debug("Connected. Setting database");
 		sqlHandler.use(db);
 		long newtime = System.currentTimeMillis();
-		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Done. Took "+(newtime-oldtime)+" ms.");
+		System.out.println(Main.PREFIX+"[MySQLBanHandler] Done. Took "+(newtime-oldtime)+" ms.");
 	}
 	/**
 	 * Sanitizes the input to be safe for usage in a SQL query.
@@ -77,7 +77,7 @@ public final class MySQLBanHandler extends BanHandler {
 		debug("Banning player "+player);
 		if (isPlayerBanned(player, admin)) throw new PlayerAlreadyBannedException(player+" is already banned!");
 		debug("Not already banned");
-		String tbl = GlobalConf.Sql.prefix+"perm";
+		String tbl = GlobalConf.get("mysql.prefix").asString()+"perm";
 		if (sqlHandler.checkTable(tbl)) {
 			debug("Table exists");
 			sqlHandler.query("INSERT INTO "+tbl+" (" +
@@ -91,13 +91,13 @@ public final class MySQLBanHandler extends BanHandler {
 		}
 		else {
 			debug("Table does not exist");
-			sqlHandler.query("CREATE  TABLE `"+GlobalConf.Sql.db+"`.`"+tbl+"` (" +
+			sqlHandler.query("CREATE  TABLE `"+GlobalConf.get("mysql.db").asString()+"`.`"+tbl+"` (" +
 					"`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ," +
 					"`username` VARCHAR(255) NULL ," +
 					"`reason` VARCHAR(255) NULL ," +
 					"PRIMARY KEY (`id`) );");
 			debug("Table created");
-			sqlHandler.query("ALTER TABLE `"+GlobalConf.Sql.db+"`.`"+tbl+"`"+
+			sqlHandler.query("ALTER TABLE `"+GlobalConf.get("mysql.db").asString()+"`.`"+tbl+"`"+
 					"ADD INDEX `NAMEINDEX` (`username` ASC);");
 			debug("Table altered");
 			debug("Re-calling");
@@ -107,12 +107,12 @@ public final class MySQLBanHandler extends BanHandler {
 
 	@Override
 	public void tempBanPlayer(String player, long primTime, String admin) throws PlayerAlreadyBannedException, UnsupportedOperationException {
-		if (!GlobalConf.allowTempBans) throw new UnsupportedOperationException("Temp bans are disabled!");
+		if (!GlobalConf.get("allowTempBans").asBoolean()) throw new UnsupportedOperationException("Temp bans are disabled!");
 		if (isPlayerBanned(player, admin)) throw new PlayerAlreadyBannedException(player+" is already banned!");
 		Long time = System.currentTimeMillis()+((primTime*60)*1000);
-		String tbl = GlobalConf.Sql.prefix+"temp";
+		String tbl = GlobalConf.get("mysql.prefix").asString()+"temp";
 		if (sqlHandler.checkTable(tbl)) {
-			sqlHandler.query("INSERT INTO `"+GlobalConf.Sql.db+"`.`"+tbl+"` (" +
+			sqlHandler.query("INSERT INTO `"+GlobalConf.get("mysql.db").asString()+"`.`"+tbl+"` (" +
 					"username, " +
 					"time" +
 					") VALUES (" +
@@ -121,12 +121,12 @@ public final class MySQLBanHandler extends BanHandler {
 					");");
 		}
 		else {
-			sqlHandler.query("CREATE  TABLE `"+GlobalConf.Sql.db+"`.`"+tbl+"` (" +
+			sqlHandler.query("CREATE  TABLE `"+GlobalConf.get("mysql.db").asString()+"`.`"+tbl+"` (" +
 					"`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ," +
 					"`username` VARCHAR(255) NULL ," +
 					"`time` VARCHAR(255) NULL ," +
 					"PRIMARY KEY (`id`) );");
-			sqlHandler.query("ALTER TABLE `"+GlobalConf.Sql.db+"`.`"+tbl+"`"+
+			sqlHandler.query("ALTER TABLE `"+GlobalConf.get("mysql.db").asString()+"`.`"+tbl+"`"+
 					"ADD INDEX `NAMEINDEX` (`username` ASC);");
 			tempBanPlayer(player, primTime, admin);
 		}
@@ -136,16 +136,16 @@ public final class MySQLBanHandler extends BanHandler {
 	public void unbanPlayer(String player, String admin) throws PlayerNotBannedException {
 		BanData bd = getBanData(player, admin);
 		if (bd.getType() == Type.PERMANENT)  {
-			String tbl = GlobalConf.Sql.prefix+"perm";
+			String tbl = GlobalConf.get("mysql.prefix").asString()+"perm";
 			if (sqlHandler.checkTable(tbl)) {
-				sqlHandler.query("DELETE FROM `"+GlobalConf.Sql.db+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
+				sqlHandler.query("DELETE FROM `"+GlobalConf.get("mysql.db").asString()+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
 				return;
 			}
 		}
 		else if (bd.getType() == Type.TEMPORARY) {
-			String tbl = GlobalConf.Sql.prefix+"temp";
+			String tbl = GlobalConf.get("mysql.prefix").asString()+"temp";
 			if (sqlHandler.checkTable(tbl)) {
-				sqlHandler.query("DELETE FROM `"+GlobalConf.Sql.db+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
+				sqlHandler.query("DELETE FROM `"+GlobalConf.get("mysql.db").asString()+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
 				return;
 			}
 		}
@@ -161,10 +161,10 @@ public final class MySQLBanHandler extends BanHandler {
 	@Override
 	public BanData getBanData(String player, String admin) {
 		debug("Getting ban data for "+player);
-		String tbl = GlobalConf.Sql.prefix+"perm";
+		String tbl = GlobalConf.get("mysql.prefix").asString()+"perm";
 		if (sqlHandler.checkTable(tbl)) {
 			debug(tbl+" exists");
-			ResultSet reasonResult = sqlHandler.query("SELECT reason FROM `"+GlobalConf.Sql.db+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
+			ResultSet reasonResult = sqlHandler.query("SELECT reason FROM `"+GlobalConf.get("mysql.db").asString()+"`.`"+tbl+"` WHERE username='"+addSlashes(player)+"';");
 			debug("got reasonResult, it is "+reasonResult);
 			boolean results = false;
 			try {
@@ -194,9 +194,9 @@ public final class MySQLBanHandler extends BanHandler {
 				}
 			}
 		}
-		String tblB = GlobalConf.Sql.prefix+"temp";
+		String tblB = GlobalConf.get("mysql.prefix").asString()+"temp";
 		if (sqlHandler.checkTable(tblB)) {
-			ResultSet reasonResultB = sqlHandler.query("SELECT time FROM `"+GlobalConf.Sql.db+"`.`"+tblB+"` WHERE username='"+addSlashes(player)+"';");
+			ResultSet reasonResultB = sqlHandler.query("SELECT time FROM `"+GlobalConf.get("mysql.db").asString()+"`.`"+tblB+"` WHERE username='"+addSlashes(player)+"';");
 			boolean resultsB = false;
 			try {
 				resultsB = reasonResultB.first();
@@ -209,7 +209,7 @@ public final class MySQLBanHandler extends BanHandler {
 					time = reasonResultB.getLong("time");
 					if (time <= System.currentTimeMillis()) {
 						if (sqlHandler.checkTable(tblB)) {
-							sqlHandler.query("DELETE FROM `"+GlobalConf.Sql.db+"`.`"+tblB+"` WHERE username='"+addSlashes(player)+"';");
+							sqlHandler.query("DELETE FROM `"+GlobalConf.get("mysql.db").asString()+"`.`"+tblB+"` WHERE username='"+addSlashes(player)+"';");
 						}
 						return new BanData(player);
 					}
@@ -233,11 +233,11 @@ public final class MySQLBanHandler extends BanHandler {
 
 	@Override
 	public void onDisable() {
-		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Closing connection");
+		System.out.println(Main.PREFIX+"[MySQLBanHandler] Closing connection");
 		long oldtime = System.currentTimeMillis();
 		sqlHandler.close();
 		long newtime = System.currentTimeMillis();
-		System.out.println(GlobalConf.logPrefix+"[MySQLBanHandler] Done. Took "+(newtime-oldtime)+" ms.");
+		System.out.println(Main.PREFIX+"[MySQLBanHandler] Done. Took "+(newtime-oldtime)+" ms.");
 	}
 	public static BanHandler onEnable() {
 		Map<String, String> data = Main.getBanHandlerInitArgs();
@@ -247,7 +247,7 @@ public final class MySQLBanHandler extends BanHandler {
 	public void convert(BanHandler handler) {
 		Vector<BanData> dump = dump(BanHandler.SYSTEM_ADMIN_NAME);
 		for (BanData data : dump) {
-			if (GlobalConf.allowTempBans && data.getType() == Type.TEMPORARY) {
+			if (GlobalConf.get("allowTempBans").asBoolean() && data.getType() == Type.TEMPORARY) {
 				try {
 					handler.tempBanPlayer(data.getVictim(), data.getTime(), BanHandler.SYSTEM_ADMIN_NAME);
 				} catch (UnsupportedOperationException e) {
@@ -267,8 +267,8 @@ public final class MySQLBanHandler extends BanHandler {
 	@Override
 	public Vector<BanData> dump(String admin) {
 		Vector<BanData> data = new Vector<BanData>(50);
-		ResultSet temp = sqlHandler.query("SELECT * FROM "+GlobalConf.Sql.prefix+"temp;");
-		ResultSet perm = sqlHandler.query("SELECT * FROM "+GlobalConf.Sql.prefix+"perm;");
+		ResultSet temp = sqlHandler.query("SELECT * FROM "+GlobalConf.get("mysql.prefix").asString()+"temp;");
+		ResultSet perm = sqlHandler.query("SELECT * FROM "+GlobalConf.get("mysql.prefix").asString()+"perm;");
 		if (temp != null) {
 			try {
 				for (; temp.next();) {
@@ -278,7 +278,7 @@ public final class MySQLBanHandler extends BanHandler {
 					}
 			} catch (SQLException e) {
 				e.printStackTrace();
-				Main.LOG.warning(GlobalConf.logPrefix+"Dump on MySQL failed due to SQLException -- dump will be truncated!");
+				Main.LOG.warning(Main.PREFIX+"Dump on MySQL failed due to SQLException -- dump will be truncated!");
 			} finally {
 				try {
 					temp.close();
@@ -296,7 +296,7 @@ public final class MySQLBanHandler extends BanHandler {
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
-				Main.LOG.warning(GlobalConf.logPrefix+"Dump on MySQL failed due to SQLException -- dump will be truncated!");
+				Main.LOG.warning(Main.PREFIX+"Dump on MySQL failed due to SQLException -- dump will be truncated!");
 			} finally {
 				try {
 					perm.close();

@@ -90,10 +90,10 @@ public abstract class BanHandler {
 	 */
 	public static String getFormattedBanReason(String banReason, Type banType, Long tempBanTime) {
 		if (banType == Type.PERMANENT) {
-			return ChatColor.valueOf(GlobalConf.banColor)+GlobalConf.banMessage.replace("%reason", banReason).replace("%time", "infinite");
+			return ChatColor.valueOf(GlobalConf.get("banColor").asString())+GlobalConf.get("banMessage").asString().replace("%reason", banReason).replace("%time", "infinite");
 		}
 		else if (banType == Type.TEMPORARY) {
-			return ChatColor.valueOf(GlobalConf.tempBanColor)+GlobalConf.tempBanMessage.replace("%reason", "Temporary Ban").replace("%time", tempBanTime.toString());
+			return ChatColor.valueOf(GlobalConf.get("tempBanColor").asString())+GlobalConf.get("tempBanMessage").asString().replace("%reason", "Temporary Ban").replace("%time", tempBanTime.toString());
 		}
 		return "";
 	}
