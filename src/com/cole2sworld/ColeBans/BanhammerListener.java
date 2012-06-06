@@ -202,6 +202,9 @@ public class BanhammerListener implements Listener {
 	public void onClick(PlayerInteractEvent event) {
 		if (!GlobalConf.get("banhammer.enable").asBoolean()) return;
 		if (!GlobalConf.get("banhammer.allowSmite").asBoolean()) return;
+		if (!new PermissionSet(event.getPlayer()).canBanhammer) return;
+		if (event.getItem() == null) return;
+		if (event.getItem().getType() != Material.valueOf(GlobalConf.get("banhammer.type").asString())) return;
 		if (event.getAction() == Action.PHYSICAL) return;
 		SimpleAction act = SimpleAction.forAction(event.getAction());
 		Location loc = event.getPlayer().getTargetBlock(null, 50).getLocation();
