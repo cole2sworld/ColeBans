@@ -106,6 +106,7 @@ public class BanhammerListener implements Listener {
 				if (!pset.canBanhammer) return;
 				BanhammerAction action = BanhammerAction.valueOf(GlobalConf.get("banhammer.leftClickAction").asString());
 				if (action == BanhammerAction.NONE) return;
+				event.setCancelled(true);
 				RestrictionManager.freeze(victim);
 				BukkitScheduler sched = Bukkit.getScheduler();
 				sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation()), 1);
@@ -162,6 +163,7 @@ public class BanhammerListener implements Listener {
 			if (!pset.canBanhammer) return;
 			BanhammerAction action = BanhammerAction.valueOf(GlobalConf.get("banhammer.rightClickAction").asString());
 			if (action == BanhammerAction.NONE) return;
+			event.setCancelled(true);
 			RestrictionManager.freeze(victim);
 			BukkitScheduler sched = Bukkit.getScheduler();
 			sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation()), 1);
@@ -206,6 +208,7 @@ public class BanhammerListener implements Listener {
 		if (event.getItem() == null) return;
 		if (event.getItem().getType() != Material.valueOf(GlobalConf.get("banhammer.type").asString())) return;
 		if (event.getAction() == Action.PHYSICAL) return;
+		event.setCancelled(true);
 		SimpleAction act = SimpleAction.forAction(event.getAction());
 		Location loc = event.getPlayer().getTargetBlock(null, 50).getLocation();
 		if (act == SimpleAction.LEFT_CLICK) {
