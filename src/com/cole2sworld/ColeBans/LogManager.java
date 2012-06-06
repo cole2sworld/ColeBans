@@ -21,6 +21,7 @@ public class LogManager {
 	public static enum Type {
 		BAN, UNBAN, TEMPBAN, KICK, SWITCH, LOCAL_BAN, OTHER, UNKNOWN, BANHAMMER_BAN, BANHAMMER_KICK;
 		public static Type forOrdinal(int ordinal) {
+			if (ordinal < 0 || ordinal >= values().length) return UNKNOWN;
 			return values()[ordinal];
 		}
 	}
