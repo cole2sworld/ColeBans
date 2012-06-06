@@ -31,5 +31,7 @@ public final class Help implements CBCommand {
 		help.put("/cb switch", "Switch ban handlers");
 		help.put("/cb version", "Print the ColeBans version");
 		help.put("/cb hammer", "Get a banhammer");
+		help.put("/cb freeze", "Freeze a player");
+		help.put("/cb thaw", "Thaw a player");
 	}
 }

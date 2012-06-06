@@ -19,6 +19,7 @@ public final class PermissionSet {
 	public final boolean canCount;
 	public final boolean canLog;
 	public final boolean canBanhammer;
+	public final boolean canFreeze;
 	public final boolean console;
 	public PermissionSet(CommandSender sender) {
 		if (sender instanceof Player) {
@@ -33,6 +34,7 @@ public final class PermissionSet {
 			canCount = Main.instance.hasPermission(player, "colebans.count");
 			canLog = Main.instance.hasPermission(player, "colebans.viewlog");
 			canBanhammer = Main.instance.hasPermission(player, "colebans.banhammer");
+			canFreeze = Main.instance.hasPermission(player, "colebans.freeze");
 			console = false;
 		}
 		else {
@@ -46,6 +48,7 @@ public final class PermissionSet {
 			canCount = true;
 			canLog = true;
 			canBanhammer = true;
+			canFreeze = true;
 			console = true;
 		}
 	}
