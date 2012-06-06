@@ -7,7 +7,7 @@ import javax.naming.OperationNotSupportedException;
 
 import org.bukkit.ChatColor;
 
-import com.cole2sworld.ColeBans.GlobalConf;
+import com.cole2sworld.ColeBans.framework.GlobalConf;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 /**

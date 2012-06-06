@@ -8,10 +8,10 @@ import java.util.Locale;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import com.cole2sworld.ColeBans.LogEntry;
 import com.cole2sworld.ColeBans.LogManager;
 import com.cole2sworld.ColeBans.LogManager.Type;
 import com.cole2sworld.ColeBans.Main;
+import com.cole2sworld.ColeBans.framework.LogEntry;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
 /**
  * The actions command. Handles getting action logs.

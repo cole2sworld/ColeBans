@@ -11,10 +11,10 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.LogManager;
 import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.LogManager.Type;
+import com.cole2sworld.ColeBans.framework.GlobalConf;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.handlers.YAMLBanHandler;

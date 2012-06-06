@@ -1,9 +1,11 @@
-package com.cole2sworld.ColeBans;
+package com.cole2sworld.ColeBans.framework;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.configuration.Configuration;
+
+import com.cole2sworld.ColeBans.Main;
 
 /**
  * ColeBans global configuration.

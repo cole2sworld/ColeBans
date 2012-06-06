@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 
 import javax.management.InstanceAlreadyExistsException;
 
+import com.cole2sworld.ColeBans.framework.GlobalConf;
 import com.cole2sworld.ColeBans.handlers.BanHandler;
 
 public class Util {

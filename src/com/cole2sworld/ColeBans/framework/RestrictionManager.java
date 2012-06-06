@@ -1,4 +1,4 @@
-package com.cole2sworld.ColeBans;
+package com.cole2sworld.ColeBans.framework;
 
 import java.util.HashMap;
 import org.bukkit.Location;

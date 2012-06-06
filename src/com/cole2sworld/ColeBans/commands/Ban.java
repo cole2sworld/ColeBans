@@ -5,10 +5,10 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.LogManager;
 import com.cole2sworld.ColeBans.LogManager.Type;
 import com.cole2sworld.ColeBans.Main;
+import com.cole2sworld.ColeBans.framework.GlobalConf;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 /**

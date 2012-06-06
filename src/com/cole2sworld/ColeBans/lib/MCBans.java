@@ -10,9 +10,9 @@ import org.json.util.JSONException;
 import org.json.util.JSONObject;
 import org.json.util.JSONTokener;
 
-import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.Util;
+import com.cole2sworld.ColeBans.framework.GlobalConf;
 import com.cole2sworld.ColeBans.handlers.BanData;
 
 /**

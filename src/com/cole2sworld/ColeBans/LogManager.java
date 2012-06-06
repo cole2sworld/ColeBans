@@ -9,6 +9,7 @@ import java.util.Map;
 
 import static com.cole2sworld.ColeBans.handlers.MySQLBanHandler.addSlashes;
 
+import com.cole2sworld.ColeBans.framework.LogEntry;
 import com.unibia.simplemysql.SimpleMySQL;
 
 /**

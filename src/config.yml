@@ -16,9 +16,6 @@ settings:
         type: GOLD_HOE
         leftClickAction: BAN
         rightClickAction: KICK
-        damageTool: no
-        allowDirtTill: no
-        opOnly: no
         allowSmite: yes
         reason: Banhammered
     mysql:

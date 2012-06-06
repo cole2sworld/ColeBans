@@ -1,6 +1,8 @@
-package com.cole2sworld.ColeBans;
+package com.cole2sworld.ColeBans.framework;
 
 import java.util.HashMap;
+
+import com.cole2sworld.ColeBans.LogManager;
 /**
  * Log entry, for Actions.
  * @author cole2

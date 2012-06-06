@@ -3,8 +3,8 @@ package com.cole2sworld.ColeBans.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
+import com.cole2sworld.ColeBans.framework.GlobalConf;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.handlers.YAMLBanHandler;
 

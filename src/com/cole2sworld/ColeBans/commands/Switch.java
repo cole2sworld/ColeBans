@@ -5,11 +5,11 @@ import java.lang.reflect.InvocationTargetException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.LogManager;
 import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.Util;
 import com.cole2sworld.ColeBans.LogManager.Type;
+import com.cole2sworld.ColeBans.framework.GlobalConf;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.handlers.BanHandler;
 

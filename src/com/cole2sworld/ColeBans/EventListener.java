@@ -8,6 +8,8 @@ import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent.Result;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
+
+import com.cole2sworld.ColeBans.framework.GlobalConf;
 import com.cole2sworld.ColeBans.handlers.BanData;
 import com.cole2sworld.ColeBans.handlers.BanHandler;
 import com.cole2sworld.ColeBans.handlers.BanHandler.Type;

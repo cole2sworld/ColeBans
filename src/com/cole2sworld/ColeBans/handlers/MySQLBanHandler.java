@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.Vector;
 
-import com.cole2sworld.ColeBans.GlobalConf;
 import com.cole2sworld.ColeBans.Main;
+import com.cole2sworld.ColeBans.framework.GlobalConf;
 import com.cole2sworld.ColeBans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.ColeBans.framework.PlayerNotBannedException;
 import com.unibia.simplemysql.SimpleMySQL;

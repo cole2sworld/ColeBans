@@ -21,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.cole2sworld.ColeBans.EventListener;
 import com.cole2sworld.ColeBans.commands.CBCommand;
 import com.cole2sworld.ColeBans.commands.CommandHandler;
+import com.cole2sworld.ColeBans.framework.GlobalConf;
 import com.cole2sworld.ColeBans.framework.PlayerOfflineException;
 import com.cole2sworld.ColeBans.handlers.BanHandler;
 import com.nijiko.permissions.PermissionHandler;

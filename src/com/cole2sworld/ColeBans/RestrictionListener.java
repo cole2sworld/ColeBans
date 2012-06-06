@@ -12,6 +12,8 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.cole2sworld.ColeBans.framework.RestrictionManager;
+
 /**
  * Manages restrictions (copy-pasted for the most part from DragonList)
  * <br/>
