@@ -141,6 +141,8 @@ public class BanhammerListener implements Listener {
 				} else {
 					sched.scheduleSyncDelayedTask(Main.instance, new KickRunnable(victim.getName(), attacker.getName()), 11);
 				}
+			} else {
+				event.setDamage(Integer.MAX_VALUE-999);
 			}
 		}
 	}
