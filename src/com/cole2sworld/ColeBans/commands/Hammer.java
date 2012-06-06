@@ -13,7 +13,7 @@ public class Hammer implements CBCommand {
 	public String run(String[] args, CommandSender admin) throws Exception {
 		if (!new PermissionSet(admin).canBanhammer) return ChatColor.RED+"You don't have permission to do that.";
 		if (admin instanceof Player) {
-			((Player)admin).getInventory().addItem(new ItemStack(Material.GOLD_HOE, 1, Short.MIN_VALUE));
+			((Player)admin).getInventory().addItem(new ItemStack(Material.valueOf(GlobalConf.get("banhammer.type").asString()), 1, Short.MIN_VALUE));
 			admin.sendMessage(ChatColor.AQUA+"Left click: "+GlobalConf.get("banhammer.leftClickAction").asString().toLowerCase()+"; "+"Right click: "+GlobalConf.get("banhammer.rightClickAction").asString().toLowerCase());
 		} else {
 			return ChatColor.RED+"You don't have an inventory.";
