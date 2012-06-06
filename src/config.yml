@@ -19,6 +19,8 @@ settings:
         damageTool: no
         allowDirtTill: no
         opOnly: no
+        allowSmite: yes
+        reason: Banhammered
     mysql:
         user: root
         pass: pass

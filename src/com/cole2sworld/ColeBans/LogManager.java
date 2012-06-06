@@ -18,7 +18,7 @@ import com.unibia.simplemysql.SimpleMySQL;
  */
 public class LogManager {
 	public static enum Type {
-		BAN, UNBAN, TEMPBAN, KICK, SWITCH, LOCAL_BAN, OTHER, UNKNOWN;
+		BAN, UNBAN, TEMPBAN, KICK, SWITCH, LOCAL_BAN, OTHER, UNKNOWN, BANHAMMER_BAN, BANHAMMER_KICK;
 		public static Type forOrdinal(int ordinal) {
 			return values()[ordinal];
 		}

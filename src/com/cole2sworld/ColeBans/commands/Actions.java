@@ -70,6 +70,10 @@ public final class Actions implements CBCommand {
 					admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.BLUE+entry.getAdmin()+" switched ban handlers to "+entry.getVictim());
 				} else if (entry.getType() == Type.OTHER) {
 					admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.AQUA+entry.getAdmin()+" did something to "+entry.getVictim());
+				} else if (entry.getType() == Type.BANHAMMER_BAN) {
+					admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.GOLD+entry.getAdmin()+" banhammered "+entry.getVictim());
+				} else if (entry.getType() == Type.BANHAMMER_KICK) {
+					admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.LIGHT_PURPLE+entry.getAdmin()+" kickhammered "+entry.getVictim());
 				} else {
 					admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.DARK_PURPLE+entry.getAdmin()+" did an unknown action on "+entry.getVictim());
 				}
@@ -140,6 +144,10 @@ public final class Actions implements CBCommand {
 				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.BLUE+entry.getAdmin()+" switched ban handlers to "+entry.getVictim());
 			} else if (entry.getType() == Type.OTHER) {
 				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.AQUA+entry.getAdmin()+" did something to "+entry.getVictim());
+			} else if (entry.getType() == Type.BANHAMMER_BAN) {
+				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.GOLD+entry.getAdmin()+" banhammered "+entry.getVictim());
+			} else if (entry.getType() == Type.BANHAMMER_KICK) {
+				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.LIGHT_PURPLE+entry.getAdmin()+" kickhammered "+entry.getVictim());
 			} else {
 				admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.DARK_PURPLE+entry.getAdmin()+" did an unknown action on "+entry.getVictim());
 			}

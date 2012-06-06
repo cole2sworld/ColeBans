@@ -116,6 +116,7 @@ public final class Main extends JavaPlugin {
 			oldtime = System.currentTimeMillis();
 			pm.registerEvents(new EventListener(), this);
 			pm.registerEvents(new BanhammerListener(), this);
+			pm.registerEvents(new RestrictionListener(), this);
 			newtime = System.currentTimeMillis();
 			System.out.println(PREFIX+"Done. Took "+(newtime-oldtime)+" ms.");
 		}
