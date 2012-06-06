@@ -97,13 +97,13 @@ public class BanhammerListener implements Listener {
 		if (!GlobalConf.get("banhammer.enable").asBoolean()) return;
 		if (event.getDamager() instanceof Player) {
 			Player attacker = (Player) event.getDamager();
+			PermissionSet pset = new PermissionSet(attacker);
+			if (!pset.canBanhammer) return;
 			if (event.getEntity() instanceof Player) {
 				Player victim = (Player) event.getEntity();
-				PermissionSet pset = new PermissionSet(attacker);
 				ItemStack held = attacker.getItemInHand();
 				if (held == null) return;
 				if (held.getType() != Material.valueOf(GlobalConf.get("banhammer.type").asString())) return;
-				if (!pset.canBanhammer) return;
 				BanhammerAction action = BanhammerAction.valueOf(GlobalConf.get("banhammer.leftClickAction").asString());
 				if (action == BanhammerAction.NONE) return;
 				event.setCancelled(true);
