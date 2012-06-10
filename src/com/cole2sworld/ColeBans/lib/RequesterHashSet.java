@@ -9,60 +9,32 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-import org.bukkit.Bukkit;
+
 import org.json.util.JSONArray;
 import org.json.util.JSONObject;
 import org.json.util.JSONTokener;
 
+import org.bukkit.Bukkit;
+
 import com.cole2sworld.ColeBans.handlers.BanData;
 
 public class RequesterHashSet implements RequesterCallback, Closeable {
-	private volatile HashSet<MCBansRequester> requesters = new HashSet<MCBansRequester>();
-	private volatile HashMap<String, String> results = new HashMap<String, String>();
-	private final RequesterCallback callback;
-	private Future<List<BanData>> future = null;
-	private boolean closed;
-	public RequesterHashSet(RequesterCallback callback) {
-		this.callback = callback;
-	}
-	public synchronized boolean add(MCBansRequester e) {
-		verifyNotClosed();
-		boolean result = requesters.add(e);
-		e.setWaitForSize(this);
-		e.start();
-		return result;
-	}
-	public void abort() {
-		verifyNotClosed();
-		for (MCBansRequester requester : requesters) {
-			requester.interrupt();
-		}
-	}
-	public List<String> getResults() {
-		return new ArrayList<String>(results.values());
-	}
-	public Set<MCBansRequester> getProcessing() {
-		return requesters;
-	}
-	public boolean isFinished() {
-		return requesters.size() == 0;
-	}
-	private static BanData convertLookup(String name, String lookupResult) {
+	private static BanData convertLookup(final String name, final String lookupResult) {
 		try {
-			StringReader reader = new StringReader(lookupResult);
-			JSONTokener tokener = new JSONTokener(reader);
-			JSONObject jobject = new JSONObject(tokener);
-			JSONArray array = jobject.getJSONArray("local");
-			HashMap<InetAddress, String> servers = new HashMap<InetAddress, String>();
+			final StringReader reader = new StringReader(lookupResult);
+			final JSONTokener tokener = new JSONTokener(reader);
+			final JSONObject jobject = new JSONObject(tokener);
+			final JSONArray array = jobject.getJSONArray("local");
+			final HashMap<InetAddress, String> servers = new HashMap<InetAddress, String>();
 			String localReason = null;
 			for (int i = 0; i<array.length(); i++) {
-				Object val = array.get(i);
+				final Object val = array.get(i);
 				if (val instanceof String) {
-					String valString = (String) array.get(i);
-					String[] splitString = valString.split(" .:. ");
-					String barredServer = splitString[0];
-					InetAddress barredServerIp = InetAddress.getByName(barredServer);
-					String reason = splitString[1];
+					final String valString = (String) array.get(i);
+					final String[] splitString = valString.split(" .:. ");
+					final String barredServer = splitString[0];
+					final InetAddress barredServerIp = InetAddress.getByName(barredServer);
+					final String reason = splitString[1];
 					if (barredServerIp.getHostAddress().equals(Bukkit.getIp())) {
 						if (splitString.length > 1) {
 							localReason = reason;
@@ -73,47 +45,50 @@ public class RequesterHashSet implements RequesterCallback, Closeable {
 				}
 			}
 			BanData rtrn;
-			if (localReason == null) rtrn = new BanData(name);
-			else rtrn = new BanData(name, localReason);
+			if (localReason == null) {
+				rtrn = new BanData(name);
+			} else {
+				rtrn = new BanData(name, localReason);
+			}
 			rtrn.setCustomData("mcbans-banned-servers", servers);
 			return rtrn;
 		}
-		catch (Exception e) {}
+		catch (final Exception e) {}
 		return null;
 	}
-	@Override
-	public synchronized void requestFinished(MCBansRequester requester) {
-		results.put(requester.getInstruction(), requester.getResult());
-		requesters.remove(requester);
-		this.notify();
-		if (isFinished()) {
-			callback.requestFinished(null);
-			close();
-			if (future != null) {
-				ArrayList<BanData> data = new ArrayList<BanData>();
-				for (Entry<String, String> entry : results.entrySet()) {
-					data.add(convertLookup(decodeInstructionToPlayer(entry.getKey()), entry.getValue()));
-				}
-				future.setResult(data);
-			}
-		}
-	}
-	private String decodeInstructionToPlayer(String key) {
-		String[] split = key.split("&");
+	private static String decodeInstructionToPlayer(final String key) {
+		final String[] split = key.split("&");
 		String playerRaw = null;
-		for (String str : split) {
+		for (final String str : split) {
 			if (str.startsWith("player=")) {
 				playerRaw = str;
 				break;
 			}
 		}
 		if (playerRaw == null) return null;
-		String[] plySplit = playerRaw.split("=");
+		final String[] plySplit = playerRaw.split("=");
 		return plySplit[1];
 	}
-	public void use(Future<List<BanData>> future) {
+	private volatile HashSet<MCBansRequester> requesters = new HashSet<MCBansRequester>();
+	private volatile HashMap<String, String> results = new HashMap<String, String>();
+	private final RequesterCallback callback;
+	private Future<List<BanData>> future = null;
+	private boolean closed;
+	public RequesterHashSet(final RequesterCallback callback) {
+		this.callback = callback;
+	}
+	public void abort() {
 		verifyNotClosed();
-		this.future  = future;
+		for (final MCBansRequester requester : requesters) {
+			requester.interrupt();
+		}
+	}
+	public synchronized boolean add(final MCBansRequester e) {
+		verifyNotClosed();
+		final boolean result = requesters.add(e);
+		e.setWaitForSize(this);
+		e.start();
+		return result;
 	}
 	/**
 	 * Closes this RequesterHashSet, therefore making it no longer usable.
@@ -124,10 +99,41 @@ public class RequesterHashSet implements RequesterCallback, Closeable {
 		abort();
 		closed = true;
 	}
-	private void verifyNotClosed() {
-		if (closed) throw new IllegalStateException("RequesterHashSet is closed");
+	public Set<MCBansRequester> getProcessing() {
+		return requesters;
 	}
+	public List<String> getResults() {
+		return new ArrayList<String>(results.values());
+	}
+
 	public boolean isClosed() {
 		return closed;
+	}
+	public boolean isFinished() {
+		return requesters.size() == 0;
+	}
+	@Override
+	public synchronized void requestFinished(final MCBansRequester requester) {
+		results.put(requester.getInstruction(), requester.getResult());
+		requesters.remove(requester);
+		notify();
+		if (isFinished()) {
+			callback.requestFinished(null);
+			close();
+			if (future != null) {
+				final ArrayList<BanData> data = new ArrayList<BanData>();
+				for (final Entry<String, String> entry : results.entrySet()) {
+					data.add(convertLookup(decodeInstructionToPlayer(entry.getKey()), entry.getValue()));
+				}
+				future.setResult(data);
+			}
+		}
+	}
+	public void use(final Future<List<BanData>> future) {
+		verifyNotClosed();
+		this.future  = future;
+	}
+	private void verifyNotClosed() {
+		if (closed) throw new IllegalStateException("RequesterHashSet is closed");
 	}
 }

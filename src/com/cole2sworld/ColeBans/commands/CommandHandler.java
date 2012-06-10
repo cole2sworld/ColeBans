@@ -17,37 +17,38 @@ public class CommandHandler {
 	 * @param cmdLabel The command label
 	 * @param args The space-seperated arguments
 	 */
-	public static boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
+	@SuppressWarnings("unused")
+	public static boolean onCommand(final CommandSender sender, final Command cmd, final String cmdLabel, final String[] args) {
 		Main.debug("Static handler called");
 		String error = ChatColor.YELLOW+"An unspecified error has occurred while running this command.";
 		Main.debug("PermissionSet allocated");
 		if (cmdLabel.equalsIgnoreCase("ban")) {
 			Main.debug("Ban command");
-			String result = new Ban().run(args, sender);
+			final String result = new Ban().run(args, sender);
 			if (result == null) return true;
 			error = result;
 		}
 		else if (cmdLabel.equalsIgnoreCase("tempban")) {
 			Main.debug("Tempban command");
-			String result = new Tempban().run(args, sender);
+			final String result = new Tempban().run(args, sender);
 			if (result == null) return true;
 			error = result;
 		}
 		else if (cmdLabel.equalsIgnoreCase("unban")) {
 			Main.debug("Unban command");
-			String result = new Unban().run(args, sender);
+			final String result = new Unban().run(args, sender);
 			if (result == null) return true;
 			error = result;
 		}
 		else if (cmdLabel.equalsIgnoreCase("lookup") || cmdLabel.equalsIgnoreCase("check")) {
 			Main.debug("Lookup/Check command");
-			String result = new Check().run(args, sender);
+			final String result = new Check().run(args, sender);
 			if (result == null) return true;
 			error = result;
 		}
 		else if (cmdLabel.equalsIgnoreCase("kick")) {
 			Main.debug("Kick command");
-			String result = new Kick().run(args, sender);
+			final String result = new Kick().run(args, sender);
 			if (result == null) return true;
 			error = result;
 		}

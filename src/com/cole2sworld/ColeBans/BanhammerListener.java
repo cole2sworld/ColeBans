@@ -30,85 +30,98 @@ import com.cole2sworld.ColeBans.framework.SimpleAction;
  * @since v5 Elderberry
  */
 public class BanhammerListener implements Listener {
-	public static class ExplosionRunnable implements Runnable {
-		private final Location location;
-		public ExplosionRunnable(Location loc) {
-			location = loc;
-		}
-		public void run() {
-			location.getWorld().createExplosion(location, 0);
-		}
-	}
-	public static class LightningRunnable implements Runnable {
-		private final Location location;
-		public LightningRunnable(Location loc) {
-			location = loc;
-		}
-		public void run() {
-			location.getWorld().strikeLightningEffect(location);
-		}
+	public static enum BanhammerAction {
+		BAN, KICK, NONE;
 	}
 	public static class BanRunnable implements Runnable {
 		private final String player;
 		private final String admin;
-		public BanRunnable(String ply, String adm) {
+		public BanRunnable(final String ply, final String adm) {
 			player = ply;
 			admin = adm;
 		}
+		@Override
 		public void run() {
 			try {
 				Main.instance.banHandler.banPlayer(player, GlobalConf.get("banhammer.reason").asString(), admin);
-				Player playerObj = Main.instance.server.getPlayerExact(player);
+				final Player playerObj = Main.instance.server.getPlayerExact(player);
 				if (playerObj != null) {
 					playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.get("banColor").asString())+"BANNED: "+GlobalConf.get("banhammer.reason").asString());
 					if (GlobalConf.get("fancyEffects").asBoolean()) {
-						World world = playerObj.getWorld();
+						final World world = playerObj.getWorld();
 						world.createExplosion(playerObj.getLocation(), 0);
 					}
 				}
-				if (GlobalConf.get("announceBansAndKicks").asBoolean()) Main.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.get("banColor").asString())+player+" was banned! ["+GlobalConf.get("banhammer.reason").asString()+"]");
+				if (GlobalConf.get("announceBansAndKicks").asBoolean()) {
+					Main.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.get("banColor").asString())+player+" was banned! ["+GlobalConf.get("banhammer.reason").asString()+"]");
+				}
 				LogManager.addEntry(LogManager.Type.BANHAMMER_BAN, admin, player);
-			} catch (PlayerAlreadyBannedException e) {
+			} catch (final PlayerAlreadyBannedException e) {
 				//impossibru
 			}
+		}
+	}
+	public static class ExplosionRunnable implements Runnable {
+		private final Location location;
+		public ExplosionRunnable(final Location loc) {
+			location = loc;
+		}
+		@Override
+		public void run() {
+			location.getWorld().createExplosion(location, 0);
 		}
 	}
 	public static class KickRunnable implements Runnable {
 		private final String player;
 		private final String admin;
-		public KickRunnable(String ply, String adm) {
+		public KickRunnable(final String ply, final String adm) {
 			player = ply;
 			admin = adm;
 		}
+		@Override
 		public void run() {
 			try {
 				Main.instance.kickPlayer(player, GlobalConf.get("banhammer.reason").asString());
 				LogManager.addEntry(LogManager.Type.BANHAMMER_KICK, admin, player);
-			} catch (PlayerOfflineException e) {
+			} catch (final PlayerOfflineException e) {
 				//impossibru
 			}
 		}
 	}
-	public static enum BanhammerAction {
-		BAN, KICK, NONE;
+	public static class LightningRunnable implements Runnable {
+		private final Location location;
+		public LightningRunnable(final Location loc) {
+			location = loc;
+		}
+		@Override
+		public void run() {
+			location.getWorld().strikeLightningEffect(location);
+		}
 	}
+	private static Location getRandomAround(Location loc) {
+		final Random rand = new Random(System.currentTimeMillis());
+		loc = loc.clone();
+		loc.add(rand.nextDouble()*(rand.nextBoolean() ? -1D : 1D), 0, rand.nextDouble()*(rand.nextBoolean() ? -1D : 1D));
+		return loc;
+	}
+
 	@EventHandler (priority=EventPriority.LOWEST)
-	public void onAttack(EntityDamageByEntityEvent event) {
+	public void onAttack(final EntityDamageByEntityEvent event) {
 		if (!GlobalConf.get("banhammer.enable").asBoolean()) return;
 		if (event.getDamager() instanceof Player) {
-			Player attacker = (Player) event.getDamager();
-			PermissionSet pset = new PermissionSet(attacker);
+			final Player attacker = (Player) event.getDamager();
+			final PermissionSet pset = new PermissionSet(attacker);
 			if (!pset.canBanhammer) return;
 			if (event.getEntity() instanceof Player) {
-				Player victim = (Player) event.getEntity();
-				ItemStack held = attacker.getItemInHand();
+				final Player victim = (Player) event.getEntity();
+				final ItemStack held = attacker.getItemInHand();
 				if (held == null) return;
 				if (held.getType() != Material.valueOf(GlobalConf.get("banhammer.type").asString())) return;
-				BanhammerAction action = BanhammerAction.valueOf(GlobalConf.get("banhammer.leftClickAction").asString());
+				final BanhammerAction action = BanhammerAction.valueOf(GlobalConf.get("banhammer.leftClickAction").asString());
 				if (action == BanhammerAction.NONE) return;
 				event.setCancelled(true);
 				RestrictionManager.freeze(victim);
-				BukkitScheduler sched = Bukkit.getScheduler();
+				final BukkitScheduler sched = Bukkit.getScheduler();
 				sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation()), 1);
 				sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation().add(0, 1, 0)), 2);
 				sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation().add(0, 2, 0)), 3);
@@ -146,28 +159,39 @@ public class BanhammerListener implements Listener {
 			}
 		}
 	}
-	private Location getRandomAround(Location loc) {
-		Random rand = new Random(System.currentTimeMillis());
-		loc = loc.clone();
-		loc.add(rand.nextDouble()*(rand.nextBoolean() ? -1D : 1D), 0, rand.nextDouble()*(rand.nextBoolean() ? -1D : 1D));
-		return loc;
+	@EventHandler
+	public void onClick(final PlayerInteractEvent event) {
+		if (!GlobalConf.get("banhammer.enable").asBoolean()) return;
+		if (!GlobalConf.get("banhammer.allowSmite").asBoolean()) return;
+		if (!new PermissionSet(event.getPlayer()).canBanhammer) return;
+		if (event.getItem() == null) return;
+		if (event.getItem().getType() != Material.valueOf(GlobalConf.get("banhammer.type").asString())) return;
+		if (event.getAction() == Action.PHYSICAL) return;
+		event.setCancelled(true);
+		final SimpleAction act = SimpleAction.forAction(event.getAction());
+		final Location loc = event.getPlayer().getTargetBlock(null, 50).getLocation();
+		if (act == SimpleAction.LEFT_CLICK) {
+			loc.getWorld().createExplosion(loc, 0);
+		} else {
+			loc.getWorld().strikeLightningEffect(loc);
+		}
 	}
 	@EventHandler (priority=EventPriority.LOWEST)
-	public void onInteract(PlayerInteractEntityEvent event) {
+	public void onInteract(final PlayerInteractEntityEvent event) {
 		if (!GlobalConf.get("banhammer.enable").asBoolean()) return;
-		Player attacker = event.getPlayer();
+		final Player attacker = event.getPlayer();
 		if (event.getRightClicked() instanceof Player) {
-			Player victim = (Player) event.getRightClicked();
-			PermissionSet pset = new PermissionSet(attacker);
-			ItemStack held = attacker.getItemInHand();
+			final Player victim = (Player) event.getRightClicked();
+			final PermissionSet pset = new PermissionSet(attacker);
+			final ItemStack held = attacker.getItemInHand();
 			if (held == null) return;
 			if (held.getType() != Material.valueOf(GlobalConf.get("banhammer.type").asString())) return;
 			if (!pset.canBanhammer) return;
-			BanhammerAction action = BanhammerAction.valueOf(GlobalConf.get("banhammer.rightClickAction").asString());
+			final BanhammerAction action = BanhammerAction.valueOf(GlobalConf.get("banhammer.rightClickAction").asString());
 			if (action == BanhammerAction.NONE) return;
 			event.setCancelled(true);
 			RestrictionManager.freeze(victim);
-			BukkitScheduler sched = Bukkit.getScheduler();
+			final BukkitScheduler sched = Bukkit.getScheduler();
 			sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation()), 1);
 			sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation().add(0, 1, 0)), 2);
 			sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation().add(0, 2, 0)), 3);
@@ -200,23 +224,6 @@ public class BanhammerListener implements Listener {
 			} else {
 				sched.scheduleSyncDelayedTask(Main.instance, new KickRunnable(victim.getName(), attacker.getName()), 11);
 			}
-		}
-	}
-	@EventHandler
-	public void onClick(PlayerInteractEvent event) {
-		if (!GlobalConf.get("banhammer.enable").asBoolean()) return;
-		if (!GlobalConf.get("banhammer.allowSmite").asBoolean()) return;
-		if (!new PermissionSet(event.getPlayer()).canBanhammer) return;
-		if (event.getItem() == null) return;
-		if (event.getItem().getType() != Material.valueOf(GlobalConf.get("banhammer.type").asString())) return;
-		if (event.getAction() == Action.PHYSICAL) return;
-		event.setCancelled(true);
-		SimpleAction act = SimpleAction.forAction(event.getAction());
-		Location loc = event.getPlayer().getTargetBlock(null, 50).getLocation();
-		if (act == SimpleAction.LEFT_CLICK) {
-			loc.getWorld().createExplosion(loc, 0);
-		} else {
-			loc.getWorld().strikeLightningEffect(loc);
 		}
 	}
 }
