@@ -21,15 +21,15 @@ import com.cole2sworld.ColeBans.framework.LogEntry;
  */
 public class LogManager {
 	public static enum Type {
-		BAN ,
-		UNBAN ,
-		TEMPBAN ,
-		KICK ,
-		SWITCH ,
-		LOCAL_BAN ,
-		OTHER ,
-		UNKNOWN ,
-		BANHAMMER_BAN ,
+		BAN,
+		UNBAN,
+		TEMPBAN,
+		KICK,
+		SWITCH,
+		LOCAL_BAN,
+		OTHER,
+		UNKNOWN,
+		BANHAMMER_BAN,
 		BANHAMMER_KICK;
 		public static Type forOrdinal(final int ordinal) {
 			if ((ordinal < 0) || (ordinal >= values().length)) return UNKNOWN;
@@ -230,8 +230,6 @@ public class LogManager {
 		}
 		final Map<String, String> data = Main.getBanHandlerInitArgs();
 		sql = new SimpleMySQL();
-		sql.enableReconnect();
-		sql.setReconnectNumRetry(25);
 		sql.connect(data.get("host"), data.get("username"), data.get("password"));
 		sql.use(data.get("db"));
 		tablePrefix = data.get("prefix");
@@ -247,6 +245,7 @@ public class LogManager {
 	 * @return Modified list
 	 */
 	public static List<LogEntry> since(final long timeMillis, final List<LogEntry> oldlist) {
+		checkConnectionAIDR();
 		final ArrayList<LogEntry> list = new ArrayList<LogEntry>();
 		for (final LogEntry entry : oldlist) {
 			if (entry.getTime() >= timeMillis) {
@@ -256,8 +255,36 @@ public class LogManager {
 		return list;
 	}
 	
+	/**
+	 * Check the connection, and <b>i</b>f <b>d</b>isconnected,
+	 * <b>r</b>econnect.
+	 * 
+	 * @return How long the operation took
+	 */
+	private static long checkConnectionAIDR() {
+		final long oldtime = System.currentTimeMillis();
+		final SimpleMySQL.State st = sql.checkConnection();
+		final boolean didSomething = false;
+		if (st != SimpleMySQL.State.CONNECTED) {
+			System.out.println(Main.PREFIX + "[LogManager] Re-initalizing connection");
+			final Map<String, String> data = Main.getBanHandlerInitArgs();
+			sql = new SimpleMySQL();
+			sql.connect(data.get("host"), data.get("username"), data.get("password"));
+			sql.use(data.get("db"));
+			tablePrefix = data.get("prefix");
+			tbl = tablePrefix + "log";
+		}
+		final long newtime = System.currentTimeMillis();
+		if (didSomething) {
+			System.out.println(Main.PREFIX + "[LogManager] Done. Took " + (newtime - oldtime)
+					+ " ms.");
+		}
+		return newtime - oldtime;
+	}
+	
 	private static void verify() {
 		initialize();
+		checkConnectionAIDR();
 		if (!sql.checkTable(tbl)) {
 			sql.query("CREATE  TABLE " + tbl + " (" + "`type` INT UNSIGNED NOT NULL ,"
 					+ "`admin` VARCHAR(45) NULL ," + "`victim` VARCHAR(45) NULL ,"
