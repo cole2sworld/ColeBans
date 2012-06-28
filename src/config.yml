@@ -1,4 +1,7 @@
 # For information on how to configure ColeBans, go to http://c2wr.com/cbconf
+# banHandler can be MySQL or YAML. MCBans is being worked on (as of 6/28/2012)
+# Please note that if fancyEffects is disabled, the banhammer will not work.
+###### APIKEY IS VERY VERY IMPORTANT IF YOU CHOSE MCBANS FOR THE BAN HANDLER ######
 settings:
     allowTempBans: yes
     banMessage: You are banned for %reason!
@@ -8,10 +11,8 @@ settings:
     kickColor: YELLOW
     tempBanColor: RED
     announceBansAndKicks: yes
-    #banHandler can be MySQL, MCBans, YAML, or JSON.
     banHandler: YAML
     banhammer:
-        #Please note that if fancyEffects is disabled, the banhammer will not work.
         enable: yes
         type: GOLD_HOE
         leftClickAction: BAN
@@ -25,17 +26,12 @@ settings:
         db: minecraft
         prefix: cb_
     mcbans:
-        ###### THIS LINE IS VERY VERY IMPORTANT IF YOU CHOSE MCBANS FOR THE BAN HANDLER ######
         apiKey: yourAPIKeyHere
-        # Set this to the BanHandler you want to use for the backups, or "None" to turn off backups.
         backup: None
         fullBackups: no
-        #The minimum rep a player can have to join your server.
         minRep: 10
     yaml:
         fileName: banlist.yml
     advanced:
-        # The package is where to get the ban handlers. Only change this line if you know what you are doing.
         package: com.cole2sworld.ColeBans.handlers
-        #The suffix is what is at the end of all the ban handlers. Only change this line if you know what you are doing.
         suffix: BanHandler
