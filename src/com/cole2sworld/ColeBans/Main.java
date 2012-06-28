@@ -272,6 +272,8 @@ public final class Main extends JavaPlugin {
 			newtime = System.currentTimeMillis();
 			System.out.println(PREFIX + "Done. Took " + (newtime - oldtime) + " ms.");
 		} catch (final Exception e) {
+			// TMTRAINER effect
+			// http://bulbapedia.bulbagarden.net/wiki/TMTRAINER_effect
 			LOG.severe(PREFIX + "▄▒□◊▲□TMTRAINER◙░░▓▄'s TM55 is frozen solid!");
 			LOG.severe(PREFIX + "▪▪▪▪ is hurt by the burn!");
 			LOG.severe(PREFIX + "▪▪▪▪ fainted!");
