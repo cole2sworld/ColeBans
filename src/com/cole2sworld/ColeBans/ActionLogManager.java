@@ -19,7 +19,7 @@ import com.cole2sworld.ColeBans.framework.LogEntry;
  * @author cole2
  * 
  */
-public class LogManager {
+public class ActionLogManager {
 	public static enum Type {
 		BAN,
 		UNBAN,

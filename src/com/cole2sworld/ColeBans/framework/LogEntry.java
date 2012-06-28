@@ -2,7 +2,7 @@ package com.cole2sworld.ColeBans.framework;
 
 import java.util.HashMap;
 
-import com.cole2sworld.ColeBans.LogManager;
+import com.cole2sworld.ColeBans.ActionLogManager;
 /**
  * Log entry, for Actions.
  * @author cole2
@@ -16,17 +16,17 @@ public class LogEntry {
 		map.put("victim", "?");
 		map.put("time", "0");
 	}
-	public LogEntry(LogManager.Type type, String admin, String victim, long time) {
+	public LogEntry(ActionLogManager.Type type, String admin, String victim, long time) {
 		setType(type);
 		setAdmin(admin);
 		setVictim(victim);
 		setTime(time);
 	}
-	public void setType(LogManager.Type type) {
+	public void setType(ActionLogManager.Type type) {
 		map.put("type", type.name());
 	}
-	public LogManager.Type getType() {
-		return LogManager.Type.valueOf(map.get("type"));
+	public ActionLogManager.Type getType() {
+		return ActionLogManager.Type.valueOf(map.get("type"));
 	}
 	public void setAdmin(String admin) {
 		map.put("admin", admin);

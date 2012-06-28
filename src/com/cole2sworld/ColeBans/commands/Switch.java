@@ -5,10 +5,10 @@ import java.lang.reflect.InvocationTargetException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import com.cole2sworld.ColeBans.LogManager;
+import com.cole2sworld.ColeBans.ActionLogManager;
 import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.Util;
-import com.cole2sworld.ColeBans.LogManager.Type;
+import com.cole2sworld.ColeBans.ActionLogManager.Type;
 import com.cole2sworld.ColeBans.framework.GlobalConf;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
 import com.cole2sworld.ColeBans.handlers.BanHandler;
@@ -34,7 +34,7 @@ public final class Switch implements CBCommand {
 			long timeSince = (System.currentTimeMillis()/1000)-oldTime;
 			Main.LOG.info(Main.PREFIX+"Conversion succeeded! Took "+timeSince+" seconds.");
 			if (!perm.console) admin.sendMessage(ChatColor.GREEN+"Conversion succeeded! Took "+timeSince+" seconds.");
-			LogManager.addEntry(Type.SWITCH, admin.getName(), args[0]);
+			ActionLogManager.addEntry(Type.SWITCH, admin.getName(), args[0]);
 		} catch (IllegalArgumentException e) {
 			return ChatColor.DARK_RED+"Given ban handler is wierdly implemented";
 		} catch (SecurityException e) {

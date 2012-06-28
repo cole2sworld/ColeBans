@@ -8,8 +8,8 @@ import java.util.Locale;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import com.cole2sworld.ColeBans.LogManager;
-import com.cole2sworld.ColeBans.LogManager.Type;
+import com.cole2sworld.ColeBans.ActionLogManager;
+import com.cole2sworld.ColeBans.ActionLogManager.Type;
 import com.cole2sworld.ColeBans.Main;
 import com.cole2sworld.ColeBans.framework.LogEntry;
 import com.cole2sworld.ColeBans.framework.PermissionSet;
@@ -54,7 +54,7 @@ public final class Actions implements CBCommand {
 			Main.debug("count is "+count);
 			if (count <= 0) return ChatColor.RED+"Count must be greater than 0";
 			admin.sendMessage(ChatColor.AQUA+"Retrieving the last "+count+" actions to happen...");
-			List<LogEntry> entries = LogManager.getAll(count);
+			List<LogEntry> entries = ActionLogManager.getAll(count);
 			for (LogEntry entry : entries) {
 				if (entry.getType() == Type.BAN) {
 					admin.sendMessage("["+ChatColor.ITALIC+formatter.format(entry.getTime())+ChatColor.RESET+"] "+ChatColor.DARK_RED+entry.getAdmin()+" banned "+entry.getVictim());
@@ -127,7 +127,7 @@ public final class Actions implements CBCommand {
 			to = "*";
 		}
 		admin.sendMessage(ChatColor.AQUA+"Retrieving all records for actions made on "+ChatColor.ITALIC+to+ChatColor.AQUA+" by "+ChatColor.ITALIC+by+ChatColor.AQUA+" since "+formatter.format(new Date(since))+"...");
-		List<LogEntry> entries = LogManager.since(since, LogManager.getByOn(by, to));
+		List<LogEntry> entries = ActionLogManager.since(since, ActionLogManager.getByOn(by, to));
 		Main.debug("Got entries");
 		for (LogEntry entry : entries) {
 			if (entry.getType() == Type.BAN) {

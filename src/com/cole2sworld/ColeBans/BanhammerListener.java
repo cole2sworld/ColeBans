@@ -68,7 +68,7 @@ public class BanhammerListener implements Listener {
 							+ " was banned! ["
 							+ GlobalConf.get("banhammer.reason").asString() + "]");
 				}
-				LogManager.addEntry(LogManager.Type.BANHAMMER_BAN, admin, player);
+				ActionLogManager.addEntry(ActionLogManager.Type.BANHAMMER_BAN, admin, player);
 			} catch (final PlayerAlreadyBannedException e) {
 				// impossibru
 			}
@@ -101,7 +101,7 @@ public class BanhammerListener implements Listener {
 		public void run() {
 			try {
 				Main.instance.kickPlayer(player, GlobalConf.get("banhammer.reason").asString());
-				LogManager.addEntry(LogManager.Type.BANHAMMER_KICK, admin, player);
+				ActionLogManager.addEntry(ActionLogManager.Type.BANHAMMER_KICK, admin, player);
 			} catch (final PlayerOfflineException e) {
 				// impossibru
 			}
@@ -121,8 +121,9 @@ public class BanhammerListener implements Listener {
 		}
 	}
 	
+	private final static Random	rand	= new Random(System.currentTimeMillis());
+	
 	private static Location getRandomAround(final Location loca) {
-		final Random rand = new Random(System.currentTimeMillis());
 		final Location loc = loca.clone();
 		loc.add(rand.nextDouble() * (rand.nextBoolean() ? -1D : 1D), 0,
 				rand.nextDouble() * (rand.nextBoolean() ? -1D : 1D));
