@@ -11,6 +11,7 @@ settings:
     kickColor: YELLOW
     tempBanColor: RED
     announceBansAndKicks: yes
+    allowIPLog: yes
     banHandler: YAML
     banhammer:
         enable: yes

@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import com.cole2sworld.ColeBans.framework.GlobalConf;
+
 /**
  * Manager for the iplog.yml
  * 
@@ -33,15 +35,21 @@ public final class IPLogManager {
 	 */
 	public static void initalize() {
 		if (initalized) return;
+		if (!GlobalConf.get("allowIPLog").asBoolean()) {
+			System.out.println(Main.PREFIX
+					+ "[IPLogManager] Skipping initalization as IP logging is disabled.");
+			return;
+		}
+		System.out.println(Main.PREFIX + "[IPLogManager] Initalizing...");
+		final long oldTime = System.currentTimeMillis();
 		final File dataFolder = Main.instance.getDataFolder();
 		dataFolder.mkdirs();
 		logFile = new File(dataFolder.getPath() + "/iplog.yml");
 		try {
 			logFile.createNewFile();
 		} catch (final IOException e) {
-			Main.LOG.severe((Main.PREFIX + Main.PREFIX
-					+ "[IPLogManager] Error creating IP log file! (" + e.getMessage()) != null ? e
-					.getMessage() : "??" + ")");
+			Main.LOG.severe((Main.PREFIX + "[IPLogManager] Error creating IP log file! (" + e
+					.getMessage()) != null ? e.getMessage() : "??" + ")");
 		}
 		ipLog = new YamlConfiguration();
 		try {
@@ -54,6 +62,8 @@ public final class IPLogManager {
 		} catch (final InvalidConfigurationException e) {
 			Main.LOG.severe(Main.PREFIX + "[IPLogManager] IP log file is invalid!");
 		}
+		System.out.println(Main.PREFIX + "[IPLogManager] Done. Took "
+				+ (System.currentTimeMillis() - oldTime) + " ms.");
 		initalized = true;
 	}
 	
@@ -66,6 +76,8 @@ public final class IPLogManager {
 	 *         they have been logged.
 	 */
 	public static String lookupByIP(final InetAddress ip) {
+		if (!GlobalConf.get("allowIPLog").asBoolean()) return null;
+		initalize();
 		final String newIP = ip.getHostAddress();
 		for (final Entry<String, Object> entry : ipLog.getValues(true).entrySet()) {
 			if (entry.getValue().equals(newIP)) return entry.getKey();
@@ -82,6 +94,8 @@ public final class IPLogManager {
 	 *         if they have been logged.
 	 */
 	public static InetAddress lookupByName(final String name) {
+		if (!GlobalConf.get("allowIPLog").asBoolean()) return null;
+		initalize();
 		try {
 			return ipLog.get(name) == null ? null : InetAddress.getByAddress(Util.processIp(ipLog
 					.getString(name)));
@@ -98,6 +112,8 @@ public final class IPLogManager {
 	}
 	
 	public static void save() {
+		if (!GlobalConf.get("allowIPLog").asBoolean()) return;
+		initalize();
 		try {
 			ipLog.save(logFile);
 		} catch (final IOException e) {
