@@ -27,7 +27,7 @@ public class RequesterHashSet implements RequesterCallback, Closeable {
 			final JSONArray array = jobject.getJSONArray("local");
 			final HashMap<InetAddress, String> servers = new HashMap<InetAddress, String>();
 			String localReason = null;
-			for (int i = 0; i<array.length(); i++) {
+			for (int i = 0; i < array.length(); i++) {
 				final Object val = array.get(i);
 				if (val instanceof String) {
 					final String valString = (String) array.get(i);
@@ -52,10 +52,12 @@ public class RequesterHashSet implements RequesterCallback, Closeable {
 			}
 			rtrn.setCustomData("mcbans-banned-servers", servers);
 			return rtrn;
+		} catch (final Exception e) {
+			// does not matter really
 		}
-		catch (final Exception e) {}
 		return null;
 	}
+	
 	private static String decodeInstructionToPlayer(final String key) {
 		final String[] split = key.split("&");
 		String playerRaw = null;
@@ -69,20 +71,24 @@ public class RequesterHashSet implements RequesterCallback, Closeable {
 		final String[] plySplit = playerRaw.split("=");
 		return plySplit[1];
 	}
-	private volatile HashSet<MCBansRequester> requesters = new HashSet<MCBansRequester>();
-	private volatile HashMap<String, String> results = new HashMap<String, String>();
-	private final RequesterCallback callback;
-	private Future<List<BanData>> future = null;
-	private boolean closed;
+	
+	private volatile HashSet<MCBansRequester>	requesters	= new HashSet<MCBansRequester>();
+	private volatile HashMap<String, String>	results		= new HashMap<String, String>();
+	private final RequesterCallback				callback;
+	private Future<List<BanData>>				future		= null;
+	private boolean								closed;
+	
 	public RequesterHashSet(final RequesterCallback callback) {
 		this.callback = callback;
 	}
+	
 	public void abort() {
 		verifyNotClosed();
 		for (final MCBansRequester requester : requesters) {
 			requester.interrupt();
 		}
 	}
+	
 	public synchronized boolean add(final MCBansRequester e) {
 		verifyNotClosed();
 		final boolean result = requesters.add(e);
@@ -90,6 +96,7 @@ public class RequesterHashSet implements RequesterCallback, Closeable {
 		e.start();
 		return result;
 	}
+	
 	/**
 	 * Closes this RequesterHashSet, therefore making it no longer usable.
 	 */
@@ -99,19 +106,23 @@ public class RequesterHashSet implements RequesterCallback, Closeable {
 		abort();
 		closed = true;
 	}
+	
 	public Set<MCBansRequester> getProcessing() {
 		return requesters;
 	}
+	
 	public List<String> getResults() {
 		return new ArrayList<String>(results.values());
 	}
-
+	
 	public boolean isClosed() {
 		return closed;
 	}
+	
 	public boolean isFinished() {
 		return requesters.size() == 0;
 	}
+	
 	@Override
 	public synchronized void requestFinished(final MCBansRequester requester) {
 		results.put(requester.getInstruction(), requester.getResult());
@@ -123,16 +134,19 @@ public class RequesterHashSet implements RequesterCallback, Closeable {
 			if (future != null) {
 				final ArrayList<BanData> data = new ArrayList<BanData>();
 				for (final Entry<String, String> entry : results.entrySet()) {
-					data.add(convertLookup(decodeInstructionToPlayer(entry.getKey()), entry.getValue()));
+					data.add(convertLookup(decodeInstructionToPlayer(entry.getKey()),
+							entry.getValue()));
 				}
 				future.setResult(data);
 			}
 		}
 	}
-	public void use(final Future<List<BanData>> future) {
+	
+	public void use(final Future<List<BanData>> newFuture) {
 		verifyNotClosed();
-		this.future  = future;
+		future = newFuture;
 	}
+	
 	private void verifyNotClosed() {
 		if (closed) throw new IllegalStateException("RequesterHashSet is closed");
 	}

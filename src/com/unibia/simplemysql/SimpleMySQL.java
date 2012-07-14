@@ -205,7 +205,6 @@ public final class SimpleMySQL {
 	 *            The SQL query
 	 * @return For SELECT type queries a SimpleMySQLResult. All other type of
 	 *         queries will return null
-	 * @see #connect()
 	 * @see #connect(java.lang.String, java.lang.String, java.lang.String)
 	 * @see #connect(java.lang.String, java.lang.String, java.lang.String,
 	 *      java.lang.String)
