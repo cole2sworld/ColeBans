@@ -211,6 +211,10 @@ public class BanhammerListener implements Listener {
 							attacker.getName()), 11);
 				}
 			} else {
+				final ItemStack held = attacker.getItemInHand();
+				if (held == null) return;
+				if (held.getType() != Material.valueOf(GlobalConf.get("banhammer.type").asString()))
+					return;
 				event.setDamage(Integer.MAX_VALUE - 999);
 			}
 		}
