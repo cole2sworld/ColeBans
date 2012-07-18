@@ -1,14 +1,18 @@
 package com.cole2sworld.colebans;
 
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -59,7 +63,8 @@ public class BanhammerListener implements Listener {
 							+ "BANNED: " + GlobalConf.get("banhammer.reason").asString());
 					if (GlobalConf.get("fancyEffects").asBoolean()) {
 						final World world = playerObj.getWorld();
-						world.createExplosion(playerObj.getLocation(), 0);
+						world.createExplosion(playerObj.getLocation(),
+								GlobalConf.get("banhammer.explosionBlockDamage").asInteger());
 					}
 				}
 				if (GlobalConf.get("announceBansAndKicks").asBoolean()) {
@@ -85,7 +90,8 @@ public class BanhammerListener implements Listener {
 		
 		@Override
 		public void run() {
-			location.getWorld().createExplosion(location, 0);
+			location.getWorld().createExplosion(location,
+					GlobalConf.get("banhammer.explosionBlockDamage").asInteger());
 		}
 	}
 	
@@ -118,7 +124,11 @@ public class BanhammerListener implements Listener {
 		
 		@Override
 		public void run() {
-			location.getWorld().strikeLightningEffect(location);
+			if (GlobalConf.get("banhammer.realLightning").asBoolean()) {
+				location.getWorld().strikeLightning(location);
+			} else {
+				location.getWorld().strikeLightningEffect(location);
+			}
 		}
 	}
 	
@@ -214,13 +224,16 @@ public class BanhammerListener implements Listener {
 			} else {
 				final ItemStack held = attacker.getItemInHand();
 				if (held == null) return;
+				if (!GlobalConf.get("banhammer.oneHitKillMobs").asBoolean()) return;
 				if (held.getType() != Material.valueOf(GlobalConf.get("banhammer.type").asString()))
 					return;
 				if (event.getEntity() instanceof LivingEntity) {
 					((LivingEntity) event.getEntity()).setHealth(1);
 					event.setDamage(1);
-					event.getEntity().getWorld()
-							.createExplosion(event.getEntity().getLocation(), 0);
+					event.getEntity()
+							.getWorld()
+							.createExplosion(event.getEntity().getLocation(),
+									GlobalConf.get("banhammer.explosionBlockDamage").asInteger());
 				}
 			}
 		}
@@ -239,9 +252,29 @@ public class BanhammerListener implements Listener {
 		final SimpleAction act = SimpleAction.forAction(event.getAction());
 		final Location loc = event.getPlayer().getTargetBlock(null, 50).getLocation();
 		if (act == SimpleAction.LEFT_CLICK) {
-			loc.getWorld().createExplosion(loc, 0);
+			loc.getWorld().createExplosion(loc,
+					GlobalConf.get("banhammer.explosionBlockDamage").asInteger());
+			if (!GlobalConf.get("banhammer.explosionsKill").asBoolean()) return;
+			final Snowball dummy = loc.getWorld().spawn(loc, Snowball.class);
+			final List<Entity> nearby = dummy.getNearbyEntities(4, 4, 4);
+			dummy.remove();
+			for (final Entity en : nearby) {
+				if (en.getUniqueId().equals(event.getPlayer().getUniqueId())) {
+					continue;
+				}
+				if (en instanceof LivingEntity) {
+					((LivingEntity) en).setHealth(0);
+					en.playEffect(EntityEffect.DEATH);
+				} else {
+					en.remove();
+				}
+			}
 		} else {
-			loc.getWorld().strikeLightningEffect(loc);
+			if (GlobalConf.get("banhammer.realLightning").asBoolean()) {
+				loc.getWorld().strikeLightning(loc);
+			} else {
+				loc.getWorld().strikeLightningEffect(loc);
+			}
 		}
 	}
 	

@@ -22,7 +22,7 @@ import com.cole2sworld.colebans.handlers.BanHandler.Type;
  * @since v1 Apricot
  */
 @SuppressWarnings("static-method")
-final class EventListener implements Listener {
+public final class EventListener implements Listener {
 	/**
 	 * Checks if the player is banned, if so it will kick them out.
 	 * 
@@ -31,11 +31,13 @@ final class EventListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public final void onPlayerPreLogin(final PlayerPreLoginEvent event) {
+		System.out.println("Pre login");
+		Main.debug("Got pre-login for " + event.getName());
 		final BanData bd = Main.instance.banHandler.getBanData(event.getName(),
 				BanHandler.SYSTEM_ADMIN_NAME);
 		final Type banType = bd.getType();
-		final String player = event.getName();
 		if (banType == Type.PERMANENT) {
+			Main.debug("Permanent");
 			final String banReason = bd.getReason();
 			event.setResult(Result.KICK_BANNED);
 			event.setKickMessage(ChatColor.valueOf(GlobalConf.get("banColor").asString())
@@ -43,9 +45,10 @@ final class EventListener implements Listener {
 			return;
 		}
 		if (GlobalConf.get("allowTempBans").asBoolean()) {
-			final Long tempBanTime = Main.instance.banHandler.getBanData(player,
-					BanHandler.SYSTEM_ADMIN_NAME).getTime();
+			Main.debug("Temp ban");
+			final Long tempBanTime = bd.getTime();
 			if (tempBanTime > -1) {
+				Main.debug("Valid");
 				Long tempBanMins = tempBanTime - System.currentTimeMillis();
 				tempBanMins /= 1000;
 				tempBanMins /= 60;

@@ -6,9 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.cole2sworld.colebans.ActionLogManager;
+import com.cole2sworld.colebans.ActionLogManager.Type;
 import com.cole2sworld.colebans.Main;
 import com.cole2sworld.colebans.Util;
-import com.cole2sworld.colebans.ActionLogManager.Type;
 import com.cole2sworld.colebans.framework.GlobalConf;
 import com.cole2sworld.colebans.framework.PermissionSet;
 import com.cole2sworld.colebans.framework.PlayerAlreadyBannedException;
@@ -23,10 +23,8 @@ public final class Tempban implements CBCommand {
 		if (!(new PermissionSet(admin).canTempBan))
 			return ChatColor.RED + "You don't have permission to do that.";
 		String error = null;
-		if (args.length < 2) {
-			error = ChatColor.RED + "You must specify a player and time (in minutes).";
-		} else if (args.length > 2) {
-			error = ChatColor.RED + "Too many arguments. Usage: /tempban <player> <minutes>";
+		if (args.length < 3) {
+			error = ChatColor.RED + "Usage: /tempban <player> <minutes> <reason>...";
 		} else {
 			final String victim = args[0];
 			try {
@@ -61,10 +59,10 @@ public final class Tempban implements CBCommand {
 							Main.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.get(
 									"tempBanColor").asString())
 									+ victim
-									+ " was temporarily banned! ["
+									+ " was temporarily banned! [" + reason + "] ("
 									+ time
 									+ " minute"
-									+ Util.getPlural(time, true) + "]");
+									+ Util.getPlural(time, true) + ")");
 						}
 						ActionLogManager.addEntry(Type.TEMPBAN, admin.getName(), victim);
 					} catch (final PlayerAlreadyBannedException e) {

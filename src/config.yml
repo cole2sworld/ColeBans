@@ -20,6 +20,10 @@ settings:
         rightClickAction: KICK
         allowSmite: yes
         reason: Banhammered
+        explosionBlockDamage: 0
+        oneHitKillMobs: yes
+        explosionsKill: yes
+        realLightning: yes
     mysql:
         user: root
         pass: pass

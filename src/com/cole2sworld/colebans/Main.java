@@ -45,7 +45,7 @@ public final class Main extends JavaPlugin {
 	
 	public static final void debug(final String msg) {
 		if (debug) {
-			String caller = "null";
+			String caller = "??";
 			try {
 				throw new Exception("Getting caller");
 			} catch (final Exception e) {
