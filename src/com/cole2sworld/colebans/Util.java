@@ -2,6 +2,8 @@ package com.cole2sworld.colebans;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.cole2sworld.colebans.framework.GlobalConf;
 import com.cole2sworld.colebans.handlers.BanHandler;
@@ -86,5 +88,16 @@ public class Util {
 			throw new UnknownHostException();
 		}
 		return procIp;
+	}
+	
+	/**
+	 * Make a list backwards
+	 */
+	public static <T> List<T> reverseList(final List<T> list) {
+		final ArrayList<T> newList = new ArrayList<T>();
+		for (int i = list.size() - 1; i >= 0; i--) {
+			newList.add(list.get(i));
+		}
+		return newList;
 	}
 }

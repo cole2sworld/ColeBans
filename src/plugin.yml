@@ -1,5 +1,5 @@
 name: ColeBans
-main: com.cole2sworld.ColeBans.Main
+main: com.cole2sworld.colebans.Main
 version: 5 BUILDNUMBER
 commands:
     ban:

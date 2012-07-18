@@ -1,6 +1,5 @@
 package com.cole2sworld.colebans.lib;
 
-import java.io.Closeable;
 import java.io.StringReader;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import org.bukkit.Bukkit;
 
 import com.cole2sworld.colebans.handlers.BanData;
 
-public class RequesterHashSet implements RequesterCallback, Closeable {
+public class RequesterHashSet implements RequesterCallback {
 	private static BanData convertLookup(final String name, final String lookupResult) {
 		try {
 			final StringReader reader = new StringReader(lookupResult);
@@ -100,7 +99,6 @@ public class RequesterHashSet implements RequesterCallback, Closeable {
 	/**
 	 * Closes this RequesterHashSet, therefore making it no longer usable.
 	 */
-	@Override
 	public void close() {
 		if (isClosed()) return;
 		abort();

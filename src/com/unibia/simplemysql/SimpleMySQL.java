@@ -209,7 +209,7 @@ public final class SimpleMySQL {
 	 * @see #connect(java.lang.String, java.lang.String, java.lang.String,
 	 *      java.lang.String)
 	 */
-	public ResultSet query(final String query) {
+	public ResultSet query(String query) {
 		Main.debug("Running query " + query);
 		// Make sure connection is alive
 		checkConnection();
@@ -218,6 +218,11 @@ public final class SimpleMySQL {
 		Statement stmt;
 		ResultSet mysql_result;
 		ResultSet result = null;
+		
+		// make sure we aren't idiots
+		if (!query.endsWith(";")) {
+			query = query + ";";
+		}
 		
 		/*
 		 * We want to keep things simple, so...

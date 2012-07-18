@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Vector;
 
@@ -12,6 +13,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.cole2sworld.colebans.Main;
+import com.cole2sworld.colebans.Util;
 import com.cole2sworld.colebans.framework.GlobalConf;
 import com.cole2sworld.colebans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.colebans.framework.PlayerNotBannedException;
@@ -47,16 +49,33 @@ public final class YAMLBanHandler extends BanHandler implements FileBanHandler {
 					+ "[YAMLBanHandler] InvalidConfigurationException when loading. Plugin will fail to operate correctly.");
 			return null;
 		}
-		
-		return new YAMLBanHandler(tFile, tConf);
+		int convert = 0;
+		for (final Entry<String, Object> entry : tConf.getConfigurationSection("tempBans")
+				.getValues(false).entrySet()) {
+			if (entry.getValue() instanceof Long) {
+				final long time = (Long) entry.getValue();
+				tConf.set(entry.getKey(), null);
+				final ConfigurationSection s = tConf.createSection("tempBans." + entry.getKey());
+				s.set("time", time);
+				s.set("reason", "Temporary Ban");
+				convert++;
+			}
+		}
+		System.out.println(Main.PREFIX + "[YAMLBanHandler] Converted " + convert
+				+ " temporary ban "
+				+ (Util.getPlural(convert, true).equals("s") ? "entries" : "entry") + ".");
+		return new YAMLBanHandler(tFile, tConf, convert > 0);
 	}
 	
 	private final File				file;
 	private final YamlConfiguration	conf;
 	
-	public YAMLBanHandler(final File file, final YamlConfiguration conf) {
+	public YAMLBanHandler(final File file, final YamlConfiguration conf, final boolean save) {
 		this.file = file;
 		this.conf = conf;
+		if (save) {
+			save();
+		}
 		System.out.println(Main.PREFIX + "[YAMLBanHandler] Done loading.");
 	}
 	
@@ -94,6 +113,18 @@ public final class YAMLBanHandler extends BanHandler implements FileBanHandler {
 				}
 			}
 		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.cole2sworld.colebans.handlers.BanHandler#countBans(java.lang.String)
+	 */
+	@Override
+	public long countBans(final String admin) {
+		return conf.getConfigurationSection("permBans").getKeys(false).size()
+				+ conf.getConfigurationSection("tempBans").getKeys(false).size();
 	}
 	
 	@Override

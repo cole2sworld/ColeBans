@@ -5,9 +5,6 @@ import java.util.Vector;
 
 import javax.naming.OperationNotSupportedException;
 
-import org.bukkit.ChatColor;
-
-import com.cole2sworld.colebans.framework.GlobalConf;
 import com.cole2sworld.colebans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.colebans.framework.PlayerNotBannedException;
 
@@ -39,31 +36,6 @@ public abstract class BanHandler {
 	 * player intervention
 	 */
 	public static final String	SYSTEM_ADMIN_NAME	= "[System]";
-	
-	/**
-	 * Gets the formatted ban reason for "reason"
-	 * 
-	 * @param banReason
-	 *            The reason for the ban
-	 * @param banType
-	 *            The type of ban
-	 * @param tempBanTime
-	 *            The amount of time in minutes until the ban expires
-	 * @return The fancy formatted ban reason, with colors and everything
-	 */
-	public static String getFormattedBanReason(final String banReason, final Type banType,
-			final Long tempBanTime) {
-		if (banType == Type.PERMANENT)
-			return ChatColor.valueOf(GlobalConf.get("banColor").asString())
-					+ GlobalConf.get("banMessage").asString().replace("%reason", banReason)
-							.replace("%time", "infinite");
-		else if (banType == Type.TEMPORARY)
-			return ChatColor.valueOf(GlobalConf.get("tempBanColor").asString())
-					+ GlobalConf.get("tempBanMessage").asString()
-							.replace("%reason", "Temporary Ban")
-							.replace("%time", tempBanTime.toString());
-		return "";
-	}
 	
 	/**
 	 * Do stuff related to getting ready, and then return a new instance of the
@@ -105,7 +77,7 @@ public abstract class BanHandler {
 	 * 
 	 * @return The amount of bans.
 	 */
-	public abstract long countBans();
+	public abstract long countBans(String admin);
 	
 	/**
 	 * Does a full dump of the data for this ban handler.
@@ -127,7 +99,7 @@ public abstract class BanHandler {
 	 * 
 	 * @return Truncated name of this class. MySQLBanHandler becomes 'mysql'
 	 */
-	public String getTruncatedName() {
+	public final String getTruncatedName() {
 		return this.getClass().getSimpleName().replace("BanHandler", "")
 				.toLowerCase(Locale.ENGLISH);
 	}

@@ -53,7 +53,8 @@ final class EventListener implements Listener {
 				event.setKickMessage(ChatColor.valueOf(GlobalConf.get("tempBanColor").asString())
 						+ GlobalConf.get("tempBanMessage").asString()
 								.replace("%time", tempBanMins.toString())
-								.replace("%plural", Util.getPlural(tempBanMins, true)));
+								.replace("%plural", Util.getPlural(tempBanMins, true))
+								.replace("%reason", bd.getReason()));
 				return;
 			}
 		}

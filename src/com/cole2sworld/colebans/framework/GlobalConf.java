@@ -15,10 +15,10 @@ import com.cole2sworld.colebans.Main;
  * 
  */
 public class GlobalConf implements MapCallback<String, CastableObject> {
-	private static Configuration								def;
-	private static Configuration								backConf;
-	public static final CallbackHashMap<String, CastableObject>	conf	= new CallbackHashMap<String, CastableObject>();
-	private static boolean										loading	= false;
+	private static Configuration									def;
+	private static Configuration									backConf;
+	private static final CallbackHashMap<String, CastableObject>	conf	= new CallbackHashMap<String, CastableObject>();
+	private static boolean											loading	= false;
 	static {
 		conf.addCallback(new GlobalConf());
 	}
@@ -39,6 +39,18 @@ public class GlobalConf implements MapCallback<String, CastableObject> {
 		}
 		save();
 		loading = false;
+		boolean didSomething = false;
+		if (!get("tempBanMessage").asString().contains("%reason")) {
+			set("tempBanMessage", "You are tempbanned for %reason! %time minute%plural remaining!");
+			didSomething = true;
+		}
+		if (get("advanced.package").asString().equals("com.cole2sworld.ColeBans.handlers")) {
+			set("advanced.package", "com.cole2sworld.colebans.handlers");
+			didSomething = true;
+		}
+		if (didSomething) {
+			save();
+		}
 	}
 	
 	public static void save() {

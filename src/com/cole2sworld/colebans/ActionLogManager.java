@@ -37,6 +37,7 @@ public class ActionLogManager {
 		}
 	}
 	
+	private static boolean		triedInit	= false;
 	private static String		tablePrefix;
 	private static SimpleMySQL	sql;
 	private static String		tbl;
@@ -55,6 +56,7 @@ public class ActionLogManager {
 	 *            Victim of the action
 	 */
 	public static void addEntry(final Type type, final String admin, final String victim) {
+		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return;
 		verify();
 		final PreparedStatement stmt = sql.prepare("INSERT INTO " + tbl
 				+ " (type, admin, victim, time) VALUES (?, ?, ?, ?);");
@@ -95,9 +97,10 @@ public class ActionLogManager {
 	 * @return All results
 	 */
 	public static List<LogEntry> getAll(final int limit) {
+		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return null;
 		verify();
 		final ArrayList<LogEntry> entries = new ArrayList<LogEntry>();
-		final PreparedStatement stmt = sql.prepare("SELECT * FROM " + tbl + " ORDER BY time ASC "
+		final PreparedStatement stmt = sql.prepare("SELECT * FROM " + tbl + " ORDER BY time DESC "
 				+ (limit == -1 ? ";" : "LIMIT " + limit + ";"));
 		try {
 			final ResultSet result = stmt.executeQuery();
@@ -105,7 +108,7 @@ public class ActionLogManager {
 				entries.add(new LogEntry(Type.forOrdinal(result.getInt("type")), result
 						.getString("admin"), result.getString("victim"), result.getLong("time")));
 			}
-			return entries;
+			return Util.reverseList(entries);
 		} catch (final SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -126,6 +129,7 @@ public class ActionLogManager {
 	 * @return All results
 	 */
 	public static List<LogEntry> getBy(final String admin) {
+		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return null;
 		verify();
 		final ArrayList<LogEntry> entries = new ArrayList<LogEntry>();
 		final PreparedStatement stmt = sql.prepare("SELECT * FROM " + tbl + " WHERE admin=?");
@@ -159,6 +163,7 @@ public class ActionLogManager {
 	 * @return All results
 	 */
 	public static List<LogEntry> getByOn(final String admin, final String victim) {
+		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return null;
 		verify();
 		final ArrayList<LogEntry> entries = new ArrayList<LogEntry>();
 		final String st = "SELECT * FROM " + tbl + " WHERE ("
@@ -195,6 +200,7 @@ public class ActionLogManager {
 	 * @return All results
 	 */
 	public static List<LogEntry> getTo(final String victim) {
+		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return null;
 		verify();
 		final ArrayList<LogEntry> entries = new ArrayList<LogEntry>();
 		final PreparedStatement stmt = sql.prepare("SELECT * FROM " + tbl + " WHERE victim=?");
@@ -224,8 +230,11 @@ public class ActionLogManager {
 	public static void initialize() {
 		if (initialized) return;
 		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) {
-			Main.LOG.warning(Main.PREFIX
-					+ "[ActionLogger] Could not initalize - current ban handler is not MySQL.");
+			if (!triedInit) {
+				Main.LOG.warning(Main.PREFIX
+						+ "[ActionLogManager] Could not initialize - current ban handler is not MySQL.");
+				triedInit = true;
+			}
 			return;
 		}
 		final Map<String, String> data = Main.getBanHandlerInitArgs();
@@ -245,6 +254,7 @@ public class ActionLogManager {
 	 * @return Modified list
 	 */
 	public static List<LogEntry> since(final long timeMillis, final List<LogEntry> oldlist) {
+		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return null;
 		checkConnectionAIDR();
 		final ArrayList<LogEntry> list = new ArrayList<LogEntry>();
 		for (final LogEntry entry : oldlist) {
@@ -262,6 +272,7 @@ public class ActionLogManager {
 	 * @return How long the operation took
 	 */
 	private static long checkConnectionAIDR() {
+		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return 0;
 		final long oldtime = System.currentTimeMillis();
 		final SimpleMySQL.State st = sql.checkConnection();
 		final boolean didSomething = false;
@@ -283,6 +294,7 @@ public class ActionLogManager {
 	}
 	
 	private static void verify() {
+		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return;
 		initialize();
 		checkConnectionAIDR();
 		if (!sql.checkTable(tbl)) {

@@ -5,7 +5,7 @@
 settings:
     allowTempBans: yes
     banMessage: You are banned for %reason!
-    tempBanMessage: You are tempbanned! %time minute%plural remaining!
+    tempBanMessage: You are tempbanned for %reason! %time minute%plural remaining!
     fancyEffects: yes
     banColor: DARK_RED
     kickColor: YELLOW

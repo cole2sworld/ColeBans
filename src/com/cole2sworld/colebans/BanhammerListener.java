@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -215,7 +216,12 @@ public class BanhammerListener implements Listener {
 				if (held == null) return;
 				if (held.getType() != Material.valueOf(GlobalConf.get("banhammer.type").asString()))
 					return;
-				event.setDamage(Integer.MAX_VALUE - 999);
+				if (event.getEntity() instanceof LivingEntity) {
+					((LivingEntity) event.getEntity()).setHealth(1);
+					event.setDamage(1);
+					event.getEntity().getWorld()
+							.createExplosion(event.getEntity().getLocation(), 0);
+				}
 			}
 		}
 	}

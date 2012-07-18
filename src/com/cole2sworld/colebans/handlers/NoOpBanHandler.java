@@ -33,6 +33,18 @@ public class NoOpBanHandler extends BanHandler {
 		noOp();
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.cole2sworld.colebans.handlers.BanHandler#countBans(java.lang.String)
+	 */
+	@Override
+	public long countBans(final String admin) {
+		noOp();
+		return -1;
+	}
+	
 	@Override
 	public final Vector<BanData> dump(final String admin) {
 		noOp();

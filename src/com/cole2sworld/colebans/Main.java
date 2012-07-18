@@ -181,7 +181,7 @@ public final class Main extends JavaPlugin {
 				cmdName = Character.toUpperCase(firstChar) + cmdName.toLowerCase(Locale.ENGLISH);
 				debug("cmdName = " + cmdName);
 				final Object rawObject = Class.forName(
-						"com.cole2sworld.ColeBans.commands." + cmdName).newInstance();
+						"com.cole2sworld.colebans.commands." + cmdName).newInstance();
 				debug("rawObject = " + rawObject.getClass().getSimpleName());
 				if (rawObject instanceof CBCommand) {
 					debug("rawObject is a CBCommand");
@@ -234,12 +234,12 @@ public final class Main extends JavaPlugin {
 	public void onEnable() {
 		try {
 			System.out.println(PREFIX + "Initalizing...");
-			
 			server = getServer();
 			final PluginManager pm = server.getPluginManager();
 			System.out.println(PREFIX + "Loading config and ban handler...");
 			long oldtime = System.currentTimeMillis();
 			GlobalConf.load();
+			IPLogManager.initalize();
 			if (debug) {
 				LOG.warning(PREFIX + "Using a debug build. Expect many messages");
 			}
@@ -250,18 +250,19 @@ public final class Main extends JavaPlugin {
 			} catch (final SecurityException e) {
 				onFatal("Somehow, a SecurityException occurred. Plugin conflict?");
 			} catch (final NoSuchMethodException e) {
-				onFatal("Bad ban handler given in config file!");
+				onFatal("Bad ban handler given in config file! (NSME)");
 			} catch (final IllegalArgumentException e) {
-				onFatal("Bad ban handler given in config file!");
+				onFatal("Bad ban handler given in config file! (IAE1)");
 			} catch (final IllegalAccessException e) {
-				onFatal("Bad ban handler given in config file!");
+				onFatal("Bad ban handler given in config file! (IAE2)");
 			} catch (final InvocationTargetException e) {
-				onFatal("Bad ban handler given in config file!");
+				onFatal("Bad ban handler given in config file! (ITE)");
 			} catch (final NullPointerException e) {
-				onFatal("Bad ban handler given in config file!");
+				onFatal("Bad ban handler given in config file! (NPE)");
 			} catch (final ClassCastException e) {
-				onFatal("Bad ban handler given in config file!");
+				onFatal("Bad ban handler given in config file! (CCE)");
 			}
+			ActionLogManager.initialize();
 			long newtime = System.currentTimeMillis();
 			System.out.println(PREFIX + "Done. Took " + (newtime - oldtime) + " ms.");
 			System.out.println(PREFIX + "Registering events...");

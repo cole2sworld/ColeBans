@@ -10,6 +10,7 @@ import java.util.Vector;
 import com.unibia.simplemysql.SimpleMySQL;
 
 import com.cole2sworld.colebans.Main;
+import com.cole2sworld.colebans.MySQLDatabasePatchManager;
 import com.cole2sworld.colebans.framework.GlobalConf;
 import com.cole2sworld.colebans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.colebans.framework.PlayerNotBannedException;
@@ -62,6 +63,7 @@ public final class MySQLBanHandler extends BanHandler {
 	}
 	
 	public static BanHandler onEnable() {
+		MySQLDatabasePatchManager.check();
 		final Map<String, String> data = Main.getBanHandlerInitArgs();
 		return new MySQLBanHandler(data.get("username"), data.get("password"), data.get("host"),
 				data.get("db"));
@@ -163,7 +165,7 @@ public final class MySQLBanHandler extends BanHandler {
 	 * @see com.cole2sworld.ColeBans.handlers.BanHandler#countBans()
 	 */
 	@Override
-	public long countBans() {
+	public long countBans(final String admin) {
 		ResultSet result = null;
 		try {
 			result = sqlHandler.query("SELECT COUNT(username) FROM `"
@@ -198,7 +200,8 @@ public final class MySQLBanHandler extends BanHandler {
 				for (; temp.next();) {
 					final String name = temp.getString("username");
 					final long time = temp.getLong("time");
-					data.add(new BanData(name, time));
+					final String reason = temp.getString("reason");
+					data.add(new BanData(name, time, reason));
 				}
 			} catch (final SQLException e) {
 				e.printStackTrace();
@@ -276,7 +279,7 @@ public final class MySQLBanHandler extends BanHandler {
 		}
 		final String tblB = GlobalConf.get("mysql.prefix").asString() + "temp";
 		if (sqlHandler.checkTable(tblB)) {
-			final ResultSet reasonResultB = sqlHandler.query("SELECT time FROM `"
+			final ResultSet reasonResultB = sqlHandler.query("SELECT time,reason FROM `"
 					+ GlobalConf.get("mysql.db").asString() + "`.`" + tblB + "` WHERE username='"
 					+ addSlashes(player) + "';");
 			boolean resultsB = false;
@@ -287,8 +290,13 @@ public final class MySQLBanHandler extends BanHandler {
 			}
 			if (resultsB) {
 				long time = -1L;
+				String reason = null;
 				try {
 					time = reasonResultB.getLong("time");
+					reason = reasonResultB.getString("reason");
+					if (reason == null) {
+						reason = "Temporary Ban";
+					}
 					if (time <= System.currentTimeMillis()) {
 						if (sqlHandler.checkTable(tblB)) {
 							sqlHandler.query("DELETE FROM `"
@@ -306,7 +314,7 @@ public final class MySQLBanHandler extends BanHandler {
 						debug("SQLException closing ResultSet");
 					}
 				}
-				if (time > -1) return new BanData(player, time);
+				if ((time > -1) && (reason != null)) return new BanData(player, time, reason);
 			}
 		}
 		return new BanData(player);
@@ -319,6 +327,7 @@ public final class MySQLBanHandler extends BanHandler {
 	
 	@Override
 	public Vector<String> listBannedPlayers(final String admin) {
+		// FIXME Don't use dump, be lighter and use MySQL
 		checkConnectionAIDR();
 		final Vector<String> list = new Vector<String>(50);
 		final Vector<BanData> verbData = dump(admin);

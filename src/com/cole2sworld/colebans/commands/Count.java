@@ -8,12 +8,13 @@ import com.cole2sworld.colebans.Util;
 import com.cole2sworld.colebans.framework.PermissionSet;
 
 public final class Count implements CBCommand {
-
+	
 	@Override
-	public String run(String[] args, CommandSender admin) {
-		if (!(new PermissionSet(admin).canCount)) return ChatColor.RED+"You do not have permission to do that.";
-		long count = Main.instance.banHandler.listBannedPlayers(admin.getName()).size();
-		return "This server has made "+count+" ban"+Util.getPlural(count, true)+".";
+	public String run(final String[] args, final CommandSender admin) {
+		if (!(new PermissionSet(admin).canCount))
+			return ChatColor.RED + "You do not have permission to do that.";
+		final long count = Main.instance.banHandler.countBans(admin.getName());
+		return "This server has made " + count + " ban" + Util.getPlural(count, true) + ".";
 	}
-
+	
 }
