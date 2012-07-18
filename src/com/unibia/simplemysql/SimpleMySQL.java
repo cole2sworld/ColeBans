@@ -52,7 +52,7 @@ import java.sql.Statement;
 import com.mysql.jdbc.CommunicationsException;
 import com.mysql.jdbc.exceptions.MySQLNonTransientConnectionException;
 
-import com.cole2sworld.ColeBans.Main;
+import com.cole2sworld.colebans.Main;
 
 /**
  * 
