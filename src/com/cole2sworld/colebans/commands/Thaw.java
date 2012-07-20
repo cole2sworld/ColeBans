@@ -8,7 +8,10 @@ import org.bukkit.entity.Player;
 import com.cole2sworld.colebans.framework.PermissionSet;
 import com.cole2sworld.colebans.framework.RestrictionManager;
 
-public class Thaw implements CBCommand {
+public final class Thaw implements CBCommand {
+	public Thaw() {
+	}
+	
 	@Override
 	public String run(final String[] args, final CommandSender admin) throws Exception {
 		if (!new PermissionSet(admin).canFreeze)

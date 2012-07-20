@@ -8,7 +8,7 @@ import java.util.List;
 import com.cole2sworld.colebans.framework.GlobalConf;
 import com.cole2sworld.colebans.handlers.BanHandler;
 
-public class Util {
+public final class Util {
 	/**
 	 * Check if the number "check" should be pluralized in speech with an s.
 	 * Returns "s" if yes, "" if no when plural is true, "are" if yes or "is" if
@@ -99,5 +99,8 @@ public class Util {
 			newList.add(list.get(i));
 		}
 		return newList;
+	}
+	
+	private Util() {
 	}
 }

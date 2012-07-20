@@ -1,6 +1,7 @@
 package com.cole2sworld.colebans.handlers;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.cole2sworld.colebans.handlers.BanHandler.Type;
 
@@ -9,8 +10,8 @@ import com.cole2sworld.colebans.handlers.BanHandler.Type;
  * 
  */
 public final class BanData {
-	private final HashMap<String, String>	standard	= new HashMap<String, String>(4);
-	private final HashMap<String, Object>	custom		= new HashMap<String, Object>(5);
+	private final Map<String, String>	standard	= new HashMap<String, String>(4);
+	private final Map<String, Object>	custom		= new HashMap<String, Object>(5);
 	
 	/**
 	 * Do nothing, allowing you to use .set* methods

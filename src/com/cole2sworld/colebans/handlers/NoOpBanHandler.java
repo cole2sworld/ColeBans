@@ -1,13 +1,12 @@
 package com.cole2sworld.colebans.handlers;
 
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import javax.naming.OperationNotSupportedException;
 
-import com.cole2sworld.colebans.Main;
-import com.cole2sworld.colebans.framework.PlayerAlreadyBannedException;
-import com.cole2sworld.colebans.framework.PlayerNotBannedException;
+import com.cole2sworld.colebans.ColeBansPlugin;
 
 public class NoOpBanHandler extends BanHandler {
 	
@@ -18,14 +17,8 @@ public class NoOpBanHandler extends BanHandler {
 	
 	protected static final void noOp() {
 		Logger.getLogger("Minecraft")
-				.severe(Main.PREFIX
+				.severe(ColeBansPlugin.PREFIX
 						+ "Using No-Operation ban handler. Please change to a finished ban handler.");
-	}
-	
-	@Override
-	public final void banPlayer(final String player, final String reason, final String admin)
-			throws PlayerAlreadyBannedException {
-		noOp();
 	}
 	
 	@Override
@@ -64,7 +57,7 @@ public class NoOpBanHandler extends BanHandler {
 	}
 	
 	@Override
-	public final Vector<String> listBannedPlayers(final String admin) {
+	public final List<String> listBannedPlayers(final String admin) {
 		noOp();
 		return new Vector<String>(0);
 	}
@@ -75,14 +68,20 @@ public class NoOpBanHandler extends BanHandler {
 	}
 	
 	@Override
-	public final void tempBanPlayer(final String player, final long time, final String reason,
-			final String admin) throws PlayerAlreadyBannedException, UnsupportedOperationException {
+	protected final void handleBanPlayer(final String player, final String reason,
+			final String admin) {
 		noOp();
 	}
 	
 	@Override
-	public final void unbanPlayer(final String player, final String admin)
-			throws PlayerNotBannedException {
+	protected final void handleTempBanPlayer(final String player, final long time,
+			final String reason,
+			final String admin) {
+		noOp();
+	}
+	
+	@Override
+	protected final void handleUnbanPlayer(final String player, final String admin) {
 		noOp();
 	}
 }

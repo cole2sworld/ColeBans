@@ -11,7 +11,7 @@ import org.json.util.JSONException;
 import org.json.util.JSONObject;
 import org.json.util.JSONTokener;
 
-import com.cole2sworld.colebans.Main;
+import com.cole2sworld.colebans.ColeBansPlugin;
 import com.cole2sworld.colebans.Util;
 import com.cole2sworld.colebans.framework.GlobalConf;
 import com.cole2sworld.colebans.handlers.BanData;
@@ -25,8 +25,8 @@ import com.cole2sworld.colebans.handlers.BanData;
 public final class MCBans implements RequesterCallback {
 	private final String	key;
 	
-	public MCBans(final String key) {
-		this.key = key;
+	public MCBans(final String k) {
+		key = k;
 	}
 	
 	public Future<List<BanData>> dump(final String admin) {
@@ -40,7 +40,7 @@ public final class MCBans implements RequesterCallback {
 			}
 			final String a = requester.getResult();
 			final String[] c = a.split(",");
-			final ArrayList<BanData> data = new ArrayList<BanData>();
+			final List<BanData> data = new ArrayList<BanData>();
 			if (!GlobalConf.get("mcbans.fullBackups").asBoolean()) {
 				for (final String player : c) {
 					data.add(new BanData(player, "Imported from MCBans"));
@@ -121,7 +121,7 @@ public final class MCBans implements RequesterCallback {
 						final String[] splitString = valString.split(" .:. ");
 						final String ip = InetAddress.getByAddress(Util.processIp(splitString[0]))
 								.toString();
-						if (ip.equals(Main.instance.server.getIp())) {
+						if (ip.equals(ColeBansPlugin.instance.server.getIp())) {
 							if (splitString.length > 1) return new BanData(player, splitString[1]);
 						}
 					}

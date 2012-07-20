@@ -1,6 +1,7 @@
 package com.cole2sworld.colebans.framework;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.cole2sworld.colebans.ActionLogManager;
 
@@ -10,8 +11,8 @@ import com.cole2sworld.colebans.ActionLogManager;
  * @author cole2
  * @since v5 Elderberry
  */
-public class LogEntry {
-	private final HashMap<String, String>	map	= new HashMap<String, String>();
+public final class LogEntry {
+	private final Map<String, String>	map	= new HashMap<String, String>();
 	
 	public LogEntry() {
 		map.put("type", "UNKNOWN");

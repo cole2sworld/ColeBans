@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 import org.bukkit.configuration.Configuration;
 
-import com.cole2sworld.colebans.Main;
+import com.cole2sworld.colebans.ColeBansPlugin;
 
 /**
  * ColeBans global configuration.
@@ -14,28 +14,28 @@ import com.cole2sworld.colebans.Main;
  * @author cole2
  * 
  */
-public class GlobalConf implements MapCallback<String, CastableObject> {
+public final class GlobalConf implements MapCallback<String, CastableObject> {
 	private static Configuration									def;
 	private static Configuration									backConf;
-	private static final CallbackHashMap<String, CastableObject>	conf	= new CallbackHashMap<String, CastableObject>();
+	private static final CallbackHashMap<String, CastableObject>	CONFIG	= new CallbackHashMap<String, CastableObject>();
 	private static boolean											loading	= false;
 	static {
-		conf.addCallback(new GlobalConf());
+		CONFIG.addCallback(new GlobalConf());
 	}
 	
 	public static CastableObject get(final String key) {
-		return conf.get(key.startsWith("settings.") ? key : "settings." + key);
+		return CONFIG.get(key.startsWith("settings.") ? key : "settings." + key);
 	}
 	
 	public static void load() {
 		loading = true;
-		backConf = Main.instance.getConfig();
+		backConf = ColeBansPlugin.instance.getConfig();
 		def = backConf.getDefaults();
 		for (final Entry<String, Object> entry : def.getValues(true).entrySet()) {
-			conf.put(entry.getKey(), new CastableObject(entry.getValue()));
+			CONFIG.put(entry.getKey(), new CastableObject(entry.getValue()));
 		}
 		for (final Entry<String, Object> entry : backConf.getValues(true).entrySet()) {
-			conf.put(entry.getKey(), new CastableObject(entry.getValue()));
+			CONFIG.put(entry.getKey(), new CastableObject(entry.getValue()));
 		}
 		save();
 		loading = false;
@@ -55,14 +55,17 @@ public class GlobalConf implements MapCallback<String, CastableObject> {
 	
 	public static void save() {
 		// make sure our changes are committed
-		for (final Entry<String, CastableObject> entry : conf.entrySet()) {
+		for (final Entry<String, CastableObject> entry : CONFIG.entrySet()) {
 			backConf.set(entry.getKey(), entry.getValue().asObject());
 		}
-		Main.instance.saveConfig();
+		ColeBansPlugin.instance.saveConfig();
 	}
 	
 	public static void set(final String key, final Object value) {
-		conf.put(key.startsWith("settings.") ? key : "settings." + key, new CastableObject(value));
+		CONFIG.put(key.startsWith("settings.") ? key : "settings." + key, new CastableObject(value));
+	}
+	
+	private GlobalConf() {
 	}
 	
 	@Override

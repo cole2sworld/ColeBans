@@ -61,7 +61,7 @@ import java.io.Writer;
  * @version 2010-12-24
  */
 public class JSONWriter {
-	private static final int	maxdepth	= 20;
+	private static final int	MAX_DEPTH	= 20;
 	
 	/**
 	 * The comma flag determines if a comma should be output before the next
@@ -96,7 +96,7 @@ public class JSONWriter {
 	public JSONWriter(final Writer w) {
 		comma = false;
 		mode = 'i';
-		stack = new JSONObject[maxdepth];
+		stack = new JSONObject[MAX_DEPTH];
 		top = 0;
 		writer = w;
 	}
@@ -338,7 +338,7 @@ public class JSONWriter {
 	 *             If nesting is too deep.
 	 */
 	private void push(final JSONObject jo) throws JSONException {
-		if (top >= maxdepth) throw new JSONException("Nesting too deep.");
+		if (top >= MAX_DEPTH) throw new JSONException("Nesting too deep.");
 		stack[top] = jo;
 		mode = jo == null ? 'a' : 'k';
 		top += 1;

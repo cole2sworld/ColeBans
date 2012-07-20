@@ -3,17 +3,18 @@ package com.cole2sworld.colebans.framework;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class CallbackHashMap<K, V> extends HashMap<K, V> {
-	private static final long					serialVersionUID	= 4236640905274897413L;
-	private final HashSet<MapCallback<K, V>>	callbacks			= new HashSet<MapCallback<K, V>>();
+	private static final long				serialVersionUID	= 4236640905274897413L;
+	private final Set<MapCallback<K, V>>	callbacks			= new HashSet<MapCallback<K, V>>();
 	
-	public void addCallback(final MapCallback<K, V> callback) {
+	public final void addCallback(final MapCallback<K, V> callback) {
 		callbacks.add(callback);
 	}
 	
 	@Override
-	public void clear() {
+	public final void clear() {
 		super.clear();
 		for (final MapCallback<K, V> callback : callbacks) {
 			callback.onMapModify(this, null, null, MapCallback.MapAction.CLEAR);
@@ -21,7 +22,7 @@ public class CallbackHashMap<K, V> extends HashMap<K, V> {
 	}
 	
 	@Override
-	public V put(final K key, final V value) {
+	public final V put(final K key, final V value) {
 		final V result = super.put(key, value);
 		for (final MapCallback<K, V> callback : callbacks) {
 			callback.onMapModify(this, key, value, MapCallback.MapAction.PUT);
@@ -30,7 +31,7 @@ public class CallbackHashMap<K, V> extends HashMap<K, V> {
 	}
 	
 	@Override
-	public void putAll(final Map<? extends K, ? extends V> m) {
+	public final void putAll(final Map<? extends K, ? extends V> m) {
 		super.putAll(m);
 		for (final MapCallback<K, V> callback : callbacks) {
 			for (final Map.Entry<? extends K, ? extends V> entry : m.entrySet()) {
@@ -45,7 +46,7 @@ public class CallbackHashMap<K, V> extends HashMap<K, V> {
 			"unused",
 			"unchecked"
 	})
-	public V remove(final Object key) {
+	public final V remove(final Object key) {
 		try { // poor man's instanceof check
 			final K derp = (K) key;
 		} catch (final Exception e) {
@@ -58,7 +59,7 @@ public class CallbackHashMap<K, V> extends HashMap<K, V> {
 		return result;
 	}
 	
-	public void removeCallback(final MapCallback<K, V> callback) {
+	public final void removeCallback(final MapCallback<K, V> callback) {
 		callbacks.remove(callback);
 	}
 }

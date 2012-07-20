@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import org.bukkit.Bukkit;
 
 import com.cole2sworld.colebans.handlers.BanData;
 
-public class RequesterHashSet implements RequesterCallback {
+public final class RequesterHashSet implements RequesterCallback {
 	private static BanData convertLookup(final String name, final String lookupResult) {
 		try {
 			final StringReader reader = new StringReader(lookupResult);
@@ -71,14 +72,14 @@ public class RequesterHashSet implements RequesterCallback {
 		return plySplit[1];
 	}
 	
-	private volatile HashSet<MCBansRequester>	requesters	= new HashSet<MCBansRequester>();
-	private volatile HashMap<String, String>	results		= new HashMap<String, String>();
-	private final RequesterCallback				callback;
-	private Future<List<BanData>>				future		= null;
-	private boolean								closed;
+	private volatile Set<MCBansRequester>	requesters	= new HashSet<MCBansRequester>();
+	private volatile Map<String, String>	results		= new HashMap<String, String>();
+	private final RequesterCallback			callback;
+	private Future<List<BanData>>			future		= null;
+	private boolean							closed;
 	
-	public RequesterHashSet(final RequesterCallback callback) {
-		this.callback = callback;
+	public RequesterHashSet(final RequesterCallback c) {
+		this.callback = c;
 	}
 	
 	public void abort() {

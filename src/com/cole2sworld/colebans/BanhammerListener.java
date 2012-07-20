@@ -36,14 +36,14 @@ import com.cole2sworld.colebans.framework.SimpleAction;
  * @author cole2
  * @since v5 Elderberry
  */
-public class BanhammerListener implements Listener {
+public final class BanhammerListener implements Listener {
 	public static enum BanhammerAction {
 		BAN,
 		KICK,
 		NONE;
 	}
 	
-	public static class BanRunnable implements Runnable {
+	public final static class BanRunnable implements Runnable {
 		private final String	player;
 		private final String	admin;
 		
@@ -55,9 +55,9 @@ public class BanhammerListener implements Listener {
 		@Override
 		public void run() {
 			try {
-				Main.instance.banHandler.banPlayer(player, GlobalConf.get("banhammer.reason")
+				ColeBansPlugin.instance.banHandler.banPlayer(player, GlobalConf.get("banhammer.reason")
 						.asString(), admin);
-				final Player playerObj = Main.instance.server.getPlayerExact(player);
+				final Player playerObj = ColeBansPlugin.instance.server.getPlayerExact(player);
 				if (playerObj != null) {
 					playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.get("banColor").asString())
 							+ "BANNED: " + GlobalConf.get("banhammer.reason").asString());
@@ -68,7 +68,7 @@ public class BanhammerListener implements Listener {
 					}
 				}
 				if (GlobalConf.get("announceBansAndKicks").asBoolean()) {
-					Main.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.get(
+					ColeBansPlugin.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.get(
 							"banColor").asString())
 							+ player
 							+ " was banned! ["
@@ -81,7 +81,7 @@ public class BanhammerListener implements Listener {
 		}
 	}
 	
-	public static class ExplosionRunnable implements Runnable {
+	public final static class ExplosionRunnable implements Runnable {
 		private final Location	location;
 		
 		public ExplosionRunnable(final Location loc) {
@@ -95,7 +95,7 @@ public class BanhammerListener implements Listener {
 		}
 	}
 	
-	public static class KickRunnable implements Runnable {
+	public final static class KickRunnable implements Runnable {
 		private final String	player;
 		private final String	admin;
 		
@@ -107,7 +107,7 @@ public class BanhammerListener implements Listener {
 		@Override
 		public void run() {
 			try {
-				Main.instance.kickPlayer(player, GlobalConf.get("banhammer.reason").asString());
+				ColeBansPlugin.instance.kickPlayer(player, GlobalConf.get("banhammer.reason").asString());
 				ActionLogManager.addEntry(ActionLogManager.Type.BANHAMMER_KICK, admin, player);
 			} catch (final PlayerOfflineException e) {
 				// impossibru
@@ -115,7 +115,7 @@ public class BanhammerListener implements Listener {
 		}
 	}
 	
-	public static class LightningRunnable implements Runnable {
+	public final static class LightningRunnable implements Runnable {
 		private final Location	location;
 		
 		public LightningRunnable(final Location loc) {
@@ -127,20 +127,25 @@ public class BanhammerListener implements Listener {
 			if (GlobalConf.get("banhammer.realLightning").asBoolean()) {
 				location.getWorld().strikeLightning(location);
 			} else {
+				
 				location.getWorld().strikeLightningEffect(location);
 			}
 		}
 	}
 	
-	private final static Random	rand	= new Random(System.currentTimeMillis());
+	private final static Random	RANDOM	= new Random(System.currentTimeMillis());
 	
 	private static Location getRandomAround(final Location loca) {
 		final Location loc = loca.clone();
-		loc.add(rand.nextDouble() * (rand.nextBoolean() ? -1D : 1D), 0,
-				rand.nextDouble() * (rand.nextBoolean() ? -1D : 1D));
+		loc.add(RANDOM.nextDouble() * (RANDOM.nextBoolean() ? -1D : 1D), 0,
+				RANDOM.nextDouble() * (RANDOM.nextBoolean() ? -1D : 1D));
 		return loc;
 	}
 	
+	protected BanhammerListener() {
+	}
+	
+	@SuppressWarnings("static-method")
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onAttack(final EntityDamageByEntityEvent event) {
 		if (!GlobalConf.get("banhammer.enable").asBoolean()) return;
@@ -160,65 +165,65 @@ public class BanhammerListener implements Listener {
 				event.setCancelled(true);
 				RestrictionManager.freeze(victim);
 				final BukkitScheduler sched = Bukkit.getScheduler();
-				sched.scheduleSyncDelayedTask(Main.instance,
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance,
 						new ExplosionRunnable(victim.getLocation()), 1);
-				sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim
 						.getLocation().add(0, 1, 0)), 2);
-				sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim
 						.getLocation().add(0, 2, 0)), 3);
-				sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim
 						.getLocation().add(0, 3, 0)), 4);
-				sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim
 						.getLocation().add(0, 4, 0)), 5);
-				sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim
 						.getLocation().add(0, 5, 0)), 6);
-				sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim
 						.getLocation().add(0, 6, 0)), 7);
-				sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim
 						.getLocation().add(0, 7, 0)), 8);
-				sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim
 						.getLocation().add(0, 8, 0)), 9);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 1);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 1);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 2);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 2);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 3);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 3);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 4);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 4);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 5);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 5);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 6);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 6);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 7);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 7);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 8);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 8);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 9);
-				sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 						getRandomAround(victim.getLocation())), 9);
 				if (action == BanhammerAction.BAN) {
-					sched.scheduleSyncDelayedTask(Main.instance, new BanRunnable(victim.getName(),
+					sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new BanRunnable(victim.getName(),
 							attacker.getName()), 11);
 				} else {
-					sched.scheduleSyncDelayedTask(Main.instance, new KickRunnable(victim.getName(),
+					sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new KickRunnable(victim.getName(),
 							attacker.getName()), 11);
 				}
 			} else {
@@ -239,6 +244,7 @@ public class BanhammerListener implements Listener {
 		}
 	}
 	
+	@SuppressWarnings("static-method")
 	@EventHandler
 	public void onClick(final PlayerInteractEvent event) {
 		if (!GlobalConf.get("banhammer.enable").asBoolean()) return;
@@ -278,6 +284,7 @@ public class BanhammerListener implements Listener {
 		}
 	}
 	
+	@SuppressWarnings("static-method")
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onInteract(final PlayerInteractEntityEvent event) {
 		if (!GlobalConf.get("banhammer.enable").asBoolean()) return;
@@ -296,65 +303,65 @@ public class BanhammerListener implements Listener {
 			event.setCancelled(true);
 			RestrictionManager.freeze(victim);
 			final BukkitScheduler sched = Bukkit.getScheduler();
-			sched.scheduleSyncDelayedTask(Main.instance,
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance,
 					new ExplosionRunnable(victim.getLocation()), 1);
-			sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation()
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim.getLocation()
 					.add(0, 1, 0)), 2);
-			sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation()
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim.getLocation()
 					.add(0, 2, 0)), 3);
-			sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation()
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim.getLocation()
 					.add(0, 3, 0)), 4);
-			sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation()
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim.getLocation()
 					.add(0, 4, 0)), 5);
-			sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation()
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim.getLocation()
 					.add(0, 5, 0)), 6);
-			sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation()
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim.getLocation()
 					.add(0, 6, 0)), 7);
-			sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation()
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim.getLocation()
 					.add(0, 7, 0)), 8);
-			sched.scheduleSyncDelayedTask(Main.instance, new ExplosionRunnable(victim.getLocation()
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new ExplosionRunnable(victim.getLocation()
 					.add(0, 8, 0)), 9);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 1);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 1);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 2);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 2);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 3);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 3);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 4);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 4);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 5);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 5);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 6);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 6);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 7);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 7);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 8);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 8);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 9);
-			sched.scheduleSyncDelayedTask(Main.instance, new LightningRunnable(
+			sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new LightningRunnable(
 					getRandomAround(victim.getLocation())), 9);
 			if (action == BanhammerAction.BAN) {
-				sched.scheduleSyncDelayedTask(Main.instance, new BanRunnable(victim.getName(),
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new BanRunnable(victim.getName(),
 						attacker.getName()), 11);
 			} else {
-				sched.scheduleSyncDelayedTask(Main.instance, new KickRunnable(victim.getName(),
+				sched.scheduleSyncDelayedTask(ColeBansPlugin.instance, new KickRunnable(victim.getName(),
 						attacker.getName()), 11);
 			}
 		}

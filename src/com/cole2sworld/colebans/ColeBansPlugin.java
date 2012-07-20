@@ -31,7 +31,7 @@ import com.cole2sworld.colebans.handlers.BanHandler;
  * 
  * @since v1 Apricot
  */
-public final class Main extends JavaPlugin {
+public final class ColeBansPlugin extends JavaPlugin {
 	/**
 	 * Are we in debug mode? (If this is turned on when compiled, it means the
 	 * build is a debug build)
@@ -43,7 +43,7 @@ public final class Main extends JavaPlugin {
 	public static final Logger	LOG		= Logger.getLogger("Minecraft");
 	public static final String	PREFIX	= "[ColeBans] ";
 	
-	public static final void debug(final String msg) {
+	public static void debug(final String msg) {
 		if (debug) {
 			String caller = "??";
 			try {
@@ -60,7 +60,7 @@ public final class Main extends JavaPlugin {
 	}
 	
 	public static Map<String, String> getBanHandlerInitArgs() {
-		final HashMap<String, String> data = new HashMap<String, String>(15);
+		final Map<String, String> data = new HashMap<String, String>(15);
 		data.put("username", GlobalConf.get("mysql.user").asString());
 		data.put("password", GlobalConf.get("mysql.pass").asString());
 		data.put("host", GlobalConf.get("mysql.host").asString());
@@ -85,7 +85,7 @@ public final class Main extends JavaPlugin {
 	/**
 	 * The instance of Main, for accessing non-static methods.
 	 */
-	public static Main			instance;
+	public static ColeBansPlugin			instance;
 	
 	public IPLogManager			ipLog;
 	/**
@@ -104,7 +104,7 @@ public final class Main extends JavaPlugin {
 	 * use Main.instance</i>
 	 */
 	
-	public Main() {
+	public ColeBansPlugin() {
 		super();
 		instance = this;
 	}
@@ -270,6 +270,7 @@ public final class Main extends JavaPlugin {
 			pm.registerEvents(new EventListener(), this);
 			pm.registerEvents(new BanhammerListener(), this);
 			pm.registerEvents(new RestrictionListener(), this);
+			pm.registerEvents(new IPLogManager(), this);
 			newtime = System.currentTimeMillis();
 			System.out.println(PREFIX + "Done. Took " + (newtime - oldtime) + " ms.");
 		} catch (final Exception e) {

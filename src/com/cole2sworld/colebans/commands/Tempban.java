@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.cole2sworld.colebans.ActionLogManager;
 import com.cole2sworld.colebans.ActionLogManager.Type;
-import com.cole2sworld.colebans.Main;
+import com.cole2sworld.colebans.ColeBansPlugin;
 import com.cole2sworld.colebans.Util;
 import com.cole2sworld.colebans.framework.GlobalConf;
 import com.cole2sworld.colebans.framework.PermissionSet;
@@ -18,6 +18,9 @@ import com.cole2sworld.colebans.framework.PlayerAlreadyBannedException;
  * 
  */
 public final class Tempban implements CBCommand {
+	public Tempban() {
+	}
+	
 	@Override
 	public String run(final String[] args, final CommandSender admin) {
 		if (!(new PermissionSet(admin).canTempBan))
@@ -40,9 +43,9 @@ public final class Tempban implements CBCommand {
 							reasonBuilder.append(args[i]);
 						}
 						final String reason = reasonBuilder.toString();
-						Main.instance.banHandler.tempBanPlayer(victim, time, reason,
+						ColeBansPlugin.instance.banHandler.tempBanPlayer(victim, time, reason,
 								admin.getName());
-						final Player playerObj = Main.instance.server.getPlayer(victim);
+						final Player playerObj = ColeBansPlugin.instance.server.getPlayer(victim);
 						if (playerObj != null) {
 							playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.get("tempBanColor")
 									.asString())
@@ -56,7 +59,7 @@ public final class Tempban implements CBCommand {
 							}
 						}
 						if (GlobalConf.get("announceBansAndKicks").asBoolean()) {
-							Main.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.get(
+							ColeBansPlugin.instance.server.broadcastMessage(ChatColor.valueOf(GlobalConf.get(
 									"tempBanColor").asString())
 									+ victim
 									+ " was temporarily banned! [" + reason + "] ("

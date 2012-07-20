@@ -23,6 +23,9 @@ import com.cole2sworld.colebans.handlers.BanHandler.Type;
  */
 @SuppressWarnings("static-method")
 public final class EventListener implements Listener {
+	protected EventListener() {
+	}
+	
 	/**
 	 * Checks if the player is banned, if so it will kick them out.
 	 * 
@@ -30,14 +33,14 @@ public final class EventListener implements Listener {
 	 *            The PlayerPreLoginEvent created by Bukkit.
 	 */
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public final void onPlayerPreLogin(final PlayerPreLoginEvent event) {
+	public void onPlayerPreLogin(final PlayerPreLoginEvent event) {
 		System.out.println("Pre login");
-		Main.debug("Got pre-login for " + event.getName());
-		final BanData bd = Main.instance.banHandler.getBanData(event.getName(),
+		ColeBansPlugin.debug("Got pre-login for " + event.getName());
+		final BanData bd = ColeBansPlugin.instance.banHandler.getBanData(event.getName(),
 				BanHandler.SYSTEM_ADMIN_NAME);
 		final Type banType = bd.getType();
 		if (banType == Type.PERMANENT) {
-			Main.debug("Permanent");
+			ColeBansPlugin.debug("Permanent");
 			final String banReason = bd.getReason();
 			event.setResult(Result.KICK_BANNED);
 			event.setKickMessage(ChatColor.valueOf(GlobalConf.get("banColor").asString())
@@ -45,10 +48,10 @@ public final class EventListener implements Listener {
 			return;
 		}
 		if (GlobalConf.get("allowTempBans").asBoolean()) {
-			Main.debug("Temp ban");
+			ColeBansPlugin.debug("Temp ban");
 			final Long tempBanTime = bd.getTime();
 			if (tempBanTime > -1) {
-				Main.debug("Valid");
+				ColeBansPlugin.debug("Valid");
 				Long tempBanMins = tempBanTime - System.currentTimeMillis();
 				tempBanMins /= 1000;
 				tempBanMins /= 60;
@@ -70,16 +73,16 @@ public final class EventListener implements Listener {
 	 *            The PluginEnableEvent created by Bukkit.
 	 */
 	@EventHandler(priority = EventPriority.MONITOR)
-	public final void onPluginEnable(@SuppressWarnings("unused") final PluginEnableEvent event) {
-		if (Main.instance.permissionsHandler == null) {
-			final Plugin permissions = Main.instance.getServer().getPluginManager()
+	public void onPluginEnable(@SuppressWarnings("unused") final PluginEnableEvent event) {
+		if (ColeBansPlugin.instance.permissionsHandler == null) {
+			final Plugin permissions = ColeBansPlugin.instance.getServer().getPluginManager()
 					.getPlugin("Permissions");
 			if (permissions != null) {
 				if (permissions.isEnabled()
 						&& permissions.getClass().getName()
 								.equals("com.nijikokun.bukkit.Permissions.Permissions")) {
-					Main.instance.permissionsHandler = ((Permissions) permissions).getHandler();
-					System.out.println(Main.PREFIX + "Hooked into Nijikokun-like permissions.");
+					ColeBansPlugin.instance.permissionsHandler = ((Permissions) permissions).getHandler();
+					System.out.println(ColeBansPlugin.PREFIX + "Hooked into Nijikokun-like permissions.");
 				}
 			}
 		}

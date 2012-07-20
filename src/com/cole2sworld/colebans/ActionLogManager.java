@@ -19,7 +19,7 @@ import com.cole2sworld.colebans.framework.LogEntry;
  * @author cole2
  * 
  */
-public class ActionLogManager {
+public final class ActionLogManager {
 	public static enum Type {
 		BAN,
 		UNBAN,
@@ -56,12 +56,12 @@ public class ActionLogManager {
 	 *            Victim of the action
 	 */
 	public static void addEntry(final Type type, final String admin, final String victim) {
-		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return;
+		if (!ColeBansPlugin.instance.banHandler.getTruncatedName().equals("mysql")) return;
 		verify();
 		final PreparedStatement stmt = sql.prepare("INSERT INTO " + tbl
 				+ " (type, admin, victim, time) VALUES (?, ?, ?, ?);");
 		try {
-			Main.debug("Logging " + admin.toLowerCase() + " doing something to "
+			ColeBansPlugin.debug("Logging " + admin.toLowerCase() + " doing something to "
 					+ victim.toLowerCase());
 			stmt.setInt(1, type.ordinal());
 			stmt.setString(2, admin.toLowerCase());
@@ -97,7 +97,7 @@ public class ActionLogManager {
 	 * @return All results
 	 */
 	public static List<LogEntry> getAll(final int limit) {
-		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return null;
+		if (!ColeBansPlugin.instance.banHandler.getTruncatedName().equals("mysql")) return null;
 		verify();
 		final ArrayList<LogEntry> entries = new ArrayList<LogEntry>();
 		final PreparedStatement stmt = sql.prepare("SELECT * FROM " + tbl + " ORDER BY time DESC "
@@ -129,7 +129,7 @@ public class ActionLogManager {
 	 * @return All results
 	 */
 	public static List<LogEntry> getBy(final String admin) {
-		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return null;
+		if (!ColeBansPlugin.instance.banHandler.getTruncatedName().equals("mysql")) return null;
 		verify();
 		final ArrayList<LogEntry> entries = new ArrayList<LogEntry>();
 		final PreparedStatement stmt = sql.prepare("SELECT * FROM " + tbl + " WHERE admin=?");
@@ -163,7 +163,7 @@ public class ActionLogManager {
 	 * @return All results
 	 */
 	public static List<LogEntry> getByOn(final String admin, final String victim) {
-		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return null;
+		if (!ColeBansPlugin.instance.banHandler.getTruncatedName().equals("mysql")) return null;
 		verify();
 		final ArrayList<LogEntry> entries = new ArrayList<LogEntry>();
 		final String st = "SELECT * FROM " + tbl + " WHERE ("
@@ -171,7 +171,7 @@ public class ActionLogManager {
 				+ (victim.equals("*") || admin.equals("*") ? "" : ", ")
 				+ (victim.equals("*") ? "" : "victim='" + addSlashes(victim.toLowerCase()) + "'")
 				+ ");";
-		Main.debug(st);
+		ColeBansPlugin.debug(st);
 		final PreparedStatement stmt = sql.prepare(st);
 		try {
 			final ResultSet result = stmt.executeQuery();
@@ -200,7 +200,7 @@ public class ActionLogManager {
 	 * @return All results
 	 */
 	public static List<LogEntry> getTo(final String victim) {
-		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return null;
+		if (!ColeBansPlugin.instance.banHandler.getTruncatedName().equals("mysql")) return null;
 		verify();
 		final ArrayList<LogEntry> entries = new ArrayList<LogEntry>();
 		final PreparedStatement stmt = sql.prepare("SELECT * FROM " + tbl + " WHERE victim=?");
@@ -229,15 +229,15 @@ public class ActionLogManager {
 	 */
 	public static void initialize() {
 		if (initialized) return;
-		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) {
+		if (!ColeBansPlugin.instance.banHandler.getTruncatedName().equals("mysql")) {
 			if (!triedInit) {
-				Main.LOG.warning(Main.PREFIX
+				ColeBansPlugin.LOG.warning(ColeBansPlugin.PREFIX
 						+ "[ActionLogManager] Could not initialize - current ban handler is not MySQL.");
 				triedInit = true;
 			}
 			return;
 		}
-		final Map<String, String> data = Main.getBanHandlerInitArgs();
+		final Map<String, String> data = ColeBansPlugin.getBanHandlerInitArgs();
 		sql = new SimpleMySQL();
 		sql.connect(data.get("host"), data.get("username"), data.get("password"));
 		sql.use(data.get("db"));
@@ -254,7 +254,7 @@ public class ActionLogManager {
 	 * @return Modified list
 	 */
 	public static List<LogEntry> since(final long timeMillis, final List<LogEntry> oldlist) {
-		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return null;
+		if (!ColeBansPlugin.instance.banHandler.getTruncatedName().equals("mysql")) return null;
 		checkConnectionAIDR();
 		final ArrayList<LogEntry> list = new ArrayList<LogEntry>();
 		for (final LogEntry entry : oldlist) {
@@ -272,13 +272,13 @@ public class ActionLogManager {
 	 * @return How long the operation took
 	 */
 	private static long checkConnectionAIDR() {
-		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return 0;
+		if (!ColeBansPlugin.instance.banHandler.getTruncatedName().equals("mysql")) return 0;
 		final long oldtime = System.currentTimeMillis();
 		final SimpleMySQL.State st = sql.checkConnection();
 		final boolean didSomething = false;
 		if (st != SimpleMySQL.State.CONNECTED) {
-			System.out.println(Main.PREFIX + "[LogManager] Re-initalizing connection");
-			final Map<String, String> data = Main.getBanHandlerInitArgs();
+			System.out.println(ColeBansPlugin.PREFIX + "[LogManager] Re-initalizing connection");
+			final Map<String, String> data = ColeBansPlugin.getBanHandlerInitArgs();
 			sql = new SimpleMySQL();
 			sql.connect(data.get("host"), data.get("username"), data.get("password"));
 			sql.use(data.get("db"));
@@ -287,20 +287,23 @@ public class ActionLogManager {
 		}
 		final long newtime = System.currentTimeMillis();
 		if (didSomething) {
-			System.out.println(Main.PREFIX + "[LogManager] Done. Took " + (newtime - oldtime)
+			System.out.println(ColeBansPlugin.PREFIX + "[LogManager] Done. Took " + (newtime - oldtime)
 					+ " ms.");
 		}
 		return newtime - oldtime;
 	}
 	
 	private static void verify() {
-		if (!Main.instance.banHandler.getTruncatedName().equals("mysql")) return;
+		if (!ColeBansPlugin.instance.banHandler.getTruncatedName().equals("mysql")) return;
 		initialize();
 		checkConnectionAIDR();
 		if (!sql.checkTable(tbl)) {
 			sql.query("CREATE  TABLE " + tbl + " (" + "`type` INT UNSIGNED NOT NULL ,"
 					+ "`admin` VARCHAR(45) NULL ," + "`victim` VARCHAR(45) NULL ,"
-					+ "`time` BIGINT PK UNSIGNED NULL ," + "INDEX `main` (`time` ASC) );");
+					+ "`time` BIGINT UNSIGNED NULL ," + "INDEX `main` (`time` ASC) );");
 		}
+	}
+	
+	private ActionLogManager() {
 	}
 }

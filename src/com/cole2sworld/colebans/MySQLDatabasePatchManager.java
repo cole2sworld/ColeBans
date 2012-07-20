@@ -13,13 +13,20 @@ import com.unibia.simplemysql.SimpleMySQL;
  * @author cole2
  * 
  */
-public class MySQLDatabasePatchManager {
+public final class MySQLDatabasePatchManager {
+
+
+
+
+
+
+
 
 
 
 
 	// FORM off
-	private static final String[][]	patches	= {
+	private static final String[][]	PATCHES	= {
 						// r1
 						new String[] {
 									// temp ban reasons
@@ -35,16 +42,16 @@ public class MySQLDatabasePatchManager {
 								}
 						};
 	//FORM on
-	public static final int DATABASE_REVISION = patches.length;
+	public static final int DATABASE_REVISION = PATCHES.length;
 	private static final String REVISION_UPDATE_STATEMENT = "UPDATE `{$CB_DATABASE}`.`{$CB_PREFIX}meta` SET `value`='"+DATABASE_REVISION+"' WHERE `key`='revision';";
 	public static void check() {
-		final Map<String, String> data = Main.getBanHandlerInitArgs();
+		final Map<String, String> data = ColeBansPlugin.getBanHandlerInitArgs();
 		final SimpleMySQL sql = new SimpleMySQL();
 		sql.connect(data.get("host"), data.get("username"), data.get("password"));
 		sql.use(data.get("db"));
 		if (!sql.checkTable(data.get("prefix")+"meta")) {
 			// must be r0
-			for (final String query : patches[0]) {
+			for (final String query : PATCHES[0]) {
 				sql.query(query
 						.replace("{$CB_DATABASE}", data.get("db"))
 						.replace("{$CB_PREFIX}", data.get("prefix"))
@@ -54,14 +61,15 @@ public class MySQLDatabasePatchManager {
 		{
 			ResultSet result = null;
 			try {
-				result = sql.query("SELECT value FROM `"+data.get("db")+"`.`"+data.get("prefix")+"meta` WHERE key='revision';");
+				result = sql.query("SELECT value FROM `"+data.get("db")+"`.`"+data.get("prefix")+"meta` WHERE `key`='revision';");
 				result.first();
 				final int rev = result.getInt("value");
 				if (rev < 0) {
-					System.out.println(Main.PREFIX+"[MySQLDatabasePatchManager] Invalid database revision id - overwriting");
+					System.out.println(ColeBansPlugin.PREFIX+"[MySQLDatabasePatchManager] Invalid database revision id - overwriting");
 				}
 				if (rev < DATABASE_REVISION) {
-					for (final String query : patches[rev]) {
+					System.out.println(ColeBansPlugin.PREFIX+"[MySQLDatabasePatchManager] Database outdated, updating...");
+					for (final String query : PATCHES[rev]) {
 						sql.query(query
 								.replace("{$CB_DATABASE}", data.get("db"))
 								.replace("{$CB_PREFIX}", data.get("prefix"))
@@ -85,4 +93,5 @@ public class MySQLDatabasePatchManager {
 				.replace("{$CB_PREFIX}", data.get("prefix")));
 		sql.close();
 	}
+	private MySQLDatabasePatchManager() {}
 }

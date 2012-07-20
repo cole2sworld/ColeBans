@@ -1,10 +1,11 @@
 package com.cole2sworld.colebans.handlers;
 
+import java.util.List;
 import java.util.Locale;
-import java.util.Vector;
 
 import javax.naming.OperationNotSupportedException;
 
+import com.cole2sworld.colebans.framework.GlobalConf;
 import com.cole2sworld.colebans.framework.PlayerAlreadyBannedException;
 import com.cole2sworld.colebans.framework.PlayerNotBannedException;
 
@@ -61,8 +62,12 @@ public abstract class BanHandler {
 	 * @throws PlayerAlreadyBannedException
 	 *             if the player is already banned
 	 */
-	public abstract void banPlayer(String player, String reason, String admin)
-			throws PlayerAlreadyBannedException;
+	public final void banPlayer(final String player, final String reason, final String admin)
+			throws PlayerAlreadyBannedException {
+		if (isPlayerBanned(player, SYSTEM_ADMIN_NAME))
+			throw new PlayerAlreadyBannedException(player + " is already banned!");
+		handleBanPlayer(player, reason, admin);
+	}
 	
 	/**
 	 * Convert over to a new ban handler.
@@ -82,7 +87,7 @@ public abstract class BanHandler {
 	/**
 	 * Does a full dump of the data for this ban handler.
 	 */
-	public abstract Vector<BanData> dump(String admin);
+	public abstract List<BanData> dump(String admin);
 	
 	/**
 	 * @param player
@@ -118,7 +123,7 @@ public abstract class BanHandler {
 	/**
 	 * Gets a simple list of the banned players, with no reasons.
 	 */
-	public abstract Vector<String> listBannedPlayers(String admin);
+	public abstract List<String> listBannedPlayers(String admin);
 	
 	/**
 	 * Do stuff needed when disabling. Closing SQL connections, flushing caches,
@@ -142,8 +147,15 @@ public abstract class BanHandler {
 	 * @throws UnsupportedOperationException
 	 *             if temp bans are disabled
 	 */
-	public abstract void tempBanPlayer(String player, long time, String reason, String admin)
-			throws PlayerAlreadyBannedException, UnsupportedOperationException;
+	public final void tempBanPlayer(final String player, final long time, final String reason,
+			final String admin)
+			throws PlayerAlreadyBannedException, UnsupportedOperationException {
+		if (!GlobalConf.get("allowTempBans").asBoolean())
+			throw new UnsupportedOperationException("Tempbans are disabled!");
+		if (isPlayerBanned(player, admin))
+			throw new PlayerAlreadyBannedException(player + " is already banned!");
+		handleTempBanPlayer(player, time, reason, admin);
+	}
 	
 	/**
 	 * Unbans a player, whether they have been temp banned or perm banned
@@ -155,6 +167,27 @@ public abstract class BanHandler {
 	 * @throws PlayerNotBannedException
 	 *             If the player is not banned
 	 */
-	public abstract void unbanPlayer(String player, String admin) throws PlayerNotBannedException;
+	public final void unbanPlayer(final String player, final String admin)
+			throws PlayerNotBannedException {
+		if (!isPlayerBanned(player, admin))
+			throw new PlayerNotBannedException(player + " is not banned!");
+		handleUnbanPlayer(player, admin);
+	}
+	
+	/**
+	 * Handle banning a player.
+	 */
+	protected abstract void handleBanPlayer(String player, String reason, String admin);
+	
+	/**
+	 * Handle tempbanning a player.
+	 */
+	protected abstract void handleTempBanPlayer(String player, long time, String reason,
+			String admin);
+	
+	/**
+	 * Handle unbanning a player.
+	 */
+	protected abstract void handleUnbanPlayer(String player, String admin);
 	
 }

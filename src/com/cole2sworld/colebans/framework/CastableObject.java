@@ -2,6 +2,7 @@ package com.cole2sworld.colebans.framework;
 
 import org.bukkit.Location;
 
+import com.cole2sworld.colebans.ColeBansPlugin;
 import com.cole2sworld.colebans.handlers.BanData;
 
 /**
@@ -10,11 +11,27 @@ import com.cole2sworld.colebans.handlers.BanData;
  * @author cole2
  * 
  */
-public class CastableObject {
+public final class CastableObject {
 	private final Object	obj;
 	
-	public CastableObject(final Object object) {
-		obj = object;
+	public CastableObject(final Object pObject) {
+		if (pObject instanceof CastableObject) {
+			Object object = null;
+			int iterations = 0;
+			while (object instanceof CastableObject) {
+				if (iterations > 50) {
+					System.out
+							.println(ColeBansPlugin.PREFIX
+									+ " [CastableObject] Can't unwrap CastableObject after 50 iterations - giving up");
+					break;
+				}
+				object = ((CastableObject) object).asObject();
+				iterations++;
+			}
+			obj = object;
+		} else {
+			obj = pObject;
+		}
 	}
 	
 	/**
@@ -136,6 +153,7 @@ public class CastableObject {
 	 * 
 	 * @return null
 	 */
+	@SuppressWarnings("static-method")
 	public Object asNull() {
 		return null;
 	}
@@ -305,6 +323,7 @@ public class CastableObject {
 	 * 
 	 * @return true
 	 */
+	@SuppressWarnings("static-method")
 	public boolean isObject() {
 		return true;
 	}

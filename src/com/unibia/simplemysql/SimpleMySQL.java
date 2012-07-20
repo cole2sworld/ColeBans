@@ -52,14 +52,13 @@ import java.sql.Statement;
 import com.mysql.jdbc.CommunicationsException;
 import com.mysql.jdbc.exceptions.MySQLNonTransientConnectionException;
 
-import com.cole2sworld.colebans.Main;
+import com.cole2sworld.colebans.ColeBansPlugin;
 
 /**
  * 
  * @author Daniel Morante
  */
 public final class SimpleMySQL {
-	
 	public enum State {
 		CONNECTED,
 		NEVER_CONNECTED,
@@ -67,16 +66,19 @@ public final class SimpleMySQL {
 		UNKNOWN
 	}
 	
-	private Connection	mysql_connection;
+	private Connection	mysqlConnection;
+	
+	public SimpleMySQL() {
+	}
 	
 	public State checkConnection() {
 		Statement stmt;
-		ResultSet mysql_result;
+		ResultSet mysqlResult;
 		try {
 			// Execute Query
-			stmt = mysql_connection.createStatement();
-			mysql_result = stmt.executeQuery("SELECT 1 from DUAL WHERE 1=0");
-			mysql_result.close();
+			stmt = mysqlConnection.createStatement();
+			mysqlResult = stmt.executeQuery("SELECT 1 from DUAL WHERE 1=0");
+			mysqlResult.close();
 			return State.CONNECTED;
 		} catch (final CommunicationsException e) {
 			return State.LOST;
@@ -87,40 +89,40 @@ public final class SimpleMySQL {
 		} catch (final SQLException e) {
 			return State.LOST;
 		} finally {
-			mysql_result = null;
+			mysqlResult = null;
 		}
 	}
 	
 	public boolean checkTable(final String tbl) {
-		Main.debug("Checking table");
+		ColeBansPlugin.debug("Checking table");
 		checkConnection();
 		Statement stmt = null;
 		try {
-			Main.debug("Creating statement");
-			stmt = mysql_connection.createStatement();
+			ColeBansPlugin.debug("Creating statement");
+			stmt = mysqlConnection.createStatement();
 		} catch (final SQLException e) {
-			Main.debug("SQLException creating statement: " + e.getMessage());
+			ColeBansPlugin.debug("SQLException creating statement: " + e.getMessage());
 			return false;
 		}
 		ResultSet result = null;
 		try {
-			Main.debug("Executing query");
+			ColeBansPlugin.debug("Executing query");
 			result = stmt.executeQuery("SELECT * FROM " + tbl + " LIMIT 1;");
 		} catch (final SQLException e) {
-			Main.debug("SQLException executing query: SELECT * FROM " + tbl + " LIMIT 1; ("
+			ColeBansPlugin.debug("SQLException executing query: SELECT * FROM " + tbl + " LIMIT 1; ("
 					+ e.getMessage() + ")");
 			return false;
 		} finally {
 			if (result != null) {
 				try {
-					Main.debug("Closing result set");
+					ColeBansPlugin.debug("Closing result set");
 					result.close();
 				} catch (final SQLException e) {
-					Main.debug("SQLException closing result set: " + e.getMessage());
+					ColeBansPlugin.debug("SQLException closing result set: " + e.getMessage());
 				}
 			}
 		}
-		Main.debug("Reached end of method, returning true");
+		ColeBansPlugin.debug("Reached end of method, returning true");
 		return true;
 	}
 	
@@ -130,10 +132,10 @@ public final class SimpleMySQL {
 	 * @return True on close
 	 */
 	public boolean close() {
-		Main.debug("Closing connection");
+		ColeBansPlugin.debug("Closing connection");
 		try {
-			mysql_connection.close();
-			Main.debug("Close succeeded");
+			mysqlConnection.close();
+			ColeBansPlugin.debug("Close succeeded");
 			return true;
 		} catch (final Exception x) {
 			return false;
@@ -150,19 +152,19 @@ public final class SimpleMySQL {
 	 * @return True on a successful connection
 	 */
 	public boolean connect(final String server, final String username, final String password) {
-		Main.debug("Connecting");
-		String mysql_connectionURL;
-		String mysql_driver;
+		ColeBansPlugin.debug("Connecting");
+		String mysqlConnectionURL;
+		String mysqlDriver;
 		
 		try {
 			// Load MySQL JDBC Driver
-			mysql_driver = "com.mysql.jdbc.Driver";
-			Class.forName(mysql_driver);
+			mysqlDriver = "com.mysql.jdbc.Driver";
+			Class.forName(mysqlDriver);
 			
 			// Open Connection
-			mysql_connectionURL = "jdbc:mysql://" + server;
-			mysql_connection = DriverManager.getConnection(mysql_connectionURL, username, password);
-			Main.debug("Connected");
+			mysqlConnectionURL = "jdbc:mysql://" + server;
+			mysqlConnection = DriverManager.getConnection(mysqlConnectionURL, username, password);
+			ColeBansPlugin.debug("Connected");
 			return true;
 		} catch (final Exception x) {
 			
@@ -189,7 +191,7 @@ public final class SimpleMySQL {
 	
 	public PreparedStatement prepare(final String prepare) {
 		try {
-			return mysql_connection.prepareStatement(prepare);
+			return mysqlConnection.prepareStatement(prepare);
 		} catch (final SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -210,13 +212,13 @@ public final class SimpleMySQL {
 	 *      java.lang.String)
 	 */
 	public ResultSet query(String query) {
-		Main.debug("Running query " + query);
+		ColeBansPlugin.debug("Running query " + query);
 		// Make sure connection is alive
 		checkConnection();
 		
 		// Create Statement and result objects
 		Statement stmt;
-		ResultSet mysql_result;
+		ResultSet mysqlResult;
 		ResultSet result = null;
 		
 		// make sure we aren't idiots
@@ -236,30 +238,30 @@ public final class SimpleMySQL {
 		 * Function.
 		 */
 		try {
-			Main.debug("Detecting query type");
+			ColeBansPlugin.debug("Detecting query type");
 			if (query.startsWith("SELECT")) {
-				Main.debug("SELECT");
+				ColeBansPlugin.debug("SELECT");
 				// Use the "executeQuery" function becuase we have to retrive
 				// data
 				// Return the data as a resultset
 				
 				// Execute Query
-				stmt = mysql_connection.createStatement();
-				Main.debug("Statement created");
-				mysql_result = stmt.executeQuery(query);
-				Main.debug("Query executed");
-				result = mysql_result;
-				Main.debug("Result created");
+				stmt = mysqlConnection.createStatement();
+				ColeBansPlugin.debug("Statement created");
+				mysqlResult = stmt.executeQuery(query);
+				ColeBansPlugin.debug("Query executed");
+				result = mysqlResult;
+				ColeBansPlugin.debug("Result created");
 			} else {
-				Main.debug("UPDATE/INSERT/DELETE");
+				ColeBansPlugin.debug("UPDATE/INSERT/DELETE");
 				// It's an UPDATE, INSERT, or DELETE statement
 				// Use the "executeUpdate" function and return a null result
 				
 				// Execute Query
-				stmt = mysql_connection.createStatement();
-				Main.debug("Statement created");
+				stmt = mysqlConnection.createStatement();
+				ColeBansPlugin.debug("Statement created");
 				stmt.executeUpdate(query);
-				Main.debug("Query executed");
+				ColeBansPlugin.debug("Query executed");
 			}
 		} catch (final NullPointerException y) {
 			System.err.println("You are not connected to a MySQL server");
@@ -282,7 +284,7 @@ public final class SimpleMySQL {
 	public boolean use(final String database) {
 		boolean result = true;
 		try {
-			mysql_connection.setCatalog(database);
+			mysqlConnection.setCatalog(database);
 		} catch (final Exception e) {
 			result = false;
 		}

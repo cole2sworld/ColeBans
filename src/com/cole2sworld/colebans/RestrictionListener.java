@@ -15,62 +15,84 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import com.cole2sworld.colebans.framework.RestrictionManager;
 
 /**
- * Manages restrictions (copy-pasted for the most part from DragonList)
- * <br/>
+ * Manages restrictions (copy-pasted for the most part from DragonList) <br/>
  * Yay for code re-use!
+ * 
  * @author cole2
- *
+ * 
  */
-public class RestrictionListener implements Listener {
+@SuppressWarnings("static-method")
+public final class RestrictionListener implements Listener {
+	protected RestrictionListener() {
+	}
+	
+	
 	@EventHandler
-	public void onMove(PlayerMoveEvent event) {
+	public void onBreak(final BlockBreakEvent event) {
+		if (RestrictionManager.isFrozen(event.getPlayer())) {
+			event.getPlayer().sendMessage(
+					ChatColor.RED + "No, bad " + event.getPlayer().getName()
+							+ "! You can't do that while frozen!");
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void onChat(final PlayerChatEvent event) {
+		if (RestrictionManager.isFrozen(event.getPlayer())) {
+			event.setCancelled(true);
+			event.getPlayer().sendMessage(
+					ChatColor.RED + "No, bad " + event.getPlayer().getName()
+							+ "! You can't talk while frozen!");
+		}
+	}
+	
+	@EventHandler
+	public void onCommand(final PlayerCommandPreprocessEvent event) {
+		if (RestrictionManager.isFrozen(event.getPlayer())) {
+			event.setCancelled(true);
+			event.getPlayer().sendMessage(
+					ChatColor.RED + "No, bad " + event.getPlayer().getName()
+							+ "! You can't use that while frozen!");
+		}
+	}
+	
+	@EventHandler
+	public void onInteract(final PlayerInteractEvent event) {
+		if (RestrictionManager.isFrozen(event.getPlayer())) {
+			event.getPlayer().sendMessage(
+					ChatColor.RED + "No, bad " + event.getPlayer().getName()
+							+ "! You can't do that while frozen!");
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void onKick(final PlayerKickEvent event) {
+		RestrictionManager.thaw(event.getPlayer());
+	}
+	
+	@EventHandler
+	public void onMove(final PlayerMoveEvent event) {
 		if (RestrictionManager.isFrozen(event.getPlayer())) {
 			event.getPlayer().teleport(RestrictionManager.getFreezeLoc(event.getPlayer()));
 			event.getPlayer().setFallDistance(0);
 			event.getPlayer().setFireTicks(0);
 		}
 	}
+	
 	@EventHandler
-	public void onCommand(PlayerCommandPreprocessEvent event) {
+	public void onPlace(final BlockPlaceEvent event) {
 		if (RestrictionManager.isFrozen(event.getPlayer())) {
-			event.setCancelled(true);
-			event.getPlayer().sendMessage(ChatColor.RED+"No, bad "+event.getPlayer().getName()+"! You can't use that while frozen!");
-		}
-	}
-	@EventHandler
-	public void onPlace(BlockPlaceEvent event) {
-		if (RestrictionManager.isFrozen(event.getPlayer())) {
-			event.getPlayer().sendMessage(ChatColor.RED+"No, bad "+event.getPlayer().getName()+"! You can't do that while frozen!");
+			event.getPlayer().sendMessage(
+					ChatColor.RED + "No, bad " + event.getPlayer().getName()
+							+ "! You can't do that while frozen!");
 			event.setCancelled(true);
 		}
 	}
+	
 	@EventHandler
-	public void onBreak(BlockBreakEvent event) {
-		if (RestrictionManager.isFrozen(event.getPlayer())) {
-			event.getPlayer().sendMessage(ChatColor.RED+"No, bad "+event.getPlayer().getName()+"! You can't do that while frozen!");
-			event.setCancelled(true);
-		}
-	}
-	@EventHandler
-	public void onInteract(PlayerInteractEvent event) {
-		if (RestrictionManager.isFrozen(event.getPlayer())) {
-			event.getPlayer().sendMessage(ChatColor.RED+"No, bad "+event.getPlayer().getName()+"! You can't do that while frozen!");
-			event.setCancelled(true);
-		}
-	}
-	@EventHandler
-	public void onChat(PlayerChatEvent event) {
-		if (RestrictionManager.isFrozen(event.getPlayer())) {
-			event.setCancelled(true);
-			event.getPlayer().sendMessage(ChatColor.RED+"No, bad "+event.getPlayer().getName()+"! You can't talk while frozen!");
-		}
-	}
-	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
-		RestrictionManager.thaw(event.getPlayer());
-	}
-	@EventHandler
-	public void onKick(PlayerKickEvent event) {
+	public void onQuit(final PlayerQuitEvent event) {
 		RestrictionManager.thaw(event.getPlayer());
 	}
 }

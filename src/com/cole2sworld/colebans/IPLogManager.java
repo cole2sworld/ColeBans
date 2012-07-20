@@ -9,6 +9,10 @@ import java.util.Map.Entry;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerPreLoginEvent;
 
 import com.cole2sworld.colebans.framework.GlobalConf;
 
@@ -16,7 +20,7 @@ import com.cole2sworld.colebans.framework.GlobalConf;
  * Manager for the iplog.yml
  * 
  */
-public final class IPLogManager {
+public final class IPLogManager implements Listener {
 	/**
 	 * The IP log configuration.
 	 */
@@ -36,33 +40,33 @@ public final class IPLogManager {
 	public static void initalize() {
 		if (initalized) return;
 		if (!GlobalConf.get("allowIPLog").asBoolean()) {
-			System.out.println(Main.PREFIX
+			System.out.println(ColeBansPlugin.PREFIX
 					+ "[IPLogManager] Skipping initalization as IP logging is disabled.");
 			return;
 		}
-		System.out.println(Main.PREFIX + "[IPLogManager] Initalizing...");
+		System.out.println(ColeBansPlugin.PREFIX + "[IPLogManager] Initalizing...");
 		final long oldTime = System.currentTimeMillis();
-		final File dataFolder = Main.instance.getDataFolder();
+		final File dataFolder = ColeBansPlugin.instance.getDataFolder();
 		dataFolder.mkdirs();
 		logFile = new File(dataFolder.getPath() + "/iplog.yml");
 		try {
 			logFile.createNewFile();
 		} catch (final IOException e) {
-			Main.LOG.severe((Main.PREFIX + "[IPLogManager] Error creating IP log file! (" + e
+			ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX + "[IPLogManager] Error creating IP log file! (" + e
 					.getMessage()) != null ? e.getMessage() : "??" + ")");
 		}
 		ipLog = new YamlConfiguration();
 		try {
 			ipLog.load(logFile);
 		} catch (final FileNotFoundException e) {
-			Main.LOG.severe(Main.PREFIX + "[IPLogManager] IP log file not found!");
+			ColeBansPlugin.LOG.severe(ColeBansPlugin.PREFIX + "[IPLogManager] IP log file not found!");
 		} catch (final IOException e) {
-			Main.LOG.severe((Main.PREFIX + "[IPLogManager] Error reading IP log file! (" + e
+			ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX + "[IPLogManager] Error reading IP log file! (" + e
 					.getMessage()) != null ? e.getMessage() : "??" + ")");
 		} catch (final InvalidConfigurationException e) {
-			Main.LOG.severe(Main.PREFIX + "[IPLogManager] IP log file is invalid!");
+			ColeBansPlugin.LOG.severe(ColeBansPlugin.PREFIX + "[IPLogManager] IP log file is invalid!");
 		}
-		System.out.println(Main.PREFIX + "[IPLogManager] Done. Took "
+		System.out.println(ColeBansPlugin.PREFIX + "[IPLogManager] Done. Took "
 				+ (System.currentTimeMillis() - oldTime) + " ms.");
 		initalized = true;
 	}
@@ -104,7 +108,7 @@ public final class IPLogManager {
 			try {
 				ipLog.save(logFile);
 			} catch (final IOException e1) {
-				Main.LOG.severe((Main.PREFIX + "[IPLogManager] Error saving IP log file! (" + e1
+				ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX + "[IPLogManager] Error saving IP log file! (" + e1
 						.getMessage()) == null ? "??" : e1.getMessage() + ")");
 			}
 			return null;
@@ -117,8 +121,23 @@ public final class IPLogManager {
 		try {
 			ipLog.save(logFile);
 		} catch (final IOException e) {
-			Main.LOG.severe((Main.PREFIX + "[IPLogManager] Error saving IP log file! (" + e
+			ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX + "[IPLogManager] Error saving IP log file! (" + e
 					.getMessage()) == null ? "??" : e.getMessage() + ")");
+		}
+	}
+	
+	protected IPLogManager() {
+	}
+	
+	@SuppressWarnings("static-method")
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPreLogin(final PlayerPreLoginEvent event) {
+		ipLog.set(event.getName(), event.getAddress().getHostAddress());
+		try {
+			ipLog.save(logFile);
+		} catch (final IOException e) {
+			ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX + "[IPLogManager] Error saving IP log file! (" + e
+					.getMessage()) == null ? "" : e.getMessage() + ")");
 		}
 	}
 }

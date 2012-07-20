@@ -4,6 +4,7 @@ import java.net.InetAddress;
 
 import com.cole2sworld.colebans.IPLogManager;
 
+// TODO make this do something
 public abstract class IPCompatBanHandler extends BanHandler {
 	/**
 	 * Ban an IP address.
@@ -14,16 +15,14 @@ public abstract class IPCompatBanHandler extends BanHandler {
 	public abstract void banIP(InetAddress ip);
 	
 	/**
-	 * Ban an IP address by the player's name. <i>Note: This method is
-	 * implemented in IPCompatBanHandler to make a simple wrapper to
-	 * banIP(InetAddress) using IPLogManager.</i>
+	 * Ban an IP address by the player's name.
 	 * 
 	 * @param player
 	 *            Player to ban
 	 * @throws IllegalArgumentException
 	 *             If the player has not been logged before
 	 */
-	public void banIP(final String player) {
+	public final void banIP(final String player) {
 		final InetAddress addr = IPLogManager.lookupByName(player);
 		if (addr == null)
 			throw new IllegalArgumentException("That player hasn't been logged before!");
@@ -51,16 +50,14 @@ public abstract class IPCompatBanHandler extends BanHandler {
 	public abstract void unbanIP(InetAddress ip);
 	
 	/**
-	 * Unban an IP address by the player's name. <i>Note: This method is
-	 * implemented in IPCompatBanHandler to make a simple wrapper to
-	 * unbanIP(InetAddress) using IPLogManager.</i>
+	 * Unban an IP address by the player's name.
 	 * 
 	 * @param player
 	 *            Player to unban
 	 * @throws IllegalArgumentException
 	 *             If the player has not been logged before
 	 */
-	public void unbanIP(final String player) {
+	public final void unbanIP(final String player) {
 		final InetAddress addr = IPLogManager.lookupByName(player);
 		if (addr == null)
 			throw new IllegalArgumentException("That player hasn't been logged before!");
