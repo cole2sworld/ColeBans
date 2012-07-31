@@ -15,16 +15,6 @@ import com.unibia.simplemysql.SimpleMySQL;
  */
 public final class MySQLDatabasePatchManager {
 
-
-
-
-
-
-
-
-
-
-
 	// FORM off
 	private static final String[][]	PATCHES	= {
 						// r1
@@ -67,7 +57,7 @@ public final class MySQLDatabasePatchManager {
 				if (rev < 0) {
 					System.out.println(ColeBansPlugin.PREFIX+"[MySQLDatabasePatchManager] Invalid database revision id - overwriting");
 				}
-				if (rev < DATABASE_REVISION) {
+				if ((rev < DATABASE_REVISION) && (rev >= 0)) {
 					System.out.println(ColeBansPlugin.PREFIX+"[MySQLDatabasePatchManager] Database outdated, updating...");
 					for (final String query : PATCHES[rev]) {
 						sql.query(query
