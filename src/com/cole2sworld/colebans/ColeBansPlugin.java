@@ -81,33 +81,22 @@ public final class ColeBansPlugin extends JavaPlugin {
 	/**
 	 * The Permissions 3/2 (or bridge) that we will use for permissions.
 	 */
-	public PermissionHandler	permissionsHandler	= null;
+	public PermissionHandler		permissionsHandler	= null;
 	/**
 	 * The instance of Main, for accessing non-static methods.
 	 */
-	public static ColeBansPlugin			instance;
+	public static ColeBansPlugin	instance;
 	
-	public IPLogManager			ipLog;
+	public IPLogManager				ipLog;
 	/**
 	 * The server that ColeBans got on startup.
 	 */
-	public Server				server;
+	public Server					server;
 	
 	/**
 	 * The banhandler that will be used for all actions.
 	 */
-	public BanHandler			banHandler;
-	
-	/**
-	 * Creates a new ColeBans Main class. <i>Do not use. Only the Bukkit server
-	 * implementation should instantiate Main. If you need an instance of Main,
-	 * use Main.instance</i>
-	 */
-	
-	public ColeBansPlugin() {
-		super();
-		instance = this;
-	}
+	public BanHandler				banHandler;
 	
 	/**
 	 * @param player
@@ -232,6 +221,7 @@ public final class ColeBansPlugin extends JavaPlugin {
 	 */
 	@Override
 	public void onEnable() {
+		instance = this;
 		try {
 			System.out.println(PREFIX + "Initalizing...");
 			server = getServer();

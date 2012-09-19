@@ -1,5 +1,5 @@
 name: ColeBans
-main: com.cole2sworld.colebans.Main
+main: com.cole2sworld.colebans.ColeBansPlugin
 version: 5 BUILDNUMBER
 commands:
     ban:
