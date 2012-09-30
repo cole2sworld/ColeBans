@@ -52,19 +52,23 @@ public final class IPLogManager implements Listener {
 		try {
 			logFile.createNewFile();
 		} catch (final IOException e) {
-			ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX + "[IPLogManager] Error creating IP log file! (" + e
+			ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX
+					+ "[IPLogManager] Error creating IP log file! (" + e
 					.getMessage()) != null ? e.getMessage() : "??" + ")");
 		}
 		ipLog = new YamlConfiguration();
 		try {
 			ipLog.load(logFile);
 		} catch (final FileNotFoundException e) {
-			ColeBansPlugin.LOG.severe(ColeBansPlugin.PREFIX + "[IPLogManager] IP log file not found!");
+			ColeBansPlugin.LOG.severe(ColeBansPlugin.PREFIX
+					+ "[IPLogManager] IP log file not found!");
 		} catch (final IOException e) {
-			ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX + "[IPLogManager] Error reading IP log file! (" + e
+			ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX
+					+ "[IPLogManager] Error reading IP log file! (" + e
 					.getMessage()) != null ? e.getMessage() : "??" + ")");
 		} catch (final InvalidConfigurationException e) {
-			ColeBansPlugin.LOG.severe(ColeBansPlugin.PREFIX + "[IPLogManager] IP log file is invalid!");
+			ColeBansPlugin.LOG.severe(ColeBansPlugin.PREFIX
+					+ "[IPLogManager] IP log file is invalid!");
 		}
 		System.out.println(ColeBansPlugin.PREFIX + "[IPLogManager] Done. Took "
 				+ (System.currentTimeMillis() - oldTime) + " ms.");
@@ -101,14 +105,16 @@ public final class IPLogManager implements Listener {
 		if (!GlobalConf.get("allowIPLog").asBoolean()) return null;
 		initalize();
 		try {
-			return ipLog.get(name) == null ? null : InetAddress.getByAddress(Util.processIp(ipLog
-					.getString(name)));
+			return ipLog.get(name.toLowerCase()) == null ? null : InetAddress.getByAddress(Util
+					.processIp(ipLog
+							.getString(name.toLowerCase())));
 		} catch (final UnknownHostException e) {
 			ipLog.set(name, null);
 			try {
 				ipLog.save(logFile);
 			} catch (final IOException e1) {
-				ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX + "[IPLogManager] Error saving IP log file! (" + e1
+				ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX
+						+ "[IPLogManager] Error saving IP log file! (" + e1
 						.getMessage()) == null ? "??" : e1.getMessage() + ")");
 			}
 			return null;
@@ -121,7 +127,8 @@ public final class IPLogManager implements Listener {
 		try {
 			ipLog.save(logFile);
 		} catch (final IOException e) {
-			ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX + "[IPLogManager] Error saving IP log file! (" + e
+			ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX
+					+ "[IPLogManager] Error saving IP log file! (" + e
 					.getMessage()) == null ? "??" : e.getMessage() + ")");
 		}
 	}
@@ -132,11 +139,13 @@ public final class IPLogManager implements Listener {
 	@SuppressWarnings("static-method")
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPreLogin(final PlayerPreLoginEvent event) {
-		ipLog.set(event.getName(), event.getAddress().getHostAddress());
+		ipLog.set(event.getName().toLowerCase(), event.getAddress().getHostAddress());
+		
 		try {
 			ipLog.save(logFile);
 		} catch (final IOException e) {
-			ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX + "[IPLogManager] Error saving IP log file! (" + e
+			ColeBansPlugin.LOG.severe((ColeBansPlugin.PREFIX
+					+ "[IPLogManager] Error saving IP log file! (" + e
 					.getMessage()) == null ? "" : e.getMessage() + ")");
 		}
 	}

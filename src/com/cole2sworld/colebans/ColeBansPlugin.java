@@ -246,7 +246,8 @@ public final class ColeBansPlugin extends JavaPlugin {
 			} catch (final IllegalAccessException e) {
 				onFatal("Bad ban handler given in config file! (IAE2)");
 			} catch (final InvocationTargetException e) {
-				onFatal("Bad ban handler given in config file! (ITE)");
+				e.printStackTrace();
+				onFatal("Ban handler failed to initalize!");
 			} catch (final NullPointerException e) {
 				onFatal("Bad ban handler given in config file! (NPE)");
 			} catch (final ClassCastException e) {
