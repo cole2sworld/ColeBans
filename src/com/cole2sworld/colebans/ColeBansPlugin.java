@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import com.nijiko.permissions.PermissionHandler;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Server;
@@ -16,7 +14,6 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -36,12 +33,17 @@ public final class ColeBansPlugin extends JavaPlugin {
 	 * Are we in debug mode? (If this is turned on when compiled, it means the
 	 * build is a debug build)
 	 */
-	public static boolean		debug	= false;
+	public static boolean			debug	= false;
 	/**
 	 * The Minecraft log.
 	 */
-	public static final Logger	LOG		= Logger.getLogger("Minecraft");
-	public static final String	PREFIX	= "[ColeBans] ";
+	public static final Logger		LOG		= Logger.getLogger("Minecraft");
+	public static final String		PREFIX	= "[ColeBans] ";
+	
+	/**
+	 * The instance of Main, for accessing non-static methods.
+	 */
+	public static ColeBansPlugin	instance;
 	
 	public static void debug(final String msg) {
 		if (debug) {
@@ -72,33 +74,6 @@ public final class ColeBansPlugin extends JavaPlugin {
 	}
 	
 	/**
-	 * Called when something really bad happens.
-	 */
-	protected static void onFatal(final String reason) throws Exception {
-		throw new Exception(reason);
-	}
-	
-	/**
-	 * The Permissions 3/2 (or bridge) that we will use for permissions.
-	 */
-	public PermissionHandler		permissionsHandler	= null;
-	/**
-	 * The instance of Main, for accessing non-static methods.
-	 */
-	public static ColeBansPlugin	instance;
-	
-	public IPLogManager				ipLog;
-	/**
-	 * The server that ColeBans got on startup.
-	 */
-	public Server					server;
-	
-	/**
-	 * The banhandler that will be used for all actions.
-	 */
-	public BanHandler				banHandler;
-	
-	/**
 	 * @param player
 	 *            Player to check (name)
 	 * @param permissionNode
@@ -106,11 +81,28 @@ public final class ColeBansPlugin extends JavaPlugin {
 	 * @return If there is a permissionsHandler, whether or not the given player
 	 *         has the node. If there isn't, if the player is an operator.
 	 */
-	public boolean hasPermission(final Player player, final String permissionNode) {
-		if (permissionsHandler == null)
-			return player.hasPermission(new Permission(permissionNode)) || player.isOp();
-		return permissionsHandler.has(player, permissionNode);
+	public static boolean hasPermission(final Player player, final String permissionNode) {
+		return player.hasPermission(permissionNode);
 	}
+	
+	/**
+	 * Called when something really bad happens.
+	 */
+	protected static void onFatal(final String reason) throws Exception {
+		throw new Exception(reason);
+	}
+	
+	public IPLogManager	ipLog;
+	
+	/**
+	 * The server that ColeBans got on startup.
+	 */
+	public Server		server;
+	
+	/**
+	 * The banhandler that will be used for all actions.
+	 */
+	public BanHandler	banHandler;
 	
 	/**
 	 * Kicks a player out of the game, with a fancy effect if enabled.

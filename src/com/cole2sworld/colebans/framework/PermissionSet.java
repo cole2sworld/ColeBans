@@ -29,19 +29,19 @@ public final class PermissionSet {
 	public PermissionSet(final CommandSender sender) {
 		if (sender instanceof Player) {
 			final Player player = (Player) sender;
-			canBan = ColeBansPlugin.instance.hasPermission(player, "colebans.ban");
-			canTempBan = ColeBansPlugin.instance.hasPermission(player, "colebans.tempban");
-			canUnBan = ColeBansPlugin.instance.hasPermission(player, "colebans.unban");
-			canLookup = ColeBansPlugin.instance.hasPermission(player, "colebans.lookup")
-					| ColeBansPlugin.instance.hasPermission(player, "colebans.check");
-			canKick = ColeBansPlugin.instance.hasPermission(player, "colebans.kick");
-			canSwitch = ColeBansPlugin.instance.hasPermission(player, "colebans.switch");
-			canReload = ColeBansPlugin.instance.hasPermission(player, "colebans.reload");
-			canCount = ColeBansPlugin.instance.hasPermission(player, "colebans.count");
-			canLog = ColeBansPlugin.instance.hasPermission(player, "colebans.viewlog");
-			canBanhammer = ColeBansPlugin.instance.hasPermission(player, "colebans.banhammer");
-			canFreeze = ColeBansPlugin.instance.hasPermission(player, "colebans.freeze");
-			canLookupIps = ColeBansPlugin.instance.hasPermission(player, "colebans.iplookup");
+			canBan = ColeBansPlugin.hasPermission(player, "colebans.ban");
+			canTempBan = ColeBansPlugin.hasPermission(player, "colebans.tempban");
+			canUnBan = ColeBansPlugin.hasPermission(player, "colebans.unban");
+			canLookup = ColeBansPlugin.hasPermission(player, "colebans.lookup")
+					| ColeBansPlugin.hasPermission(player, "colebans.check");
+			canKick = ColeBansPlugin.hasPermission(player, "colebans.kick");
+			canSwitch = ColeBansPlugin.hasPermission(player, "colebans.switch");
+			canReload = ColeBansPlugin.hasPermission(player, "colebans.reload");
+			canCount = ColeBansPlugin.hasPermission(player, "colebans.count");
+			canLog = ColeBansPlugin.hasPermission(player, "colebans.viewlog");
+			canBanhammer = ColeBansPlugin.hasPermission(player, "colebans.banhammer");
+			canFreeze = ColeBansPlugin.hasPermission(player, "colebans.freeze");
+			canLookupIps = ColeBansPlugin.hasPermission(player, "colebans.iplookup");
 			console = false;
 		}
 		else {

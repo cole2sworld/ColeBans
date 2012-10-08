@@ -1,15 +1,11 @@
 package com.cole2sworld.colebans;
 
-import com.nijikokun.bukkit.Permissions.Permissions;
-
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent.Result;
-import org.bukkit.event.server.PluginEnableEvent;
-import org.bukkit.plugin.Plugin;
 
 import com.cole2sworld.colebans.framework.GlobalConf;
 import com.cole2sworld.colebans.handlers.BanData;
@@ -62,28 +58,6 @@ public final class EventListener implements Listener {
 								.replace("%plural", Util.getPlural(tempBanMins, true))
 								.replace("%reason", bd.getReason()));
 				return;
-			}
-		}
-	}
-	
-	/**
-	 * Monitors for when Permissions is initialized.
-	 * 
-	 * @param event
-	 *            The PluginEnableEvent created by Bukkit.
-	 */
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPluginEnable(@SuppressWarnings("unused") final PluginEnableEvent event) {
-		if (ColeBansPlugin.instance.permissionsHandler == null) {
-			final Plugin permissions = ColeBansPlugin.instance.getServer().getPluginManager()
-					.getPlugin("Permissions");
-			if (permissions != null) {
-				if (permissions.isEnabled()
-						&& permissions.getClass().getName()
-								.equals("com.nijikokun.bukkit.Permissions.Permissions")) {
-					ColeBansPlugin.instance.permissionsHandler = ((Permissions) permissions).getHandler();
-					System.out.println(ColeBansPlugin.PREFIX + "Hooked into Nijikokun-like permissions.");
-				}
 			}
 		}
 	}
