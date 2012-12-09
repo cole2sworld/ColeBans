@@ -116,7 +116,7 @@ public final class ColeBansPlugin extends JavaPlugin {
 	 */
 	public void kickPlayer(final String player, final String reason) throws PlayerOfflineException {
 		final Player playerObj = server.getPlayer(player);
-		if ((playerObj != null) && playerObj.isOnline()) {
+		if (playerObj != null && playerObj.isOnline()) {
 			if (GlobalConf.get("fancyEffects").asBoolean()) {
 				final World world = playerObj.getWorld();
 				world.playEffect(playerObj.getLocation(), Effect.SMOKE, 1);
@@ -127,18 +127,15 @@ public final class ColeBansPlugin extends JavaPlugin {
 				world.playEffect(playerObj.getLocation(), Effect.SMOKE, 6);
 			}
 			if (reason != null) {
-				playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.get("kickColor").asString())
-						+ "KICKED: " + reason);
+				playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.get("kickColor").asString()) + "KICKED: " + reason);
 			} else {
-				playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.get("kickColor").asString())
-						+ "Kicked!");
+				playerObj.kickPlayer(ChatColor.valueOf(GlobalConf.get("kickColor").asString()) + "Kicked!");
 			}
-			if (GlobalConf.get("announceBansAndKicks").asBoolean() && (reason != null)) {
-				server.broadcastMessage(ChatColor.valueOf(GlobalConf.get("kickColor").asString())
-						+ player + " was kicked! [" + reason + "]");
+			if (GlobalConf.get("announceBansAndKicks").asBoolean() && reason != null) {
+				server.broadcastMessage(ChatColor.valueOf(GlobalConf.get("kickColor").asString()) + player + " was kicked! [" + reason
+						+ "]");
 			} else if (GlobalConf.get("announceBansAndKicks").asBoolean()) {
-				server.broadcastMessage(ChatColor.valueOf(GlobalConf.get("kickColor").asString())
-						+ player + " was kicked!");
+				server.broadcastMessage(ChatColor.valueOf(GlobalConf.get("kickColor").asString()) + player + " was kicked!");
 			}
 		} else
 			throw new PlayerOfflineException(player + " is offline!");
@@ -148,8 +145,7 @@ public final class ColeBansPlugin extends JavaPlugin {
 	 * Manages the dynamic command handler and the static command handler.
 	 */
 	@Override
-	public boolean onCommand(final CommandSender sender, final Command cmd, final String cmdLabel,
-			final String[] args) {
+	public boolean onCommand(final CommandSender sender, final Command cmd, final String cmdLabel, final String[] args) {
 		debug("Executing command " + cmdLabel);
 		if (cmdLabel.equalsIgnoreCase("cb") || cmdLabel.equalsIgnoreCase("colebans")) {
 			debug("It's /cb");
@@ -161,8 +157,7 @@ public final class ColeBansPlugin extends JavaPlugin {
 				debug("firstChar = " + firstChar);
 				cmdName = Character.toUpperCase(firstChar) + cmdName.toLowerCase(Locale.ENGLISH);
 				debug("cmdName = " + cmdName);
-				final Object rawObject = Class.forName(
-						"com.cole2sworld.colebans.commands." + cmdName).newInstance();
+				final Object rawObject = Class.forName("com.cole2sworld.colebans.commands." + cmdName).newInstance();
 				debug("rawObject = " + rawObject.getClass().getSimpleName());
 				if (rawObject instanceof CBCommand) {
 					debug("rawObject is a CBCommand");
@@ -171,8 +166,7 @@ public final class ColeBansPlugin extends JavaPlugin {
 					for (int i = 1; i < args.length; i++) {
 						newArgs.add(args[i]);
 					}
-					final String error = cmdObj.run(newArgs.toArray(new String[newArgs.size()]),
-							sender);
+					final String error = cmdObj.run(newArgs.toArray(new String[newArgs.size()]), sender);
 					if (error != null) {
 						sender.sendMessage(error);
 					}
@@ -203,6 +197,7 @@ public final class ColeBansPlugin extends JavaPlugin {
 		if (banHandler != null) {
 			banHandler.onDisable();
 		}
+		IPLogManager.save();
 		GlobalConf.save();
 		System.out.println(PREFIX + "Disabled.");
 	}

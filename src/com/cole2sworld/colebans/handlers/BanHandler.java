@@ -62,10 +62,8 @@ public abstract class BanHandler {
 	 * @throws PlayerAlreadyBannedException
 	 *             if the player is already banned
 	 */
-	public final void banPlayer(final String player, final String reason, final String admin)
-			throws PlayerAlreadyBannedException {
-		if (isPlayerBanned(player, SYSTEM_ADMIN_NAME))
-			throw new PlayerAlreadyBannedException(player + " is already banned!");
+	public final void banPlayer(final String player, final String reason, final String admin) throws PlayerAlreadyBannedException {
+		if (isPlayerBanned(player, SYSTEM_ADMIN_NAME)) throw new PlayerAlreadyBannedException(player + " is already banned!");
 		handleBanPlayer(player, reason, admin);
 	}
 	
@@ -105,8 +103,7 @@ public abstract class BanHandler {
 	 * @return Truncated name of this class. MySQLBanHandler becomes 'mysql'
 	 */
 	public final String getTruncatedName() {
-		return this.getClass().getSimpleName().replace("BanHandler", "")
-				.toLowerCase(Locale.ENGLISH);
+		return this.getClass().getSimpleName().replace("BanHandler", "").toLowerCase(Locale.ENGLISH);
 	}
 	
 	/**
@@ -147,13 +144,10 @@ public abstract class BanHandler {
 	 * @throws UnsupportedOperationException
 	 *             if temp bans are disabled
 	 */
-	public final void tempBanPlayer(final String player, final long time, final String reason,
-			final String admin)
+	public final void tempBanPlayer(final String player, final long time, final String reason, final String admin)
 			throws PlayerAlreadyBannedException, UnsupportedOperationException {
-		if (!GlobalConf.get("allowTempBans").asBoolean())
-			throw new UnsupportedOperationException("Tempbans are disabled!");
-		if (isPlayerBanned(player, admin))
-			throw new PlayerAlreadyBannedException(player + " is already banned!");
+		if (!GlobalConf.get("allowTempBans").asBoolean()) throw new UnsupportedOperationException("Tempbans are disabled!");
+		if (isPlayerBanned(player, admin)) throw new PlayerAlreadyBannedException(player + " is already banned!");
 		handleTempBanPlayer(player, time, reason, admin);
 	}
 	
@@ -167,10 +161,8 @@ public abstract class BanHandler {
 	 * @throws PlayerNotBannedException
 	 *             If the player is not banned
 	 */
-	public final void unbanPlayer(final String player, final String admin)
-			throws PlayerNotBannedException {
-		if (!isPlayerBanned(player, admin))
-			throw new PlayerNotBannedException(player + " is not banned!");
+	public final void unbanPlayer(final String player, final String admin) throws PlayerNotBannedException {
+		if (!isPlayerBanned(player, admin)) throw new PlayerNotBannedException(player + " is not banned!");
 		handleUnbanPlayer(player, admin);
 	}
 	
@@ -182,8 +174,7 @@ public abstract class BanHandler {
 	/**
 	 * Handle tempbanning a player.
 	 */
-	protected abstract void handleTempBanPlayer(String player, long time, String reason,
-			String admin);
+	protected abstract void handleTempBanPlayer(final String player, final long time, final String reason, final String admin);
 	
 	/**
 	 * Handle unbanning a player.
