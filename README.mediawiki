@@ -7,11 +7,9 @@
 The point of ColeBans is to provide a extensible, simple, and useful plugin for bans. Most of the plugins I have seen are all rigid, or use their own service/configuration without an ability to change.
 
 
-ColeBans is made for CraftBukkit 1818 at the time of writing.
+ColeBans is made for CraftBukkit 1.4.5-R0.1 at the time of writing.
 
-ColeBans requires <b>Permissions 2/3 or a bridge</b> for permissions support. SuperPerms support is minimal, and is checked <i>after</i> op status. So your ops will be able to do anything, even if a permission is denied in SuperPerms.
-
-If there is no permissions plugin, ColeBans will use op-status instead. Only ops will be able to use the plugin.
+ColeBans uses SuperPerms for permissions, so most sensible permissions plugins should be compatible with it.
 
 The Jenkins for this plugin and all other Cole2's World plugins can be found [http://ci.cole2sworld.com:8080 here].
 
