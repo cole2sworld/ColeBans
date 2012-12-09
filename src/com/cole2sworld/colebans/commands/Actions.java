@@ -40,8 +40,7 @@ public final class Actions implements CBCommand {
 		}
 	}
 	
-	private static final SimpleDateFormat	DATE_FORMATTER		= new SimpleDateFormat(
-																		"MM/dd/yyyy hh:mm");
+	private static final SimpleDateFormat	DATE_FORMATTER		= new SimpleDateFormat("MM/dd/yyyy hh:mm");
 	
 	public static final long				MILLIS_PER_SECOND	= 1000L;
 	public static final long				MILLIS_PER_MINUTE	= MILLIS_PER_SECOND * 60;
@@ -54,8 +53,7 @@ public final class Actions implements CBCommand {
 	
 	@Override
 	public String run(final String[] args, final CommandSender admin) throws Exception {
-		if (!(new PermissionSet(admin).canLog))
-			return ChatColor.RED + "You don't have permission to do that.";
+		if (!new PermissionSet(admin).canLog) return ChatColor.RED + "You don't have permission to do that.";
 		if (args.length < 2) {
 			int count = 10;
 			try {
@@ -67,60 +65,45 @@ public final class Actions implements CBCommand {
 			}
 			ColeBansPlugin.debug("count is " + count);
 			if (count <= 0) return ChatColor.RED + "Count must be greater than 0";
-			admin.sendMessage(ChatColor.AQUA + "Retrieving the last " + count
-					+ " actions to happen...");
+			admin.sendMessage(ChatColor.AQUA + "Retrieving the last " + count + " actions to happen...");
 			final List<LogEntry> entries = ActionLogManager.getAll(count);
 			for (final LogEntry entry : entries) {
 				if (entry.getType() == Type.BAN) {
-					admin.sendMessage("[" + ChatColor.ITALIC
-							+ DATE_FORMATTER.format(entry.getTime())
-							+ ChatColor.RESET + "] " + ChatColor.DARK_RED + entry.getAdmin()
-							+ " banned " + entry.getVictim());
+					admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+							+ ChatColor.DARK_RED + entry.getAdmin() + " banned " + entry.getVictim());
 				} else if (entry.getType() == Type.KICK) {
-					admin.sendMessage("[" + ChatColor.ITALIC
-							+ DATE_FORMATTER.format(entry.getTime())
-							+ ChatColor.RESET + "] " + ChatColor.YELLOW + entry.getAdmin()
-							+ " kicked " + entry.getVictim());
+					admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+							+ ChatColor.YELLOW + entry.getAdmin() + " kicked " + entry.getVictim());
 				} else if (entry.getType() == Type.TEMPBAN) {
-					admin.sendMessage("[" + ChatColor.ITALIC
-							+ DATE_FORMATTER.format(entry.getTime())
-							+ ChatColor.RESET + "] " + ChatColor.RED + entry.getAdmin()
-							+ " tempbanned " + entry.getVictim());
+					admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+							+ ChatColor.RED + entry.getAdmin() + " tempbanned " + entry.getVictim());
 				} else if (entry.getType() == Type.LOCAL_BAN) {
-					admin.sendMessage("[" + ChatColor.ITALIC
-							+ DATE_FORMATTER.format(entry.getTime())
-							+ ChatColor.RESET + "] " + ChatColor.GRAY + entry.getAdmin()
-							+ " local banned " + entry.getVictim());
+					admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+							+ ChatColor.GRAY + entry.getAdmin() + " local banned " + entry.getVictim());
 				} else if (entry.getType() == Type.UNBAN) {
-					admin.sendMessage("[" + ChatColor.ITALIC
-							+ DATE_FORMATTER.format(entry.getTime())
-							+ ChatColor.RESET + "] " + ChatColor.GREEN + entry.getAdmin()
-							+ " unbanned " + entry.getVictim());
+					admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+							+ ChatColor.GREEN + entry.getAdmin() + " unbanned " + entry.getVictim());
 				} else if (entry.getType() == Type.SWITCH) {
-					admin.sendMessage("[" + ChatColor.ITALIC
-							+ DATE_FORMATTER.format(entry.getTime())
-							+ ChatColor.RESET + "] " + ChatColor.BLUE + entry.getAdmin()
-							+ " switched ban handlers to " + entry.getVictim());
+					admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+							+ ChatColor.BLUE + entry.getAdmin() + " switched ban handlers to " + entry.getVictim());
 				} else if (entry.getType() == Type.OTHER) {
-					admin.sendMessage("[" + ChatColor.ITALIC
-							+ DATE_FORMATTER.format(entry.getTime())
-							+ ChatColor.RESET + "] " + ChatColor.AQUA + entry.getAdmin()
-							+ " did something to " + entry.getVictim());
+					admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+							+ ChatColor.AQUA + entry.getAdmin() + " did something to " + entry.getVictim());
 				} else if (entry.getType() == Type.BANHAMMER_BAN) {
-					admin.sendMessage("[" + ChatColor.ITALIC
-							+ DATE_FORMATTER.format(entry.getTime())
-							+ ChatColor.RESET + "] " + ChatColor.GOLD + entry.getAdmin()
-							+ " banhammered " + entry.getVictim());
+					admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+							+ ChatColor.GOLD + entry.getAdmin() + " banhammered " + entry.getVictim());
 				} else if (entry.getType() == Type.BANHAMMER_KICK) {
-					admin.sendMessage("[" + ChatColor.ITALIC
-							+ DATE_FORMATTER.format(entry.getTime())
-							+ ChatColor.RESET + "] " + ChatColor.LIGHT_PURPLE + entry.getAdmin()
-							+ " kickhammered " + entry.getVictim());
+					admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+							+ ChatColor.LIGHT_PURPLE + entry.getAdmin() + " kickhammered " + entry.getVictim());
+				} else if (entry.getType() == Type.ELEVATE) {
+					admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+							+ ChatColor.DARK_BLUE + entry.getAdmin() + " elevated " + entry.getVictim() + "'s tempban");
+				} else if (entry.getType() == Type.EXTEND) {
+					admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+							+ ChatColor.GRAY + entry.getAdmin() + " extended " + entry.getVictim() + "'s tempban");
 				} else {
-					admin.sendMessage("[" + ChatColor.ITALIC
-							+ DATE_FORMATTER.format(entry.getTime())
-							+ ChatColor.RESET + "] " + ChatColor.DARK_PURPLE + entry.getAdmin()
-							+ " did an unknown action on " + entry.getVictim());
+					admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+							+ ChatColor.DARK_PURPLE + entry.getAdmin() + " did an unknown action on " + entry.getVictim());
 				}
 			}
 			admin.sendMessage(ChatColor.GREEN + "Report complete.");
@@ -165,64 +148,58 @@ public final class Actions implements CBCommand {
 			}
 		}
 		if (units > -1) {
-			since = (curTime) - (units * unit.getMultiplier());
+			since = curTime - units * unit.getMultiplier();
 		} else {
 			since = 0;
 		}
-		if ((by == null) && (to == null)) return ChatColor.RED + "You must specify by and/or to.";
+		if (by == null && to == null) return ChatColor.RED + "You must specify by and/or to.";
 		if (by == null) {
 			by = "*";
 		}
 		if (to == null) {
 			to = "*";
 		}
-		admin.sendMessage(ChatColor.AQUA + "Retrieving all records for actions made on "
-				+ ChatColor.ITALIC + to + ChatColor.AQUA + " by " + ChatColor.ITALIC + by
-				+ ChatColor.AQUA + " since " + DATE_FORMATTER.format(new Date(since)) + "...");
-		final List<LogEntry> entries = ActionLogManager.since(since,
-				ActionLogManager.getByOn(by, to));
+		admin.sendMessage(ChatColor.AQUA + "Retrieving all records for actions made on " + ChatColor.ITALIC + to + ChatColor.AQUA + " by "
+				+ ChatColor.ITALIC + by + ChatColor.AQUA + " since " + DATE_FORMATTER.format(new Date(since)) + "...");
+		final List<LogEntry> entries = ActionLogManager.since(since, ActionLogManager.getByOn(by, to));
 		ColeBansPlugin.debug("Got entries");
 		for (final LogEntry entry : entries) {
 			if (entry.getType() == Type.BAN) {
-				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime())
-						+ ChatColor.RESET + "] " + ChatColor.DARK_RED + entry.getAdmin()
-						+ " banned " + entry.getVictim());
+				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+						+ ChatColor.DARK_RED + entry.getAdmin() + " banned " + entry.getVictim());
 			} else if (entry.getType() == Type.KICK) {
-				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime())
-						+ ChatColor.RESET + "] " + ChatColor.YELLOW + entry.getAdmin() + " kicked "
-						+ entry.getVictim());
+				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+						+ ChatColor.YELLOW + entry.getAdmin() + " kicked " + entry.getVictim());
 			} else if (entry.getType() == Type.TEMPBAN) {
-				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime())
-						+ ChatColor.RESET + "] " + ChatColor.RED + entry.getAdmin()
-						+ " tempbanned " + entry.getVictim());
+				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] " + ChatColor.RED
+						+ entry.getAdmin() + " tempbanned " + entry.getVictim());
 			} else if (entry.getType() == Type.LOCAL_BAN) {
-				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime())
-						+ ChatColor.RESET + "] " + ChatColor.GRAY + entry.getAdmin()
-						+ " local banned " + entry.getVictim());
+				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] " + ChatColor.GRAY
+						+ entry.getAdmin() + " local banned " + entry.getVictim());
 			} else if (entry.getType() == Type.UNBAN) {
-				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime())
-						+ ChatColor.RESET + "] " + ChatColor.GREEN + entry.getAdmin()
-						+ " unbanned " + entry.getVictim());
+				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+						+ ChatColor.GREEN + entry.getAdmin() + " unbanned " + entry.getVictim());
 			} else if (entry.getType() == Type.SWITCH) {
-				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime())
-						+ ChatColor.RESET + "] " + ChatColor.BLUE + entry.getAdmin()
-						+ " switched ban handlers to " + entry.getVictim());
+				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] " + ChatColor.BLUE
+						+ entry.getAdmin() + " switched ban handlers to " + entry.getVictim());
 			} else if (entry.getType() == Type.OTHER) {
-				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime())
-						+ ChatColor.RESET + "] " + ChatColor.AQUA + entry.getAdmin()
-						+ " did something to " + entry.getVictim());
+				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] " + ChatColor.AQUA
+						+ entry.getAdmin() + " did something to " + entry.getVictim());
 			} else if (entry.getType() == Type.BANHAMMER_BAN) {
-				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime())
-						+ ChatColor.RESET + "] " + ChatColor.GOLD + entry.getAdmin()
-						+ " banhammered " + entry.getVictim());
+				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] " + ChatColor.GOLD
+						+ entry.getAdmin() + " banhammered " + entry.getVictim());
 			} else if (entry.getType() == Type.BANHAMMER_KICK) {
-				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime())
-						+ ChatColor.RESET + "] " + ChatColor.LIGHT_PURPLE + entry.getAdmin()
-						+ " kickhammered " + entry.getVictim());
+				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+						+ ChatColor.LIGHT_PURPLE + entry.getAdmin() + " kickhammered " + entry.getVictim());
+			} else if (entry.getType() == Type.ELEVATE) {
+				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+						+ ChatColor.DARK_BLUE + entry.getAdmin() + " elevated " + entry.getVictim() + "'s tempban");
+			} else if (entry.getType() == Type.EXTEND) {
+				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] " + ChatColor.GRAY
+						+ entry.getAdmin() + " extended " + entry.getVictim() + "'s tempban");
 			} else {
-				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime())
-						+ ChatColor.RESET + "] " + ChatColor.DARK_PURPLE + entry.getAdmin()
-						+ " did an unknown action on " + entry.getVictim());
+				admin.sendMessage("[" + ChatColor.ITALIC + DATE_FORMATTER.format(entry.getTime()) + ChatColor.RESET + "] "
+						+ ChatColor.DARK_PURPLE + entry.getAdmin() + " did an unknown action on " + entry.getVictim());
 			}
 		}
 		admin.sendMessage(ChatColor.GREEN + "Report complete.");

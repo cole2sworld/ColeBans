@@ -30,9 +30,11 @@ public final class ActionLogManager {
 		OTHER,
 		UNKNOWN,
 		BANHAMMER_BAN,
-		BANHAMMER_KICK;
+		BANHAMMER_KICK,
+		ELEVATE,
+		EXTEND;
 		public static Type forOrdinal(final int ordinal) {
-			if ((ordinal < 0) || (ordinal >= values().length)) return UNKNOWN;
+			if (ordinal < 0 || ordinal >= values().length) return UNKNOWN;
 			return values()[ordinal];
 		}
 	}
@@ -58,11 +60,9 @@ public final class ActionLogManager {
 	public static void addEntry(final Type type, final String admin, final String victim) {
 		if (!ColeBansPlugin.instance.banHandler.getTruncatedName().equals("mysql")) return;
 		verify();
-		final PreparedStatement stmt = sql.prepare("INSERT INTO " + tbl
-				+ " (type, admin, victim, time) VALUES (?, ?, ?, ?);");
+		final PreparedStatement stmt = sql.prepare("INSERT INTO " + tbl + " (type, admin, victim, time) VALUES (?, ?, ?, ?);");
 		try {
-			ColeBansPlugin.debug("Logging " + admin.toLowerCase() + " doing something to "
-					+ victim.toLowerCase());
+			ColeBansPlugin.debug("Logging " + admin.toLowerCase() + " doing something to " + victim.toLowerCase());
 			stmt.setInt(1, type.ordinal());
 			stmt.setString(2, admin.toLowerCase());
 			stmt.setString(3, victim.toLowerCase());
@@ -105,8 +105,8 @@ public final class ActionLogManager {
 		try {
 			final ResultSet result = stmt.executeQuery();
 			for (; result.next();) {
-				entries.add(new LogEntry(Type.forOrdinal(result.getInt("type")), result
-						.getString("admin"), result.getString("victim"), result.getLong("time")));
+				entries.add(new LogEntry(Type.forOrdinal(result.getInt("type")), result.getString("admin"), result.getString("victim"),
+						result.getLong("time")));
 			}
 			return Util.reverseList(entries);
 		} catch (final SQLException e) {
@@ -137,8 +137,8 @@ public final class ActionLogManager {
 			stmt.setString(1, admin.toLowerCase());
 			final ResultSet result = stmt.executeQuery();
 			for (; result.next();) {
-				entries.add(new LogEntry(Type.forOrdinal(result.getInt("type")), result
-						.getString("admin"), result.getString("victim"), result.getLong("time")));
+				entries.add(new LogEntry(Type.forOrdinal(result.getInt("type")), result.getString("admin"), result.getString("victim"),
+						result.getLong("time")));
 			}
 			return entries;
 		} catch (final SQLException e) {
@@ -169,15 +169,14 @@ public final class ActionLogManager {
 		final String st = "SELECT * FROM " + tbl + " WHERE ("
 				+ (admin.equals("*") ? "" : "admin='" + addSlashes(admin.toLowerCase()) + "'")
 				+ (victim.equals("*") || admin.equals("*") ? "" : ", ")
-				+ (victim.equals("*") ? "" : "victim='" + addSlashes(victim.toLowerCase()) + "'")
-				+ ");";
+				+ (victim.equals("*") ? "" : "victim='" + addSlashes(victim.toLowerCase()) + "'") + ");";
 		ColeBansPlugin.debug(st);
 		final PreparedStatement stmt = sql.prepare(st);
 		try {
 			final ResultSet result = stmt.executeQuery();
 			for (; result.next();) {
-				entries.add(new LogEntry(Type.forOrdinal(result.getInt("type")), result
-						.getString("admin"), result.getString("victim"), result.getLong("time")));
+				entries.add(new LogEntry(Type.forOrdinal(result.getInt("type")), result.getString("admin"), result.getString("victim"),
+						result.getLong("time")));
 			}
 			return entries;
 		} catch (final SQLException e) {
@@ -208,8 +207,8 @@ public final class ActionLogManager {
 			stmt.setString(1, victim.toLowerCase());
 			final ResultSet result = stmt.executeQuery();
 			for (; result.next();) {
-				entries.add(new LogEntry(Type.forOrdinal(result.getInt("type")), result
-						.getString("admin"), result.getString("victim"), result.getLong("time")));
+				entries.add(new LogEntry(Type.forOrdinal(result.getInt("type")), result.getString("admin"), result.getString("victim"),
+						result.getLong("time")));
 			}
 			return entries;
 		} catch (final SQLException e) {
@@ -287,8 +286,7 @@ public final class ActionLogManager {
 		}
 		final long newtime = System.currentTimeMillis();
 		if (didSomething) {
-			System.out.println(ColeBansPlugin.PREFIX + "[LogManager] Done. Took " + (newtime - oldtime)
-					+ " ms.");
+			System.out.println(ColeBansPlugin.PREFIX + "[LogManager] Done. Took " + (newtime - oldtime) + " ms.");
 		}
 		return newtime - oldtime;
 	}
@@ -298,9 +296,8 @@ public final class ActionLogManager {
 		initialize();
 		checkConnectionAIDR();
 		if (!sql.checkTable(tbl)) {
-			sql.query("CREATE  TABLE " + tbl + " (" + "`type` INT UNSIGNED NOT NULL ,"
-					+ "`admin` VARCHAR(45) NULL ," + "`victim` VARCHAR(45) NULL ,"
-					+ "`time` BIGINT UNSIGNED NULL ," + "INDEX `main` (`time` ASC) );");
+			sql.query("CREATE  TABLE " + tbl + " (" + "`type` INT UNSIGNED NOT NULL ," + "`admin` VARCHAR(45) NULL ,"
+					+ "`victim` VARCHAR(45) NULL ," + "`time` BIGINT UNSIGNED NULL ," + "INDEX `main` (`time` ASC) );");
 		}
 	}
 	
