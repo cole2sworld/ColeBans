@@ -86,6 +86,13 @@ public final class BanData {
 	}
 	
 	/**
+	 * @return the amount of minutes the ban was supposed to last when it was scheduled
+	 */
+	public Long getOriginalTime() {
+		return Long.parseLong(standard.get("origTime"));
+	}
+	
+	/**
 	 * @return the type
 	 */
 	public Type getType() {
@@ -122,6 +129,14 @@ public final class BanData {
 	 */
 	public void setReason(final String reason) {
 		standard.put("reason", reason);
+	}
+	
+	/**
+	 * @param origTime
+	 *            the origTime to set
+	 */
+	public void setOriginalTime(final Long origTime) {
+		standard.put("origTime", origTime.toString());
 	}
 	
 	/**
