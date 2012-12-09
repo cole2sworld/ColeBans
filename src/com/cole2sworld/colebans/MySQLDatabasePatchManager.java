@@ -15,6 +15,10 @@ import com.unibia.simplemysql.SimpleMySQL;
  */
 public final class MySQLDatabasePatchManager {
 
+
+
+
+
 	// FORM off
 	private static final String[][]	PATCHES	= {
 						// r1
@@ -29,7 +33,12 @@ public final class MySQLDatabasePatchManager {
 									"  UNIQUE INDEX `key_UNIQUE` (`key` ASC) );",
 									// revision information
 									"INSERT INTO `{$CB_DATABASE}`.`{$CB_PREFIX}meta` (`key`, `value`) VALUES ('revision', '1');"
-								}
+								},
+						// r2
+						new String[] {
+								// temp ban original times
+								"ALTER TABLE `{$CB_DATABASE}`.`{$CB_PREFIX}temp`  ADD COLUMN `origTime` SMALLINT NOT NULL DEFAULT 0  AFTER `time` ;",
+						}
 						};
 	//FORM on
 	public static final int DATABASE_REVISION = PATCHES.length;
@@ -57,7 +66,7 @@ public final class MySQLDatabasePatchManager {
 				if (rev < 0) {
 					System.out.println(ColeBansPlugin.PREFIX+"[MySQLDatabasePatchManager] Invalid database revision id - overwriting");
 				}
-				if ((rev < DATABASE_REVISION) && (rev >= 0)) {
+				if (rev < DATABASE_REVISION && rev >= 0) {
 					System.out.println(ColeBansPlugin.PREFIX+"[MySQLDatabasePatchManager] Database outdated, updating...");
 					for (final String query : PATCHES[rev]) {
 						sql.query(query
