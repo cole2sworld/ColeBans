@@ -3,11 +3,11 @@ package com.cole2sworld.colebans.handlers;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.Vector;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -50,8 +50,7 @@ public final class YAMLBanHandler extends BanHandler implements FileBanHandler {
 			return null;
 		}
 		int convert = 0;
-		for (final Entry<String, Object> entry : tConf.getConfigurationSection("tempBans")
-				.getValues(false).entrySet()) {
+		for (final Entry<String, Object> entry : tConf.getConfigurationSection("tempBans").getValues(false).entrySet()) {
 			if (entry.getValue() instanceof Long) {
 				final long time = (Long) entry.getValue();
 				tConf.set(entry.getKey(), null);
@@ -61,8 +60,7 @@ public final class YAMLBanHandler extends BanHandler implements FileBanHandler {
 				convert++;
 			}
 		}
-		System.out.println(ColeBansPlugin.PREFIX + "[YAMLBanHandler] Converted " + convert
-				+ " temporary ban "
+		System.out.println(ColeBansPlugin.PREFIX + "[YAMLBanHandler] Converted " + convert + " temporary ban "
 				+ (Util.getPlural(convert, true).equals("s") ? "entries" : "entry") + ".");
 		return new YAMLBanHandler(tFile, tConf, convert > 0);
 	}
@@ -84,20 +82,17 @@ public final class YAMLBanHandler extends BanHandler implements FileBanHandler {
 	public void convert(final BanHandler handler) {
 		final List<BanData> dump = dump(BanHandler.SYSTEM_ADMIN_NAME);
 		for (final BanData data : dump) {
-			if (GlobalConf.get("allowTempBans").asBoolean() && (data.getType() == Type.TEMPORARY)) {
+			if (GlobalConf.get("allowTempBans").asBoolean() && data.getType() == Type.TEMPORARY) {
 				try {
-					handler.tempBanPlayer(data.getVictim(), data.getTime(), data.getReason(),
-							BanHandler.SYSTEM_ADMIN_NAME);
+					handler.tempBanPlayer(data.getVictim(), data.getTime(), data.getReason(), BanHandler.SYSTEM_ADMIN_NAME);
 				} catch (final UnsupportedOperationException e) {
-					// FIXME do something more sensible - if tempbans are
-					// disabled this will cause exception spam for each player
+					// hrm, this smells impossible.
 				} catch (final PlayerAlreadyBannedException e) {
 					// just skip it, they are already banned in the target
 				}
 			} else if (data.getType() == Type.PERMANENT) {
 				try {
-					handler.banPlayer(data.getVictim(), data.getReason(),
-							BanHandler.SYSTEM_ADMIN_NAME);
+					handler.banPlayer(data.getVictim(), data.getReason(), BanHandler.SYSTEM_ADMIN_NAME);
 				} catch (final PlayerAlreadyBannedException e) {
 					// just skip it, they are already banned in the target
 				}
@@ -119,7 +114,7 @@ public final class YAMLBanHandler extends BanHandler implements FileBanHandler {
 	
 	@Override
 	public List<BanData> dump(final String admin) {
-		final List<BanData> data = new Vector<BanData>(50);
+		final List<BanData> data = new ArrayList<BanData>(50);
 		final ConfigurationSection temp = conf.getConfigurationSection("tempBans");
 		final ConfigurationSection perm = conf.getConfigurationSection("permBans");
 		if (temp != null) {
@@ -128,8 +123,8 @@ public final class YAMLBanHandler extends BanHandler implements FileBanHandler {
 			for (final String key : keySet) {
 				final Object time = tempBans.get(key);
 				if (time instanceof ConfigurationSection) {
-					data.add(new BanData(key, ((ConfigurationSection) time).getLong("time"),
-							((ConfigurationSection) time).getString("reason")));
+					data.add(new BanData(key, ((ConfigurationSection) time).getLong("time"), ((ConfigurationSection) time)
+							.getString("reason"), ((ConfigurationSection) time).getInt("origTime", 0)));
 				}
 			}
 		}
@@ -158,7 +153,7 @@ public final class YAMLBanHandler extends BanHandler implements FileBanHandler {
 		}
 		if (GlobalConf.get("allowTempBans").asBoolean()) {
 			ColeBansPlugin.debug("Temp bans allowed, continuing");
-			if ((tempBanned != 0) && (tempBanned <= System.currentTimeMillis())) {
+			if (tempBanned != 0 && tempBanned <= System.currentTimeMillis()) {
 				ColeBansPlugin.debug("Temp ban is older than current time, removing");
 				conf.set("permBans." + player, null);
 				conf.set("tempBans." + player, null); // lazy removal, don't
@@ -171,8 +166,8 @@ public final class YAMLBanHandler extends BanHandler implements FileBanHandler {
 			ColeBansPlugin.debug("Reassigning tempBanned (" + tempBanned + ")");
 			if (tempBanned != 0) {
 				ColeBansPlugin.debug("tempBanned not zero, returning TEMPORARY data");
-				return new BanData(player, tempBanned, conf.getString("tempBans." + player
-						+ ".reason"));
+				return new BanData(player, tempBanned, conf.getString("tempBans." + player + ".reason"), conf.getInt("tempBans." + player
+						+ ".origTime", 0));
 			}
 		}
 		ColeBansPlugin.debug("Returning NOT_BANNED data");
@@ -186,12 +181,7 @@ public final class YAMLBanHandler extends BanHandler implements FileBanHandler {
 	
 	@Override
 	public List<String> listBannedPlayers(final String admin) {
-		final List<String> list = new Vector<String>(50);
-		final List<BanData> verbData = dump(admin);
-		for (final BanData data : verbData) {
-			list.add(data.getVictim());
-		}
-		return list;
+		return new ArrayList<String>(conf.getKeys(false));
 	}
 	
 	@Override
@@ -234,17 +224,16 @@ public final class YAMLBanHandler extends BanHandler implements FileBanHandler {
 	
 	
 	@Override
-	protected void handleTempBanPlayer(final String player, final long primTime,
-			final String reason,
-			final String admin) {
+	protected void handleTempBanPlayer(final String player, final long primTime, final String reason, final String admin) {
 		ColeBansPlugin.debug("tempBanPlayer called");
 		ColeBansPlugin.debug("Tempbanning");
-		final long time = System.currentTimeMillis() + ((primTime * 60) * 1000);
+		final long time = System.currentTimeMillis() + primTime * 60 * 1000;
 		ColeBansPlugin.debug("Tempban primTime is " + primTime + ", final time is " + time);
 		conf.set("tempBans." + player, null);
 		final ConfigurationSection s = conf.createSection("tempBans." + player);
 		s.set("time", time);
 		s.set("reason", reason);
+		s.set("origTime", primTime);
 		ColeBansPlugin.debug("Saved");
 		save();
 	}

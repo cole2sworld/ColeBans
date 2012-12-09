@@ -40,11 +40,12 @@ public final class BanData {
 	 * @param time
 	 *            The unix time at which this ban expires
 	 */
-	public BanData(final String victim, final long time, final String reason) {
+	public BanData(final String victim, final long time, final String reason, final long origTime) {
 		setVictim(victim);
 		setTime(time);
 		setType(Type.TEMPORARY);
 		setReason(reason);
+		setOriginalTime(origTime);
 	}
 	
 	/**
