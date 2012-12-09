@@ -4,8 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerPreLoginEvent.Result;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 
 import com.cole2sworld.colebans.framework.GlobalConf;
 import com.cole2sworld.colebans.handlers.BanData;
@@ -29,10 +29,11 @@ public final class EventListener implements Listener {
 	 *            The PlayerPreLoginEvent created by Bukkit.
 	 */
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerPreLogin(final PlayerPreLoginEvent event) {
-		System.out.println("Pre login");
-		ColeBansPlugin.debug("Got pre-login for " + event.getName());
-		final BanData bd = ColeBansPlugin.instance.banHandler.getBanData(event.getName(),
+	public void onPlayerPreLogin(final PlayerLoginEvent event) {
+		System.out.println("login");
+		ColeBansPlugin.debug("Got login for " + event.getPlayer().getName());
+		final BanData bd = ColeBansPlugin.instance.banHandler.getBanData(event.getPlayer()
+				.getName(),
 				BanHandler.SYSTEM_ADMIN_NAME);
 		final Type banType = bd.getType();
 		if (banType == Type.PERMANENT) {
