@@ -18,8 +18,10 @@ public final class Help implements CBCommand {
 		HELP.put("/cb actions", "Print logged actions made by/on a player");
 		HELP.put("/cb count", "Count all bans ever made by this server");
 		HELP.put("/cb debug", "Toggle debug mode");
+		HELP.put("/cb export", "Dump all bans to banned-players.txt");
+		HELP.put("/cb extend", "Extend a tempban");
+		HELP.put("/cb elevate", "Elevate a tempban to a ban");
 		HELP.put("/cb help", "Print this help");
-		HELP.put("/cb lban", "Ban a player from this server using a seperate file");
 		HELP.put("/cb reload", "Reload all ban handlers");
 		HELP.put("/cb switch", "Switch ban handlers");
 		HELP.put("/cb version", "Print the ColeBans version");
@@ -37,7 +39,6 @@ public final class Help implements CBCommand {
 		for (final Entry<String, String> entry : HELP.entrySet()) {
 			admin.sendMessage(ChatColor.AQUA + entry.getKey() + " - " + entry.getValue());
 		}
-		return "Go to " + ChatColor.AQUA + "http://c2wr.com/cbwk" + ChatColor.WHITE
-				+ " for more help.";
+		return "Go to " + ChatColor.AQUA + "http://c2wr.com/cbwk" + ChatColor.WHITE + " for more help.";
 	}
 }
